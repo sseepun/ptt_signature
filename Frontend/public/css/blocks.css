@@ -46,7 +46,7 @@
 /* Template Editor */
 .template-editor{position:relative;}
 .template-editor .options{
-  position:absolute; top:calc(50% - 3rem); left:100%; width:2.3125rem; pointer-events:none;
+  position:absolute; top:calc(50% - 3rem); left:100%; width:2.25rem; pointer-events:none;
   opacity:0; border-radius:var(--bradius); overflow:hidden; transition:opacity .25s;
 }
 .template-editor:hover .options{opacity:1; pointer-events:auto;}

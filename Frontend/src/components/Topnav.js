@@ -1,4 +1,5 @@
-import { useState, useContext } from 'react';
+import { useState, useEffect, useContext } from 'react';
+import { useLocation } from 'react-router-dom';
 import AuthContext from '../context/AuthContext';
 import { Link } from 'react-router-dom';
 
@@ -23,6 +24,9 @@ const Topnav = () => {
     setPopupAnchor(null);
     setPopupActive(0);
   }
+
+  const location = useLocation();
+  useEffect(() => { setPopupAnchor(null); setPopupActive(0); }, [location?.pathname]);
 
   return(<>
     <nav className="topnav">
@@ -81,13 +85,13 @@ const Topnav = () => {
         anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }} 
         transformOrigin={{ vertical: 'top', horizontal: 'right' }} 
       >
-        <MenuItem className="default-p pr-5" component={Link} href="/">
+        <MenuItem className="default-p pr-5" component={Link} to="/">
           <span className="p pt-1 pb-1">หน้าแรก</span>
         </MenuItem>
-        <MenuItem className="default-p pr-5" component={Link} href="/templates">
+        <MenuItem className="default-p pr-5" component={Link} to="/templates">
           <span className="p pt-1 pb-1">จัดการ Template</span>
         </MenuItem>
-        <MenuItem className="default-p pr-5" component={Link} href="/users">
+        <MenuItem className="default-p pr-5" component={Link} to="/users">
           <span className="p pt-1 pb-1">จัดการสิทธิ์ผู้ใช้</span>
         </MenuItem>
       </Menu>
