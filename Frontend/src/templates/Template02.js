@@ -23,7 +23,7 @@ const Template02 = ({ data, onClick=()=>{} }) => {
           onClick={e => handleClick(e, 'field2')} 
           src={thisData?.field2?.value || '/img/template/02-logo.png'} 
         />
-        <p onClick={e => handleClick(e, 'field3')} className="editable xxs" 
+        <p onClick={e => handleClick(e, 'field3')} className="editable" 
           style={{ color: thisData?.field3?.color || 'inherit' }} 
         >
           {thisData?.field3?.value || 'Field 3'}

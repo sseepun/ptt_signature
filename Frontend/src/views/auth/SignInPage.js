@@ -36,11 +36,8 @@ export default function SigninPage() {
               variant="contained" color="primary" fullWidth disableElevation 
               size="large" className="bradius tt-unset" style={{ maxWidth: '18rem' }} 
             >
-              <span className="h6">เข้าสู่ระบบด้วย Azure AD</span>
+              <span className="h6">เข้าสู่ระบบ</span>
             </Button>
-            <p className="sm mt-4">
-              เข้าสู่ระบบด้วยรหัสพนักงาน เช่น 68xxx@pttplc.com
-            </p>
           </div>
         </div>
       </div>

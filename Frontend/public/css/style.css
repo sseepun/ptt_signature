@@ -108,50 +108,9 @@ section{width:100%; overflow:hidden;}
 }
 
 
-section .content-wrapper{
-  position:relative; border-radius:var(--bradius); padding:2rem; overflow:hidden;
-}
-section .content-wrapper.bg-right{ border-radius:var(--bradius) 0  0 var(--bradius);}
-section .content-wrapper.bg-right::before{
-  content:''; position:absolute; top:-.025rem; bottom:-.025rem; left:100%;
-  background:#ffffff; width:15rem; z-index:2;
-}
-section .content-wrapper .img-bg{
-  position:absolute; top:0; right:0; bottom:0; left:0;
-  background-size:cover; background-repeat:no-repeat; background-position:center;
-}
-section .content-wrapper .content-inner{position:relative;}
-@media screen and (max-width:1299.98px){
-  section .content-wrapper.bg-right::before{top:-.0625rem; bottom:-.0625rem;}
-}
-@media screen and (max-width:1199.98px){
-  section .content-wrapper{padding:3.5rem;}
-}
-@media screen and (max-width:991.98px){
-  section .content-wrapper{padding:3rem;}
-}
-@media screen and (max-width:767.98px){
-  section .content-wrapper{padding:2rem;}
-  section .content-wrapper.no-bg{padding:0 2rem 0 2rem;}
-  section .content-wrapper.pr-0{padding:2rem!important;}
-}
-@media screen and (max-width:575.98px){
-  section .content-wrapper{padding:2rem;}
-  section .content-wrapper.no-bg{padding:0 2rem 0 2rem;}
-}
-@media screen and (max-width:490.98px){
-  section .content-wrapper{padding:1.5rem;}
-  section .content-wrapper.no-bg{padding:0 1.5rem 0 1.5rem;}
-}
-@media screen and (max-width:390.98px){
-  section .content-wrapper{padding:1rem;}
-  section .content-wrapper.no-bg{padding:0 1rem 0 1rem;}
-}
-
-
 /* Typography */
 h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6, p, .p, li, label{
-    margin:0; font-weight:300; line-height:1.6;
+  margin:0; font-weight:300; line-height:1.6;
 }
 h1, .h1{font-size:4rem; line-height:1.15;}
 h2.lg, .h2.lg{font-size:2.5rem; line-height:1.25;}

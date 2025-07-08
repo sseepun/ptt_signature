@@ -12,8 +12,6 @@ export default function RouteFrontend() {
     <Suspense fallback={<PageLoading />}>
       <Routes>
         <Route path="/" element={<SignInPage />} />
-        <Route path="/auth/signin" element={<SignInPage />} />
-
         <Route path="*" element={<Navigate replace to="/" />} />
       </Routes>
     </Suspense>

@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 
 import { IconButton, Menu, MenuItem } from '@mui/material';
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
-import PersonOutlineRoundedIcon from '@mui/icons-material/PersonOutlineRounded';
 
 const Topnav = () => {
   const { user, onSignout } = useContext(AuthContext);
@@ -28,23 +27,16 @@ const Topnav = () => {
   return(<>
     <nav className="topnav">
       <div className="wrapper">
-        <Link className="logo" href="/">
-          <img src="/logo.png" alt="Logo" />
-          <div className="text">
-            <div className="top">E-Mail</div>
-            <div className="bottom">Signature</div>
-          </div>
-        </Link>
-        {true || user.isAdmin()? (
+        {user.isAdmin()? (
           <div className="menu-container">
             <div className="menu">
               <Link to="/">หน้าแรก</Link>
             </div>
             <div className="menu">
-              <Link to="/templates">อีเมลเทมเพลต</Link>
+              <Link to="/templates">จัดการ Template</Link>
             </div>
             <div className="menu">
-              <Link to="/users">การจัดการผู้ใช้</Link>
+              <Link to="/users">จัดการสิทธิ์ผู้ใช้</Link>
             </div>
           </div>
         ): (<></>)}
@@ -54,7 +46,7 @@ const Topnav = () => {
               <div className="avatar" style={{ backgroundImage: `url(${user.avatar})` }}></div>
             </IconButton>
           </div>
-          {true || user.isAdmin()? (
+          {user.isAdmin()? (
             <div className="option show-tablet" onClick={e => onPopupOpen(e, 2)}>
               <div className={`hamburger ${popupActive===2 ? 'active' : ''}`}>
                 <div /><div /><div />
@@ -78,17 +70,13 @@ const Topnav = () => {
           <span>ระดับ :</span> {user.role.displayName()}
         </p>
       </div>
-      <MenuItem className="default-p pr-5" component={Link} href="/profile">
-        <PersonOutlineRoundedIcon fontSize="small" className="mr-3" />
-        <span className="p pt-1 pb-1">ข้อมูลส่วนตัว</span>
-      </MenuItem>
       <MenuItem onClick={clickSignout} className="default-p pr-5">
         <LogoutRoundedIcon fontSize="small" className="mr-3" />
         <span className="p pt-1 pb-1">ออกจากระบบ</span>
       </MenuItem>
     </Menu>
 
-    {true || user.isAdmin()? (
+    {user.isAdmin()? (
       <Menu anchorEl={popupAnchor} open={popupActive===2} onClose={onPopupClose} 
         anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }} 
         transformOrigin={{ vertical: 'top', horizontal: 'right' }} 
@@ -97,10 +85,10 @@ const Topnav = () => {
           <span className="p pt-1 pb-1">หน้าแรก</span>
         </MenuItem>
         <MenuItem className="default-p pr-5" component={Link} href="/templates">
-          <span className="p pt-1 pb-1">อีเมลเทมเพลต</span>
+          <span className="p pt-1 pb-1">จัดการ Template</span>
         </MenuItem>
         <MenuItem className="default-p pr-5" component={Link} href="/users">
-          <span className="p pt-1 pb-1">การจัดการผู้ใช้</span>
+          <span className="p pt-1 pb-1">จัดการสิทธิ์ผู้ใช้</span>
         </MenuItem>
       </Menu>
     ): (<></>)}

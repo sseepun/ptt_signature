@@ -1,5 +1,5 @@
 
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 import {
   Button, TextField, Dialog, DialogTitle, DialogContent, DialogActions,
@@ -21,8 +21,6 @@ export default function TemplatesPage() {
   const availableBlocks = [
     { _id: 1, name: 'Block 1', type: 1, image: '/img/template/01.png' },
     { _id: 2, name: 'Block 2', type: 2, image: '/img/template/02.png' },
-    { _id: 3, name: 'Block 3', type: 1, image: '/img/template/01.png' },
-    { _id: 4, name: 'Block 4', type: 2, image: '/img/template/02.png' },
   ];
 
   const [block, setBlock] = useState(null);
@@ -78,55 +76,65 @@ export default function TemplatesPage() {
     return setCounting(prev => prev + 1);
   }
 
+  const ref = useRef(null);
+  const [scale, setScale] = useState(1);
+  useEffect(() => {
+    const updateSize = () => {
+      const _width = ref?.current?.offsetWidth || 0;
+      setScale(() => Math.round((_width? _width/1266: 1) *100)/100);
+    }
+    updateSize();
+    window.addEventListener('resize', updateSize);
+    return () => window.removeEventListener('resize', updateSize);
+  }, [ref]);
+
   return (<>
     <section className="section-padding">
       <div className="container">
-        <div className="ss-box">
-          <h4 className="fw-600">
-            แก้ไขอีเมลเทมเพลต
-          </h4>
-          <div className="templates mt-6">
-            {blocks.map((d, i) => (
-              <div key={`block_${i}_${counting}`} 
-                className="template-editor border-1 bcolor-fgray mb-2" 
-              >
-                {d.type === 1? (
-                  <Template01 data={d?.data} 
-                    onClick={(_key, _data) => onTemplate(i, _key, _data)} 
-                  />
-                ): d.type === 2? (
-                  <Template02 data={d?.data} 
-                    onClick={(_key, _data) => onTemplate(i, _key, _data)} 
-                  />
-                ): (<></>)}
-                <div className="options">
-                  <Button onClick={null} 
-                    variant="contained" color="default" disableElevation 
-                    className="bradius tt-unset bradius-0 pl-2 pr-2" style={{ minWidth: 0 }} 
-                  >
-                    <ArrowUpwardIcon />
-                  </Button>
-                  <Button onClick={null} 
-                    variant="contained" color="default" disableElevation 
-                    className="bradius tt-unset bradius-0 pl-2 pr-2" style={{ minWidth: 0 }} 
-                  >
-                    <ArrowDownwardIcon />
-                  </Button>
-                  <Button onClick={null} 
-                    variant="contained" color="error" disableElevation 
-                    className="bradius tt-unset bradius-0 pl-2 pr-2" style={{ minWidth: 0 }} 
-                  >
-                    <DeleteOutlineIcon />
-                  </Button>
-                </div>
+        <h4 className="fw-600">
+          แก้ไข Template
+        </h4>
+        <div ref={ref} className="templates mt-6" style={{ '--scale': scale }}>
+          {blocks.map((d, i) => (
+            <div key={`block_${i}_${counting}`} 
+              className="template-editor border-1 bcolor-fgray mb-2" 
+            >
+              {d.type === 1? (
+                <Template01 data={d?.data} 
+                  onClick={(_key, _data) => onTemplate(i, _key, _data)} 
+                />
+              ): d.type === 2? (
+                <Template02 data={d?.data} 
+                  onClick={(_key, _data) => onTemplate(i, _key, _data)} 
+                />
+              ): (<></>)}
+              <div className="options">
+                <Button onClick={null} 
+                  variant="contained" color="default" disableElevation 
+                  className="bradius tt-unset bradius-0 pl-2 pr-2" style={{ minWidth: 0 }} 
+                >
+                  <ArrowUpwardIcon />
+                </Button>
+                <Button onClick={null} 
+                  variant="contained" color="default" disableElevation 
+                  className="bradius tt-unset bradius-0 pl-2 pr-2" style={{ minWidth: 0 }} 
+                >
+                  <ArrowDownwardIcon />
+                </Button>
+                <Button onClick={null} 
+                  variant="contained" color="error" disableElevation 
+                  className="bradius tt-unset bradius-0 pl-2 pr-2" style={{ minWidth: 0 }} 
+                >
+                  <DeleteOutlineIcon />
+                </Button>
               </div>
-            ))}
-          
-            <div className="template-add" onClick={e => onProcess(e, 'create')}>
-              <div className="wrapper text-center">
-                <AddCircleOutlineIcon style={{ fontSize: '3rem' }} />
-                <p className="lg">เพิ่ม Signature Block</p>
-              </div>
+            </div>
+          ))}
+        
+          <div className="template-add" onClick={e => onProcess(e, 'create')}>
+            <div className="wrapper text-center">
+              <AddCircleOutlineIcon style={{ fontSize: '3rem' }} />
+              <p className="lg">เพิ่ม Signature Block</p>
             </div>
           </div>
         </div>
