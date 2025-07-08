@@ -104,6 +104,10 @@ export const AuthContextProvider = (props) => {
           _user = new UserModel(_user? JSON.parse(_user): {});
           _accessToken = CryptoJS.AES.decrypt(_accessToken, TOKEN_KEY).toString(CryptoJS.enc.Utf8);
           _refreshToken = CryptoJS.AES.decrypt(_refreshToken, REFRESH_KEY).toString(CryptoJS.enc.Utf8);
+          
+          // By Pass
+          await onSignin(_user, _accessToken, _refreshToken);
+          return () => {};
 
           const _fetch = await fetch(`${API_URL}auth/refresh`, {
             method: 'PATCH',
@@ -112,7 +116,7 @@ export const AuthContextProvider = (props) => {
           });
           if(_fetch.ok && _fetch.status === 200){
             const _data = await _fetch.json();
-            if(_data?.data){
+            if(_data?.data?.user){
               await onSignin(_data.data.user, _data.data.accessToken, _data.data.refreshToken);
               return () => {};
             }
