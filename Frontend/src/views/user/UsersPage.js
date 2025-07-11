@@ -1,6 +1,5 @@
 
-import { useState, useContext } from 'react';
-import AuthContext from '../../context/AuthContext';
+import { useState } from 'react';
 
 import {
   Button, IconButton, TextField,
@@ -11,8 +10,6 @@ import DeleteIconIcon from '@mui/icons-material/Delete';
 import { UserModel } from '../../models';
 
 export default function UsersPage() {
-  const { user } = useContext(AuthContext);
-
   const [users, setUsers] = useState([
     new UserModel({
       _id: 1,
@@ -104,14 +101,13 @@ export default function UsersPage() {
                   <th className="fw-600 text-center" style={{ minWidth: 140 }}>
                     <p className="fw-600">ระดับ</p>
                   </th>
-                  <th className="fw-600 text-center" style={{ minWidth: 95 }}>
-                    <p className="fw-600">การกระทำ</p>
+                  <th className="fw-600 text-center" style={{ minWidth: 80 }}>
+                    <p className="fw-600">ลบสิทธิ์</p>
                   </th>
                 </tr>
               </thead>
               <tbody>
                 {users.map((d, i) => {
-                  const _process = user.role.level > d.role.level? 'update': 'view'; 
                   return (
                     <tr key={i}>
                       <td>
@@ -120,11 +116,7 @@ export default function UsersPage() {
                         ></div>
                       </td>
                       <td>
-                        <p className="a h-color-p c-pointer" 
-                          onClick={e => onProcess(e, _process, d)} 
-                        >
-                          {d.displayName()}
-                        </p>
+                        <p>{d.displayName()}</p>
                         <p className="sm color-sgray">
                           อีเมล: {d.email}
                         </p>
@@ -181,12 +173,6 @@ export default function UsersPage() {
               size="large" className="bradius tt-unset mr-2" style={{ minWidth: '7.5rem' }} 
             >
               <span className="h6">ค้นหา</span>
-            </Button>
-            <Button onClick={onProcess} 
-              variant="contained" color="default" disableElevation 
-              size="large" className="bradius tt-unset" style={{ minWidth: '7.5rem' }} 
-            >
-              <span className="h6">ปิด</span>
             </Button>
           </div>
         </DialogActions>
@@ -258,12 +244,6 @@ export default function UsersPage() {
             >
               <span className="h6">เพิ่มสิทธิ์</span>
             </Button>
-            <Button onClick={onProcess} 
-              variant="contained" color="default" disableElevation 
-              size="large" className="bradius tt-unset" style={{ minWidth: '7.5rem' }} 
-            >
-              <span className="h6">ปิด</span>
-            </Button>
           </div>
         </DialogActions>
       </form>
@@ -275,7 +255,7 @@ export default function UsersPage() {
       <form onSubmit={onSubmit}>
         <DialogTitle component="div" className="p-0">
           <div className="dialog-header">
-            <h5 className="fw-600 lh-xs">
+            <h5 className="fw-600 text-center lh-xs">
               ยืนยันการลบสิทธิ์ผู้ใช้
             </h5>
             <div className="btn-close" onClick={onProcess}>
@@ -287,18 +267,12 @@ export default function UsersPage() {
         </DialogTitle>
         <DialogContent dividers={true} className="p-0 border-top-0"></DialogContent>
         <DialogActions>
-          <div className="btns mt-0">
+          <div className="btns d-flex jc-center mt-0">
             <Button type="submit" 
               variant="contained" color="error" disableElevation 
               size="large" className="bradius tt-unset mr-2" style={{ minWidth: '7.5rem' }} 
             >
-              <span className="h6">ยืนยันการลบ</span>
-            </Button>
-            <Button onClick={onProcess} 
-              variant="contained" color="default" disableElevation 
-              size="large" className="bradius tt-unset" style={{ minWidth: '7.5rem' }} 
-            >
-              <span className="h6">ปิด</span>
+              <span className="h6">ยืนยัน</span>
             </Button>
           </div>
         </DialogActions>
