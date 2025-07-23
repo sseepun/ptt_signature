@@ -13,16 +13,11 @@ const AuthContext = createContext({
   onSignout: () => {},
 
   onUpdate: () => {},
-
-  settings: {},
-  onSettingsUpdate: () => {},
 });
 
 export const AuthContextProvider = (props) => {
   const [status, setStatus] = useState('loading');
   const [user, setUser] = useState(new UserModel());
-
-  const [settings, setSettings] = useState({});
 
   const onSignin = async (u, aToken, rToken) => {
     try {
@@ -72,30 +67,11 @@ export const AuthContextProvider = (props) => {
     return true;
   }
 
-  const onSettingsUpdate = async () => {
-    let _settings = {};
-    try {
-      const _fetch = await fetch(`${API_URL}app/settings`, {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json' },
-      });
-      if(_fetch.ok && _fetch.status === 200){
-        const _data = await _fetch.json();
-        _data?.data?.result.forEach(d => _settings[d.name] = d.value);
-      }
-    } catch {}
-    setSettings(_settings);
-  }
-
   /* eslint-disable */
   useEffect(() => {
     const onLoad = async () => {
       if(status !== 'loading') return () => {};
       try {
-        await Promise.all([
-          new Promise(async resolve => { await onSettingsUpdate(); resolve(true); }),
-        ]);
-
         let _user = localStorage.getItem(`${APP_PREFIX}_USER`);
         let _accessToken = localStorage.getItem(`${APP_PREFIX}_ACCESS`);
         let _refreshToken = localStorage.getItem(`${APP_PREFIX}_REFRESH`);
@@ -142,9 +118,6 @@ export const AuthContextProvider = (props) => {
         onSignout: onSignout,
 
         onUpdate: onUpdate,
-
-        settings: settings,
-        onSettingsUpdate: onSettingsUpdate,
       }} 
     >
       {props.children}

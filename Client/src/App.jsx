@@ -1,50 +1,48 @@
-import { useEffect, useState } from 'react';
+import { useContext } from 'react';
+import { BrowserRouter } from 'react-router-dom';
+import AuthContext from '@/context/AuthContext';
+
+import { ThemeProvider, createTheme } from '@mui/material';
+
+import RouteFrontend from '@/routes/RouteFrontend';
+import RouteUser from '@/routes/RouteUser';
+import PageLoading from '@/views/auth/PageLoading';
+
+import Topnav from '@/components/Topnav';
+import Footer from '@/components/Footer';
 
 function App() {
-    const [forecasts, setForecasts] = useState();
+  const { status } = useContext(AuthContext);
 
-    useEffect(() => {
-        populateWeatherData();
-    }, []);
+  const muiTheme = createTheme({
+    typography: {
+      fontFamily: [ 'PttFont' ].join(','),
+    },
+    palette: {
+      primary: { main: '#4DAAE9', contrastText: '#ffffff' },
+      secondary: { main: '#1B1560', contrastText: '#ffffff' },
+      info: { main: '#5a8dee', contrastText: '#ffffff' },
+      success: { main: '#4ecc48', contrastText: '#ffffff' },
+      warning: { main: '#ecb403', contrastText: '#ffffff' },
+      error: { main: '#f5334f', contrastText: '#ffffff' },
+      default: { main: '#eff1f2', contrastText: '#454f5b' },
+    },
+  });
 
-    const contents = forecasts === undefined
-        ? <p><em>Loading... Please refresh once the ASP.NET backend has started. See <a href="https://aka.ms/jspsintegrationreact">https://aka.ms/jspsintegrationreact</a> for more details.</em></p>
-        : <table className="table table-striped" aria-labelledby="tableLabel">
-            <thead>
-                <tr>
-                    <th>Date</th>
-                    <th>Temp. (C)</th>
-                    <th>Temp. (F)</th>
-                    <th>Summary</th>
-                </tr>
-            </thead>
-            <tbody>
-                {forecasts.map(forecast =>
-                    <tr key={forecast.date}>
-                        <td>{forecast.date}</td>
-                        <td>{forecast.temperatureC}</td>
-                        <td>{forecast.temperatureF}</td>
-                        <td>{forecast.summary}</td>
-                    </tr>
-                )}
-            </tbody>
-        </table>;
-
-    return (
-        <div>
-            <h1 id="tableLabel">Weather forecast</h1>
-            <p>This component demonstrates fetching data from the server.</p>
-            {contents}
-        </div>
-    );
-    
-    async function populateWeatherData() {
-        const response = await fetch('weatherforecast');
-        if (response.ok) {
-            const data = await response.json();
-            setForecasts(data);
-        }
-    }
+  return (
+    <ThemeProvider theme={muiTheme}>
+      <BrowserRouter>
+        {status === 'unauthenticated'? (<>
+          <RouteFrontend />
+        </>): status === 'authenticated'? (<>
+          <Topnav />
+          <RouteUser />
+          <Footer />
+        </>): (
+          <PageLoading />
+        )}
+      </BrowserRouter>
+    </ThemeProvider>
+  );
 }
-
 export default App;

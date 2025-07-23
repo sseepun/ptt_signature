@@ -47,7 +47,7 @@ export default defineConfig({
   },
   server: {
     proxy: {
-      '^/weatherforecast': { target, secure: false }
+      '^/app-setting': { target, secure: false },
     },
     port: 63446,
     https: {
