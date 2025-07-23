@@ -5,6 +5,7 @@ import {
   Button, IconButton, TextField,
   Dialog, DialogTitle, DialogContent, DialogActions,
 } from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
 import DeleteIconIcon from '@mui/icons-material/Delete';
 
 import { UserModel } from '../../models';
@@ -81,6 +82,7 @@ export default function UsersPage() {
             </h4>
             <Button onClick={e => onProcess(e, 'create')} 
               variant="contained" color="secondary" disableElevation 
+              startIcon={<AddIcon fontSize="large" />} 
             >
               เพิ่มสิทธิ์
             </Button>
@@ -90,7 +92,7 @@ export default function UsersPage() {
               <thead>
                 <tr>
                   <th className="fw-600 text-center" style={{ minWidth: 90 }}>
-                    <p className="fw-600">รุปโปรไฟล์</p>
+                    <p className="fw-600">รูปโปรไฟล์</p>
                   </th>
                   <th className="fw-600 text-center" style={{ minWidth: 240, width: '60%' }}>
                     <p className="fw-600">ชื่อ-นามสกุล</p>
