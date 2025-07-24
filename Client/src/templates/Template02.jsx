@@ -3,7 +3,7 @@ import { useMemo } from 'react';
 const Template02 = ({ data, onClick=()=>{} }) => {
   const thisData = useMemo(() => {
     return {
-      field1: data?.field1 || { type: 'background', value: '/img/template/02-bg.jpeg' },
+      field1: data?.field1 || { type: 'background', value: '/img/template/02-bg.jpg' },
       field2: data?.field2 || { type: 'image', value: '/img/template/02-logo.png' },
       field3: data?.field3 || { type: 'text', value: 'www.pttplc.com', color: '#ffffff' },
     };
@@ -16,7 +16,7 @@ const Template02 = ({ data, onClick=()=>{} }) => {
     <div className="template template-02">
       <img className="editable img" alt="Background" 
         onClick={e => handleClick(e, 'field1')} 
-        src={thisData?.field1?.value || '/img/template/02-bg.jpeg'} 
+        src={thisData?.field1?.value || '/img/template/02-bg.jpg'} 
       />
       <div className="wrapper">
         <img className="editable logo" alt="Logo" 

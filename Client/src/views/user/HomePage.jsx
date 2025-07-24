@@ -10,7 +10,7 @@ export default function HomePage() {
         </h5>
         <div className="border-1 bcolor-fgray mt-6">
           <img className="img" src="/img/template/01.png" alt="Template" />
-          <img className="img" src="/img/template/02.png" alt="Template" />
+          <img className="img" src="/img/template/02.jpg" alt="Template" />
         </div>
         <div className="mt-6 pt-1">
           <Button variant="contained" color="secondary" fullWidth disableElevation 

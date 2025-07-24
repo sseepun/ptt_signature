@@ -11,16 +11,20 @@ import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 
 import Template01 from '@/templates/Template01';
 import Template02 from '@/templates/Template02';
+import Template03 from '@/templates/Template03';
+import Template04 from '@/templates/Template04';
 
 export default function TemplatesPage() {
   const [blocks, setBlocks] = useState([
-    { _id: 1, name: 'Block 1', type: 1, image: '/img/template/01.png' },
-    { _id: 2, name: 'Block 2', type: 2, image: '/img/template/02.png' },
+    { _id: 1, name: 'Block 1', type: 1, image: '/img/template/01.jpg' },
+    { _id: 2, name: 'Block 2', type: 2, image: '/img/template/02.jpg' },
   ]);
 
   const availableBlocks = [
-    { _id: 1, name: 'Block 1', type: 1, image: '/img/template/01.png' },
-    { _id: 2, name: 'Block 2', type: 2, image: '/img/template/02.png' },
+    { _id: 1, name: 'Block 1', type: 1, image: '/img/template/01.jpg' },
+    { _id: 2, name: 'Block 2', type: 2, image: '/img/template/02.jpg' },
+    { _id: 3, name: 'Block 3', type: 3, image: '/img/template/03.jpg' },
+    { _id: 4, name: 'Block 4', type: 4, image: '/img/template/04.jpg' },
   ];
 
   const [block, setBlock] = useState(null);
@@ -132,6 +136,14 @@ export default function TemplatesPage() {
                 <Template02 data={d?.data} 
                   onClick={(_key, _data) => onTemplate(i, _key, _data)} 
                 />
+              ): d.type === 3? (
+                <Template03 data={d?.data} 
+                  onClick={(_key, _data) => onTemplate(i, _key, _data)} 
+                />
+              ): d.type === 4? (
+                <Template04 data={d?.data} 
+                  onClick={(_key, _data) => onTemplate(i, _key, _data)} 
+                />
               ): (<></>)}
               <div className="options">
                 <Button onClick={e => onTemplateMove(e, i, 'up')} 
@@ -191,7 +203,7 @@ export default function TemplatesPage() {
               onClick={e => { e.preventDefault(); setBlock(d); }} 
             >
               <p className="lg mb-1">{d.name}</p>
-              <img className="img border-1 bcolor-fgray" src={d.image} alt="Block" />
+              <img className="img bradius border-1 bcolor-fgray" src={d.image} alt="Block" />
             </div>
           </div>
         ))}
