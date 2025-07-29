@@ -9,7 +9,7 @@ export default function HomePage() {
           คุณสามารถดาวน์โหลด E-Mail Signature ของคุณได้ที่นี่
         </h5>
         <div className="border-1 bcolor-fgray mt-6">
-          <img className="img" src="/img/template/01.png" alt="Template" />
+          <img className="img" src="/img/template/01.jpg" alt="Template" />
           <img className="img" src="/img/template/02.jpg" alt="Template" />
         </div>
         <div className="mt-6 pt-1">

@@ -76,7 +76,7 @@ export default function ButtonAD({ msalApplication, tenant, app, test=false, ...
   }
 
   return (
-    <Button onClick={true? clickSignin: signinProcess} 
+    <Button onClick={false? clickSignin: signinProcess} 
       variant="contained" color="primary" fullWidth disableElevation 
       size="large" className="bradius tt-unset" style={{ maxWidth: '18rem' }} 
     >
