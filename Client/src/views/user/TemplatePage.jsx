@@ -4,17 +4,18 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 
 import {
   Button, TextField, Dialog, DialogTitle, DialogContent, DialogActions,
+  FormControlLabel, Switch,
 } from '@mui/material';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 
-import { EmailTemplateModel } from '@/models';
 import Template01 from '@/templates/Template01';
 import Template02 from '@/templates/Template02';
 import Template03 from '@/templates/Template03';
 import Template04 from '@/templates/Template04';
+import { EmailTemplateModel } from '@/models';
 
 const availableBlocks = [
   new EmailTemplateModel().getBlock({ Type: 1, Name: 'Block 1', Image: '/img/template/01.jpg' }),
@@ -30,13 +31,28 @@ export default function TemplatePage() {
   const dataId = params?.['*'] || null;
 
   const disabled = useMemo(() => ['view'].indexOf(crud) > -1, [crud]);
+  const [disabledStatus, setDisabledStatus] = useState(false);
 
   const [template, setTemplate] = useState(new EmailTemplateModel());
   const [blocks, setBlocks] = useState([]);
   const onLoadData = async (_crud, _dataId) => {
-    if(_crud === 'create') return setBlocks([ availableBlocks[0], availableBlocks[1] ]);
-    if(['view','update'].indexOf(_crud) < 0 || !_dataId) return history('/templates');
     try {
+      setDisabledStatus(() => false);
+      const _fetchCount = await fetch('/email-template-count', {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' },
+      });
+      const _count = await _fetchCount.json();
+
+      if(_crud === 'create'){
+        if(_count < 1){
+          setTemplate(new EmailTemplateModel({ Status: 1 }));
+          setDisabledStatus(() => true);
+        }
+        return setBlocks([ availableBlocks[0], availableBlocks[1] ]);
+      }
+      if(['view','update'].indexOf(_crud) < 0 || !_dataId) return history('/templates');
+
       const _fetch = await fetch(`/email-template/${_dataId}`, {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' },
@@ -44,6 +60,7 @@ export default function TemplatePage() {
       const _data = await _fetch.json();
       const _template = new EmailTemplateModel(_data);
       setTemplate(_template);
+      if(_count < 2 || _template.Status) setDisabledStatus(() => true);
       setBlocks(_template.Blocks);
     } catch {
       return history('/templates');
@@ -171,18 +188,35 @@ export default function TemplatePage() {
     <section className="section-padding">
       <div className="container">
         <form onSubmit={onSubmit}>
-          <h4 className="fw-600">
-            {crud==='create'? 'สร้าง': crud==='update'? 'แก้ไข': 'ดู'} Template
-          </h4>
-          <input type="text" required 
-            value={template.Name || ''} 
-            onChange={e => setTemplate({ ...template, Name: e.target.value })}
-          />
-          <div ref={ref} className="templates mt-6" style={{ '--scale': scale }}>
+          <div className="template-header">
+            <h4 className="fw-600">
+              {crud==='create'? 'สร้าง': crud==='update'? 'แก้ไข': 'ดู'} Template
+            </h4>
+            <div className="form-input hide-mobile">
+              <input type="text" className="h4 fw-600" required 
+                value={template.Name || ''} placeholder="ชื่อ Template" 
+                onChange={e => setTemplate({ ...template, Name: e.target.value })}
+              />
+            </div>
+            <div className="form-switch">
+              <FormControlLabel className="m-0" 
+                label={template.Status===1? 'เปิดใช้งาน': 'ปิดใช้งาน'} 
+                control={<Switch color="success" 
+                  checked={template.Status} disabled={disabledStatus} 
+                  onChange={e => setTemplate({ ...template, Status: e.target.checked? 1: 0 })} 
+                />} 
+              />
+            </div>
+            <div className="form-input show-mobile">
+              <input type="text" className="h4 fw-600" required 
+                value={template.Name || ''} placeholder="ชื่อ Template" 
+                onChange={e => setTemplate({ ...template, Name: e.target.value })}
+              />
+            </div>
+          </div>
+          <div ref={ref} className="templates border-1 bcolor-fgray mt-6" style={{ '--scale': scale }}>
             {blocks.map((d, i) => (
-              <div key={`block_${i}_${d.Counting ?? 0}`} 
-                className="template-editor border-1 bcolor-fgray mb-2" 
-              >
+              <div key={`block_${i}_${d.Counting ?? 0}`} className={disabled? '': 'template-editor'}>
                 {d.Type === 1? (
                   <Template01 data={d?.Data} disabled={disabled} 
                     onClick={(_key, _data) => onTemplate(i, _key, _data)} 

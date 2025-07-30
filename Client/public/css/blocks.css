@@ -27,6 +27,24 @@
 }
 
 
+/* Template Header */
+.template-header{width:100%; display:flex; align-items:center;}
+.template-header .form-input{width:calc(100% - 20rem); max-width:36rem; padding:0 .625rem;}
+.template-header .form-input input[type="text"]{
+  font-family:var(--font); padding:.3125rem .625rem!important; line-height:1!important;
+  width:100%; border:2px solid transparent; transition:border-color .25s;
+}
+.template-header .form-switch{width:7.626rem; margin:0 0 0 auto;}
+@media screen and (max-width:767.98px){
+  .template-header .hide-mobile{display:none!important;}
+  .template-header{flex-wrap:wrap;}
+  .template-header .form-input{width:100%; max-width:unset; padding:0; margin:.25rem 0 0 0;}
+}
+@media screen and (min-width:768px){
+  .template-header .show-mobile{display:none!important;}
+}
+
+
 /* Template Add */
 .template-add{
   display:block; width:100%; padding:1rem; border-radius:var(--bradius);

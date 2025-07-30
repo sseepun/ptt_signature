@@ -73,11 +73,11 @@ export default function TemplatesPage() {
                   <th className="fw-600 text-center" style={{ minWidth: 240, width: '100%' }}>
                     <p className="fw-600">ชื่อ Template</p>
                   </th>
-                  <th className="fw-600 text-center" style={{ minWidth: 140 }}>
-                    <p className="fw-600">สถานะ</p>
-                  </th>
-                  <th className="fw-600 text-center" style={{ minWidth: 170 }}>
+                  <th className="fw-600 text-center" style={{ minWidth: 175 }}>
                     <p className="fw-600">แก้ไขล่าสุด</p>
+                  </th>
+                  <th className="fw-600 text-center" style={{ minWidth: 130 }}>
+                    <p className="fw-600">สถานะ</p>
                   </th>
                   <th className="fw-600 text-center" style={{ minWidth: 140 }}>
                     <p className="fw-600">การจัดการ</p>
@@ -102,29 +102,29 @@ export default function TemplatesPage() {
                           </Link>
                         </td>
                         <td className="text-center">
-                          <p>{d.Status}</p>
-                        </td>
-                        <td className="text-center">
                           <p>{formatDate(d.UpdatedAt)} {formatTime(d.UpdatedAt)}</p>
                         </td>
                         <td className="text-center">
+                          {d.displayStatus()}
+                        </td>
+                        <td className="text-center">
                           <Button component={Link} to={`/template/view/${d.Id}`} 
-                            variant="contained" color="success" disableElevation 
-                            className="bradius tt-unset pl-0 pr-0 mr-1" style={{ minWidth: 32 }} 
+                            variant="contained" color="success" disableElevation size="small" 
+                            className="bradius tt-unset p-0 mr-1" style={{ minWidth: 32, minHeight: 32 }} 
                           >
-                            <VisibilityIcon />
+                            <VisibilityIcon fontSize="small" />
                           </Button>
                           <Button component={Link} to={`/template/update/${d.Id}`} 
-                            variant="contained" color="warning" disableElevation 
-                            className="bradius tt-unset pl-0 pr-0 mr-1" style={{ minWidth: 32 }} 
+                            variant="contained" color="warning" disableElevation size="small" 
+                            className="bradius tt-unset p-0 mr-1" style={{ minWidth: 32, minHeight: 32 }} 
                           >
-                            <EditIcon />
+                            <EditIcon fontSize="small" />
                           </Button>
                           <Button onClick={e => onProcess(e, 'delete', d)} 
-                            variant="contained" color="error" disableElevation 
-                            className="bradius tt-unset pl-0 pr-0" style={{ minWidth: 32 }} 
+                            variant="contained" color="error" disableElevation size="small" 
+                            className="bradius tt-unset p-0" style={{ minWidth: 32, minHeight: 32 }} 
                           >
-                            <DeleteOutlineIcon />
+                            <DeleteOutlineIcon fontSize="small" />
                           </Button>
                         </td>
                       </tr>

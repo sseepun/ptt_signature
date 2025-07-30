@@ -82,6 +82,11 @@ table.table > tbody > tr.has-warning > td{
 .table-process .icon{color:#ffffff;}
 
 
+/* Template Header */
+.template-header .form-input input[type="text"]{border-color:#f4f4f4;}
+.template-header .form-input input[type="text"]:focus{border-color:var(--p-color);}
+
+
 /* FIXES: Material UI */
 .MuiDialog-root .MuiPaper-root{background:#ffffff; color:inherit; box-shadow:none;}
 .MuiDialog-root .MuiDialogContent-root{border-color:#e1e0ea;}

@@ -18,11 +18,28 @@ namespace Server.Controllers
       _logger = logger;
     }
 
+    [HttpGet("email-template-active")]
+    public ActionResult EmailTemplateActive()
+    {
+      EmailTemplate? data = _db.EmailTemplates
+        .Where(d => d.Status == 1)
+        .FirstOrDefault();
+      if (data == null) return NotFound();
+      return Ok(data);
+    }
+
+    [HttpGet("email-template-count")]
+    public ActionResult EmailTemplateCount()
+    {
+      var count = _db.EmailTemplates.Count();
+      return Ok(count);
+    }
+
     [HttpGet("email-templates")]
     public ActionResult EmailTemplateList()
     {
       var data = _db.EmailTemplates
-        .OrderBy(d => d.Status)
+        .OrderByDescending(d => d.Status)
         .ThenByDescending(d => d.UpdatedAt)
         .ToList();
       return Ok(data);
@@ -41,6 +58,14 @@ namespace Server.Controllers
     [HttpPost("email-template")]
     public ActionResult EmailTemplateCreate(ReqEmailTemplate req)
     {
+      if (req.Status == 1){
+        List<EmailTemplate> temps = _db.EmailTemplates
+          .Where(d => d.Status == 1)
+          .ToList();
+        foreach (var temp in temps) temp.Status = 0;
+        _db.SaveChanges();
+      }
+
       EmailTemplate data = new EmailTemplate
       {
         Name = req.Name,
@@ -61,6 +86,14 @@ namespace Server.Controllers
           .Where(d => d.Id == req.Id)
           .FirstOrDefault();
       if (data == null) return NotFound();
+      
+      if (req.Status == 1){
+        List<EmailTemplate> temps = _db.EmailTemplates
+          .Where(d => d.Status == 1)
+          .ToList();
+        foreach (var temp in temps) temp.Status = 0;
+        _db.SaveChanges();
+      }
     
       if (req.Name != null) data.Name = req.Name;
       if (req.Template != null) data.Template = req.Template;
@@ -74,8 +107,8 @@ namespace Server.Controllers
     public ActionResult EmailTemplateDelete(int Id)
     {
       EmailTemplate? data = _db.EmailTemplates
-          .Where(d => d.Id == Id)
-          .FirstOrDefault();
+        .Where(d => d.Id == Id && d.Status == 0)
+        .FirstOrDefault();
       if (data == null) return NotFound();
 
       _db.EmailTemplates.Remove(data);

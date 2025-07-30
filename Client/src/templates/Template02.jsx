@@ -1,12 +1,13 @@
 import { useMemo } from 'react';
+import { replaceRules } from '@/helpers/utility';
 
-const Template02 = ({ data, disabled=false, onClick=()=>{} }) => {
+const Template02 = ({ data, disabled=false, onClick=()=>{}, user=null }) => {
   const classer = disabled? '': 'editable';
   const thisData = useMemo(() => {
     return {
       Field1: data?.Field1 || { type: 'background', value: '/img/template/02-bg.jpg' },
       Field2: data?.Field2 || { type: 'image', value: '/img/template/02-logo.png' },
-      Field3: data?.Field3 || { type: 'text', value: 'www.pttplc.com', color: '#ffffff' },
+      Field3: replaceRules(data?.Field3 || { type: 'text', value: 'www.pttplc.com', color: '#ffffff' }, user),
     };
   }, [data]);
   const handleClick = (e=null, field='') => {
@@ -27,7 +28,7 @@ const Template02 = ({ data, disabled=false, onClick=()=>{} }) => {
         <p onClick={e => handleClick(e, 'Field3')} className={classer} 
           style={{ color: thisData?.Field3?.color || 'inherit' }} 
         >
-          {thisData?.Field3?.value || 'Field 3'}
+          {thisData?.Field3?.value || (disabled? '': 'Field 3')}
         </p>
       </div>
     </div>

@@ -4,6 +4,26 @@ export const getValueOrDefault = (val, _default='') => {
   return val ?? _default;
 }
 
+export const replaceRules = (obj, user) => {
+  if(obj?.type === 'text' && user?.Id){
+    obj.value = `${obj.value ?? ''}`
+      .replace(/\[Prefix\]/g, user.Prefix || '')
+      .replace(/\[PrefixEN\]/g, user.Prefix || '')
+      .replace(/\[FirstName\]/g, user.FirstName || '')
+      .replace(/\[LastName\]/g, user.LastName || '')
+      .replace(/\[FirstNameEN\]/g, user.FirstName || '')
+      .replace(/\[LastNameEN\]/g, user.LastName || '')
+      .replace(/\[Position\]/g, user.Title || '')
+      .replace(/\[PositionEN\]/g, user.Title || '')
+      .replace(/\[Department\]/g, user.Department || '')
+      .replace(/\[DepartmentEN\]/g, user.Department || '')
+      .replace(/\[Email\]/g, user.Email || '')
+      .replace(/\[Telephone\]/g, '+66 93 919-4699')
+      .replace(/\[Mobile\]/g, '+66 93 919-4699');
+  }
+  return obj;
+}
+
 export const formatDate = (value=null, format='DD/MM/YYYY', thai=false) => {
   let string;
   if(!value) string = momentTZ(new Date()).tz('Asia/Bangkok').format(format);

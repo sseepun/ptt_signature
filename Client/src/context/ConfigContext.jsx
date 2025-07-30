@@ -13,12 +13,13 @@ export const ConfigContextProvider = (props) => {
   useEffect(() => {
     const onLoad = async () => {
       try {
+        console.log("Loading config...");
         const _fetch = await fetch('/app-setting', {
           method: 'GET',
           headers: { 'Content-Type': 'application/json' },
         });
         const _data = await _fetch.json();
-        const _tenants = _data?.caaConfig?.tenants || [];
+        const _tenants = _data?.CaaConfig?.tenants || [];
         if(_tenants.length){
           setValid(true);
           setTenants(_tenants);

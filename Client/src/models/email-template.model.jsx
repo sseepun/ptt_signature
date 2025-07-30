@@ -1,4 +1,5 @@
 import { getValueOrDefault } from '@/helpers/utility';
+import { Chip } from '@mui/material';
 
 export class EmailTemplateModel {
   constructor(data) {
@@ -28,5 +29,10 @@ export class EmailTemplateModel {
   }
   getBlocks(_template){
     return JSON.parse(_template || '[]').filter(d => d?.Type).map(d => this.getBlock(d));
+  }
+
+  displayStatus(){
+    if(this.isValid() && this.Status) return (<Chip label="เปิดใช้งาน" color="success" />);
+    return (<Chip label="ปิดใช้งาน" color="warning" />);
   }
 }
