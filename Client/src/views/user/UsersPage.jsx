@@ -13,31 +13,37 @@ import { UserModel } from '@/models';
 export default function UsersPage() {
   const [users, setUsers] = useState([
     new UserModel({
-      _id: 1,
-      firstname: 'มานพ',
-      lastname: 'ผ่องโสภา',
-      email: 'example@ptt.com',
-      department: 'ปก.ผยก',
-      position: 'Engineer',
-      role: { _id: 1, name: 'Admin', level: 98 },
+      Id: 1,
+      EmployeeId: '1234567',
+      Department: 'IT Department',
+      IsAdmin: 1,
+      Title: 'Admin',
+      Prefix: 'Mr.',
+      FirstName: 'มานพ',
+      LastName: 'ผ่องโสภา',
+      Email: 'example@ptt.com',
     }),
     new UserModel({
-      _id: 2,
-      firstname: 'มานพ',
-      lastname: 'ผ่องโสภา',
-      email: 'example@ptt.com',
-      department: 'ปก.ผยก',
-      position: 'Engineer',
-      role: { _id: 1, name: 'Admin', level: 98 },
+      Id: 2,
+      EmployeeId: '1234567',
+      Department: 'IT Department',
+      IsAdmin: 1,
+      Title: 'Admin',
+      Prefix: 'Mr.',
+      FirstName: 'มานพ',
+      LastName: 'ผ่องโสภา',
+      Email: 'example@ptt.com',
     }),
     new UserModel({
-      _id: 3,
-      firstname: 'มานพ',
-      lastname: 'ผ่องโสภา',
-      email: 'example@ptt.com',
-      department: 'ปก.ผยก',
-      position: 'Engineer',
-      role: { _id: 1, name: 'Admin', level: 98 },
+      Id: 3,
+      EmployeeId: '1234567',
+      Department: 'IT Department',
+      IsAdmin: 1,
+      Title: 'Admin',
+      Prefix: 'Mr.',
+      FirstName: 'มานพ',
+      LastName: 'ผ่องโสภา',
+      Email: 'example@ptt.com',
     }),
   ]);
 
@@ -62,12 +68,12 @@ export default function UsersPage() {
     if(process === 'create' && employeeCode){
       setEmployee(users[0]);
       setProcess('create-2');
-    }else if(process === 'create-2' && employee?._id){
+    }else if(process === 'create-2' && employee?.Id){
       const _users = [ ...users ];
       _users.push(employee);
       setUsers(_users);
       onProcess();
-    }else if(process === 'delete' && data?._id){
+    }else if(process === 'delete' && data?.Id){
       console.log(data);
     }
   }
@@ -100,8 +106,8 @@ export default function UsersPage() {
                   <th className="fw-600 text-center" style={{ minWidth: 220, width: '40%'}}>
                     <p className="fw-600">ส่วนงาน</p>
                   </th>
-                  <th className="fw-600 text-center" style={{ minWidth: 140 }}>
-                    <p className="fw-600">ระดับ</p>
+                  <th className="fw-600 text-center" style={{ minWidth: 170 }}>
+                    <p className="fw-600">วันที่ใช้งานล่าสุด</p>
                   </th>
                   <th className="fw-600 text-center" style={{ minWidth: 80 }}>
                     <p className="fw-600">ลบสิทธิ์</p>
@@ -114,23 +120,23 @@ export default function UsersPage() {
                     <tr key={i}>
                       <td>
                         <div className="table-avatar" 
-                          style={{ backgroundImage: `url(${d.avatar})` }} 
+                          style={{ backgroundImage: `url(${d.Avatar})` }} 
                         ></div>
                       </td>
                       <td>
                         <p>{d.displayName()}</p>
                         <p className="sm color-sgray">
-                          อีเมล: {d.email}
+                          อีเมล: {d.Email}
                         </p>
                       </td>
                       <td>
-                        <p>{d.department}</p>
+                        <p>{d.Department}</p>
                         <p className="sm color-sgray">
-                          ตำแหน่ง : {d.position}
+                          ตำแหน่ง : {d.Title}
                         </p>
                       </td>
                       <td className="text-center">
-                        <p>{d.role.displayName()}</p>
+                        <p className="sm">30/07/2025 11:56 AM</p>
                       </td>
                       <td className="text-center">
                         <IconButton onClick={e => onProcess(e, 'delete', d)} color="error">
@@ -216,7 +222,7 @@ export default function UsersPage() {
                 <tr>
                   <td>
                     <div className="table-avatar" 
-                      style={{ backgroundImage: `url(${employee.avatar})` }} 
+                      style={{ backgroundImage: `url(${employee.Avatar})` }} 
                     ></div>
                   </td>
                   <td>
@@ -224,13 +230,13 @@ export default function UsersPage() {
                       {employee.displayName()}
                     </p>
                     <p className="sm color-sgray">
-                      อีเมล: {employee.email}
+                      อีเมล: {employee.Email}
                     </p>
                   </td>
                   <td>
-                    <p>{employee.department}</p>
+                    <p>{employee.Department}</p>
                     <p className="sm color-sgray">
-                      ตำแหน่ง : {employee.position}
+                      ตำแหน่ง : {employee.Title}
                     </p>
                   </td>
                 </tr>

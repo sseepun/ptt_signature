@@ -4,36 +4,35 @@ using Server.DTOs;
 
 namespace Server.Controllers
 {
-    [ApiController]
-    [Route("")]
-    public class AppSettingController : ControllerBase
+  [ApiController]
+  [Route("")]
+  public class AppSettingController : ControllerBase
+  {
+    private readonly ILogger<AppSettingController> _logger;
+
+    public AppSettingController(ILogger<AppSettingController> logger)
     {
-
-        private readonly ILogger<AppSettingController> _logger;
-
-        public AppSettingController(ILogger<AppSettingController> logger)
-        {
-            _logger = logger;
-        }
-
-        [HttpGet("")]
-        public ActionResult AppDefaultRead()
-        {
-            return Ok("PTT - E-Mail Signature API");
-        }
-
-        [HttpGet("app-setting")]
-        public ActionResult<ResAppConfig> AppSettingRead()
-        {
-            return Ok(new ResAppConfig
-            {
-                CaaProjectName = Environment.GetEnvironmentVariable("Caa:ProjectName") ?? "",
-                CaaProjectCode = Environment.GetEnvironmentVariable("Caa:ProjectCode") ?? "",
-                CaaUrl = Environment.GetEnvironmentVariable("Caa:Url") ?? "",
-                CaaUsername = Environment.GetEnvironmentVariable("Caa:Username") ?? "",
-                CaaPassword = Environment.GetEnvironmentVariable("Caa:Password") ?? "",
-                CaaConfig = JsonDocument.Parse(Environment.GetEnvironmentVariable("Caa:Config") ?? ""),
-            });
-        }
+      _logger = logger;
     }
+
+    [HttpGet("")]
+    public ActionResult AppDefaultRead()
+    {
+      return Ok("PTT - E-Mail Signature API");
+    }
+
+    [HttpGet("app-setting")]
+    public ActionResult<ResAppConfig> AppSettingRead()
+    {
+      return Ok(new ResAppConfig
+      {
+        CaaProjectName = Environment.GetEnvironmentVariable("Caa:ProjectName") ?? "",
+        CaaProjectCode = Environment.GetEnvironmentVariable("Caa:ProjectCode") ?? "",
+        CaaUrl = Environment.GetEnvironmentVariable("Caa:Url") ?? "",
+        CaaUsername = Environment.GetEnvironmentVariable("Caa:Username") ?? "",
+        CaaPassword = Environment.GetEnvironmentVariable("Caa:Password") ?? "",
+        CaaConfig = JsonDocument.Parse(Environment.GetEnvironmentVariable("Caa:Config") ?? ""),
+      });
+    }
+  }
 }

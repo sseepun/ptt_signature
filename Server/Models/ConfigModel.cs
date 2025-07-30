@@ -1,0 +1,10 @@
+﻿#nullable enable
+
+namespace System.Models;
+
+public partial class Config
+{
+    public int? Id { get; set; }
+    public required string Name { get; set; }
+    public string? Value { get; set; }
+}

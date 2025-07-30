@@ -47,7 +47,7 @@ const Topnav = () => {
         <div className="options">
           <div className="option" onClick={e => onPopupOpen(e, 1)}>
             <IconButton className="p-1">
-              <div className="avatar" style={{ backgroundImage: `url(${user.avatar})` }}></div>
+              <div className="avatar" style={{ backgroundImage: `url(${user.Avatar})` }}></div>
             </IconButton>
           </div>
           {user.isAdmin()? (
@@ -71,7 +71,7 @@ const Topnav = () => {
           {user.displayName()}
         </p>
         <p className="sm op-70 ws-nowrap">
-          <span>ระดับ :</span> {user.role.displayName()}
+          <span>ระดับ :</span> {user.displayRole()}
         </p>
       </div>
       <MenuItem onClick={clickSignout} className="default-p pr-5">

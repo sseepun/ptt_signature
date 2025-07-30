@@ -1,46 +1,49 @@
-import { UserRoleModel } from '.';
-import { unescape } from 'html-escaper';
+import { getValueOrDefault } from '@/helpers/utility';
 
 export class UserModel {
   constructor(data) {
-    this._id = data?._id || null;
+    this.Id = getValueOrDefault(data?.Id, null);
     
-    this.role = new UserRoleModel(data?.role || {});
+    this.EmployeeId = getValueOrDefault(data?.EmployeeId, null);
+    this.Department = getValueOrDefault(data?.Department, null);
 
-    this.firstname = data?.firstname ? unescape(data.firstname) : null;
-    this.lastname = data?.lastname ? unescape(data.lastname) : null;
+    this.IsAdmin = getValueOrDefault(data?.IsAdmin, 0);
 
-    this.username = data?.username || null;
-    this.email = data?.email || null;
-    this.avatar = data?.avatar || '/img/avatar/01.png';
+    this.Title = getValueOrDefault(data?.Title, null);
+    this.Prefix = getValueOrDefault(data?.Prefix, null);
+    this.FirstName = getValueOrDefault(data?.FirstName, null);
+    this.LastName = getValueOrDefault(data?.LastName, null);
 
-    this.department = data?.department || null;
-    this.position = data?.position || null;
+    this.Email = getValueOrDefault(data?.Email, null);
+    this.Avatar = getValueOrDefault(data?.Avatar, '/img/avatar/01.png');
+    
+    this.Status = getValueOrDefault(data?.Status, 0);
 
-    this.status = data?.status ?? 0;
+    this.CreatedAt = getValueOrDefault(data?.CreatedAt, null);
+    this.UpdatedAt = getValueOrDefault(data?.UpdatedAt, null);
   }
 
-  isValid(){ return this._id? true: false; }
+  isValid(){ return this.Id? true: false; }
 
   displayName(){
-    if(this.firstname || this.lastname) return `${this.firstname || ''} ${this.lastname || ''}`.trim();
-    if(this.username) return this.username;
+    if(this.FirstName || this.LastName) return `${this.FirstName || ''} ${this.LastName || ''}`.trim();
+    if(this.Email) return this.Email;
     return '';
   }
   displayRole(){
-    return this.role.displayName();
+    return this.IsAdmin? 'Admin' : 'User';
   }
   displayStatus(){
     if(this.isValid()){
-      if(this.status === 1) return (<span className="ss-tag bg-success">Active</span>);
+      if(this.Status === 1) return (<span className="ss-tag bg-success">Active</span>);
       return (<span className="ss-tag bg-warning">Inactive</span>);
     }
     return (<span className="ss-tag bg-warning">Inactive</span>);
   }
 
-  isSignedIn(){ return this._id && this.status === 1 && this.role.isValid()? true: false; }
+  isSignedIn(){ return this.Id && this.Status === 1? true: false; }
 
-  isSuperAdmin(){ return this.isSignedIn() && [99].indexOf(this.role.level) > -1? true: false; }
-  isAdmin(){ return this.isSignedIn() && [98, 99].indexOf(this.role.level) > -1? true: false; }
-  isUser(){ return this.isSignedIn() && [1].indexOf(this.role.level) > -1? true: false; }
+  isSuperAdmin(){ return this.isSignedIn() && this.IsAdmin? true: false; }
+  isAdmin(){ return this.isSignedIn() && this.IsAdmin? true: false; }
+  isUser(){ return this.isSignedIn() && !this.IsAdmin? true: false; }
 }

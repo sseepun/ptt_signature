@@ -6,6 +6,7 @@ public partial class User
 {
     public int Id { get; set; }
     public Int64? EmployeeId { get; set; }
+    public string? Department { get; set; }
     public int IsAdmin { get; set; } = 0;
     public string? Title { get; set; }
     public string? Prefix { get; set; }

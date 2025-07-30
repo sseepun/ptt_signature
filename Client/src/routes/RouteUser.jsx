@@ -11,15 +11,14 @@ export default function RouteUser() {
   return status === 'authenticated'? (<>
     <Suspense fallback={<PageLoading />}>
       <Routes>
-        <Route path="/" element={<LazyRoute dom={lazy(() => import('../views/user/HomePage'))} />} />
+        <Route path="/" element={<LazyRoute dom={lazy(() => import('@/views/user/HomePage'))} />} />
 
         {/* Admin */}
         {user.isAdmin()? (<>
-          <Route path="/templates" element={<LazyRoute dom={lazy(() => import('../views/user/TemplatesPage'))} />} />
-          {/* <Route path="/template/view/:dataId" element={<LazyRoute dom={lazy(() => import('../views/user/TemplateViewPage'))} />} />
-          <Route path="/template/:process/*" element={<LazyRoute dom={lazy(() => import('../views/admin/TemplatePage'))} />} /> */}
+          <Route path="/templates" element={<LazyRoute dom={lazy(() => import('@/views/user/TemplatesPage'))} />} />
+          <Route path="/template/:crud/*" element={<LazyRoute dom={lazy(() => import('@/views/user/TemplatePage'))} />} />
         
-          <Route path="/users" element={<LazyRoute dom={lazy(() => import('../views/user/UsersPage'))} />} />
+          <Route path="/users" element={<LazyRoute dom={lazy(() => import('@/views/user/UsersPage'))} />} />
         </>): (<></>)}
 
         <Route path="*" element={<Navigate replace to="/" />} />

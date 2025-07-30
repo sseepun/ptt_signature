@@ -4,7 +4,7 @@ namespace System.Models;
 
 public partial class EmailTemplate
 {
-    public string? Id { get; set; }
+    public int? Id { get; set; }
     public required string Name { get; set; }
     public string? Template { get; set; }
     public int Status { get; set; } = 1;

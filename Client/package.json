@@ -18,6 +18,7 @@
     "@mui/material": "^7.1.2",
     "crypto-js": "^4.2.0",
     "html-escaper": "^3.0.3",
+    "moment-timezone": "^0.6.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-redux": "^9.2.0",

@@ -48,6 +48,8 @@ export default defineConfig({
   server: {
     proxy: {
       '^/app-setting': { target, secure: false },
+      '^/email-templates': { target, secure: false },
+      '^/email-template': { target, secure: false },
     },
     port: 63446,
     https: {
