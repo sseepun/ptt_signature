@@ -22,27 +22,27 @@ export default function ButtonAD({ msalApplication, tenant, app, test=false, ...
     } catch {}
   }
 
-  /* eslint-disable */
-  useEffect(() => {
-    if(isAuthenticated && inProgress === 'none') signinComplete();
-  }, [isAuthenticated, inProgress]);
-  /* eslint-enable */
-
   const signinComplete = async () => {
     try {
       if(accounts?.[0]?.localAccountId){
-        const token = await instance.acquireTokenSilent({ ...app.tokenRequest, account: accounts[0] });
-        console.log(token)
-        // const res = await userSigninAD({
-        //   TenantId: accounts[0].tenantId,
-        //   ClientId: app.client_id,
-        //   AccessToken: token.accessToken,
-        //   LocalAccountId: accounts[0].localAccountId,
-        //   HomeAccountId: accounts[0].homeAccountId,
-        //   Name: accounts[0].name,
-        //   Username: accounts[0].username,
-        //   IdToken: accounts[0].idToken,
-        // }, test)(dispatch);
+        const _account = accounts[0];
+        const token = await instance.acquireTokenSilent({ ...app.tokenRequest, account: _account });
+        const _fetch = await fetch('/signin-ad', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            TenantId: _account.tenantId,
+            ClientId: app.client_id,
+            AccessToken: token.accessToken,
+            LocalAccountId: _account.localAccountId,
+            HomeAccountId: _account.homeAccountId,
+            Name: _account.name,
+            Username: _account.username,
+            IdToken: _account.idToken,
+          }),
+        });
+        const _data = await _fetch.json();
+        console.log(_data)
         // if(res?.accessToken){
         //   onSignin({
         //     aToken: res.accessToken,
@@ -78,8 +78,12 @@ export default function ButtonAD({ msalApplication, tenant, app, test=false, ...
     }, 'ACCESS_TOKEN', 'REFRESH_TOKEN');
   }
 
+  useEffect(() => {
+    if(isAuthenticated && inProgress === 'none') signinComplete();
+  }, [isAuthenticated, inProgress]);
+
   return (
-    <Button onClick={true? clickSignin: signinProcess} 
+    <Button onClick={false? clickSignin: signinProcess} 
       variant="contained" color="primary" fullWidth disableElevation 
       size="large" className="bradius tt-unset" style={{ maxWidth: '18rem' }} 
     >

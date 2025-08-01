@@ -1,6 +1,6 @@
 ﻿#nullable enable
 
-namespace System.Models;
+namespace Server.Models;
 
 public partial class EmailTemplate
 {

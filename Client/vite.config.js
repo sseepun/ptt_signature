@@ -46,17 +46,19 @@ export default defineConfig({
     }
   },
   server: {
+    port: 63446,
+    https: false,
+    // https: {
+    //   key: fs.readFileSync(keyFilePath),
+    //   cert: fs.readFileSync(certFilePath),
+    // }
     proxy: {
       '^/app-setting': { target, secure: false },
+      '^/signin-ad': { target, secure: false },
       '^/email-template-active': { target, secure: false },
       '^/email-template-count': { target, secure: false },
       '^/email-templates': { target, secure: false },
       '^/email-template': { target, secure: false },
     },
-    port: 63446,
-    https: {
-      key: fs.readFileSync(keyFilePath),
-      cert: fs.readFileSync(certFilePath),
-    }
   }
 })

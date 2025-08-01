@@ -13,7 +13,6 @@ export const ConfigContextProvider = (props) => {
   useEffect(() => {
     const onLoad = async () => {
       try {
-        console.log("Loading config...");
         const _fetch = await fetch('/app-setting', {
           method: 'GET',
           headers: { 'Content-Type': 'application/json' },

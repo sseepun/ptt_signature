@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 
-namespace System.Models;
+namespace Server.Models;
 
 public class SystemDbContext(DbContextOptions<SystemDbContext> options) : DbContext(options)
 {

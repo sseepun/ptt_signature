@@ -1,9 +1,12 @@
-using System.Models;
+using Server.Models;
 using Microsoft.EntityFrameworkCore;
 using Server.Extensions;
+using Server.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.AddEnvirontmentVariables();
+builder.Services.AddHttpClient();
+builder.Services.AddScoped<AzureAdService>();
 
 // Add services to the container.
 builder.Services
@@ -31,12 +34,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
-
+// app.UseHttpsRedirection();
 app.UseAuthorization();
-
 app.MapControllers();
-
 app.MapFallbackToFile("/index.html");
 
 app.Run();

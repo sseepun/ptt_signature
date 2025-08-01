@@ -76,17 +76,15 @@ export default function HomePage() {
             </div>
           ))}
         </div>
-        {!ref?.current? (<></>): (
-          <div className="mt-6 pt-1">
-            <Button onClick={onDownload} 
-              variant="contained" color="secondary" fullWidth disableElevation 
-              size="large" className="bradius tt-unset" style={{ maxWidth: '11rem' }} 
-              startIcon={<DownloadIcon fontSize="large" />} 
-            >
-              <span className="h6">ดาวน์โหลด</span>
-            </Button>
-          </div>
-        )}
+        <div className="mt-6 pt-1">
+          <Button onClick={onDownload} 
+            variant="contained" color="secondary" fullWidth disableElevation 
+            size="large" className="bradius tt-unset" style={{ maxWidth: '11rem' }} 
+            startIcon={<DownloadIcon fontSize="large" />} 
+          >
+            <span className="h6">ดาวน์โหลด</span>
+          </Button>
+        </div>
       </div>
     </section>
   )
