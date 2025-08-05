@@ -4,8 +4,8 @@ import AuthContext from '@/context/AuthContext';
 import { Button } from '@mui/material';
 
 import { DEV_PROCESS, APP_URL } from '@/actions/variables';
-// import { userSigninAD } from '@/actions/user.actions';
 import { useIsAuthenticated, useMsal } from '@azure/msal-react';
+import { makeRequest } from '@/helpers/api';
 
 export default function ButtonAD({ msalApplication, tenant, app, test=false, ...props }) {
   const { onSignin, onSignout } = useContext(AuthContext);
@@ -27,33 +27,27 @@ export default function ButtonAD({ msalApplication, tenant, app, test=false, ...
       if(accounts?.[0]?.localAccountId){
         const _account = accounts[0];
         const token = await instance.acquireTokenSilent({ ...app.tokenRequest, account: _account });
-        const _fetch = await fetch('/signin-ad', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            TenantId: _account.tenantId,
-            ClientId: app.client_id,
-            AccessToken: token.accessToken,
-            LocalAccountId: _account.localAccountId,
-            HomeAccountId: _account.homeAccountId,
-            Name: _account.name,
-            Username: _account.username,
-            IdToken: _account.idToken,
-          }),
+        const _fetch = await makeRequest('POST', '/signin-ad', {
+          TenantId: _account.tenantId,
+          ClientId: app.client_id,
+          AccessToken: token.accessToken,
+          LocalAccountId: _account.localAccountId,
+          HomeAccountId: _account.homeAccountId,
+          Name: _account.name,
+          Username: _account.username,
+          IdToken: _account.idToken,
         });
-        const _data = await _fetch.json();
-        console.log(_data)
-        // if(res?.accessToken){
-        //   onSignin({
-        //     aToken: res.accessToken,
-        //     rToken: res.refreshToken,
-        //     u: res.user,
-        //     p: res.permissions,
-        //     tenant: tenant,
-        //     app: app,
-        //   });
-        //   return;
-        // }
+        const res = await _fetch.json();
+        if(res?.User?.AccessToken){
+          onSignin({
+            u: res.User,
+            aToken: res.User.AccessToken,
+            rToken: res.User.RefreshToken,
+            tenant: tenant,
+            app: app,
+          });
+          return;
+        }
       }
     } catch {}
     instance.logoutRedirect({ postLogoutRedirectUri: APP_URL, onRedirectNavigate: (_) => false });

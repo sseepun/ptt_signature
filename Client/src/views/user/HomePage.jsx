@@ -4,6 +4,7 @@ import AuthContext from '@/context/AuthContext';
 import { Button } from '@mui/material';
 import DownloadIcon from '@mui/icons-material/Download';
 
+import { makeRequest } from '@/helpers/api';
 import Template01 from '@/templates/Template01';
 import Template02 from '@/templates/Template02';
 import Template03 from '@/templates/Template03';
@@ -18,10 +19,7 @@ export default function HomePage() {
 
   const onLoadData = async (_user) => {
     try {
-      const _fetch = await fetch(`/email-template-active`, {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json' },
-      });
+      const _fetch = await makeRequest('GET', `/email-template-active`);
       if(_fetch.ok && _fetch.status === 200){
         const _data = await _fetch.json();
         setTemplate(new EmailTemplateModel(_data));

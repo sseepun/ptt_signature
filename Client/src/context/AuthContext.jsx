@@ -2,12 +2,17 @@ import { createContext, useState, useEffect } from 'react';
 import { UserModel } from '@/models';
 
 import CryptoJS from 'crypto-js';
+import { Storage } from '@/helpers/storage';
 import { API_URL, APP_PREFIX, TOKEN_KEY, REFRESH_KEY } from '@/actions/variables';
+import { makeRequest } from '@/helpers/api';
 
 const AuthContext = createContext({
   status: 'loading',
-  user: new UserModel(),
   isSignedIn: false,
+
+  user: new UserModel(),
+  accessToken: null,
+  refreshToken: null,
 
   onSignin: () => {},
   onSignout: () => {},
@@ -18,22 +23,33 @@ const AuthContext = createContext({
 export const AuthContextProvider = (props) => {
   const [status, setStatus] = useState('loading');
   const [user, setUser] = useState(new UserModel());
+  const [accessToken, setAccessToken] = useState(null);
+  const [refreshToken, setRefreshToken] = useState(null);
 
-  const onSignin = async (u, aToken, rToken) => {
+  const onSignin = async ({ u, aToken, rToken, tenant=null, app=null }) => {
     try {
       if(u && aToken && rToken){
-        const _user = new UserModel(u? u: {});
+        const _user = new UserModel(u);
         if(_user.isSignedIn()){
           const _u = CryptoJS.AES.encrypt(JSON.stringify(_user), TOKEN_KEY).toString();
           const _accessToken = CryptoJS.AES.encrypt(aToken, TOKEN_KEY).toString();
           const _refreshToken = CryptoJS.AES.encrypt(rToken, REFRESH_KEY).toString();
           
-          localStorage.setItem(`${APP_PREFIX}_USER`, _u);
-          localStorage.setItem(`${APP_PREFIX}_ACCESS`, _accessToken);
-          localStorage.setItem(`${APP_PREFIX}_REFRESH`, _refreshToken);
+          Storage.setItem(`${APP_PREFIX}_USER`, _u);
+          Storage.setItem(`${APP_PREFIX}_ACCESS`, _accessToken);
+          Storage.setItem(`${APP_PREFIX}_REFRESH`, _refreshToken);
+
+          if(tenant && app){
+            Storage.setItem(`${APP_PREFIX}_MSAL_TENANT`, 
+              CryptoJS.AES.encrypt(JSON.stringify(tenant), TOKEN_KEY).toString());
+            Storage.setItem(`${APP_PREFIX}_MSAL_APP`, 
+              CryptoJS.AES.encrypt(JSON.stringify(app), TOKEN_KEY).toString());
+          }
 
           setStatus('authenticated');
           setUser(_user);
+          setAccessToken(aToken);
+          setRefreshToken(rToken);
           return true;
         }
       }
@@ -44,9 +60,11 @@ export const AuthContextProvider = (props) => {
   const onSignout = () => {
     setStatus('unauthenticated');
     setUser(new UserModel());
-    localStorage.removeItem(`${APP_PREFIX}_USER`);
-    localStorage.removeItem(`${APP_PREFIX}_ACCESS`);
-    localStorage.removeItem(`${APP_PREFIX}_REFRESH`);
+    Storage.removeItem(`${APP_PREFIX}_USER`);
+    Storage.removeItem(`${APP_PREFIX}_ACCESS`);
+    Storage.removeItem(`${APP_PREFIX}_REFRESH`);
+    Storage.removeItem(`${APP_PREFIX}_MSAL_TENANT`);
+    Storage.removeItem(`${APP_PREFIX}_MSAL_APP`);
     return true;
   }
 
@@ -62,7 +80,8 @@ export const AuthContextProvider = (props) => {
         address: _user?.address || user.address,
       };
       setUser(new UserModel(_newUser));
-      localStorage.setItem(`${APP_PREFIX}_USER`, CryptoJS.AES.encrypt(JSON.stringify(_newUser), TOKEN_KEY).toString());
+      Storage.setItem(`${APP_PREFIX}_USER`,
+        CryptoJS.AES.encrypt(JSON.stringify(_newUser), TOKEN_KEY).toString());
     }
     return true;
   }
@@ -71,36 +90,30 @@ export const AuthContextProvider = (props) => {
   useEffect(() => {
     const onLoad = async () => {
       if(status !== 'loading') return () => {};
-      try {
-        let _user = localStorage.getItem(`${APP_PREFIX}_USER`);
-        let _accessToken = localStorage.getItem(`${APP_PREFIX}_ACCESS`);
-        let _refreshToken = localStorage.getItem(`${APP_PREFIX}_REFRESH`);
-        if(_user && _accessToken && _refreshToken){
-          _user = CryptoJS.AES.decrypt(_user, TOKEN_KEY).toString(CryptoJS.enc.Utf8);
-          _user = new UserModel(_user? JSON.parse(_user): {});
-          _accessToken = CryptoJS.AES.decrypt(_accessToken, TOKEN_KEY).toString(CryptoJS.enc.Utf8);
-          _refreshToken = CryptoJS.AES.decrypt(_refreshToken, REFRESH_KEY).toString(CryptoJS.enc.Utf8);
-          
-          // By Pass
-          await onSignin(_user, _accessToken, _refreshToken);
-          return () => {};
 
-          const _fetch = await fetch(`${API_URL}auth/refresh`, {
-            method: 'PATCH',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ refreshToken: _refreshToken }),
-          });
-          if(_fetch.ok && _fetch.status === 200){
-            const _data = await _fetch.json();
-            if(_data?.data?.user){
-              await onSignin(_data.data.user, _data.data.accessToken, _data.data.refreshToken);
-              return () => {};
-            }
-          }
+      let _user = Storage.getItem(`${APP_PREFIX}_USER`);
+      let _accessToken = Storage.getItem(`${APP_PREFIX}_ACCESS`);
+      let _refreshToken = Storage.getItem(`${APP_PREFIX}_REFRESH`);
+      if(!_accessToken || !_refreshToken || !_user){ onSignout(); return () => {}; }
+
+      try {
+        _user = CryptoJS.AES.decrypt(_user, TOKEN_KEY).toString(CryptoJS.enc.Utf8);
+        _user = new UserModel(_user? JSON.parse(_user): {});
+        _accessToken = CryptoJS.AES.decrypt(_accessToken, TOKEN_KEY).toString(CryptoJS.enc.Utf8);
+        _refreshToken = CryptoJS.AES.decrypt(_refreshToken, REFRESH_KEY).toString(CryptoJS.enc.Utf8);
+
+        const _fetch = await makeRequest('PATCH', `refresh`, { refreshToken: _refreshToken });
+        if(_fetch.ok && _fetch.status === 200){
+          const _res = await _fetch.json();
+          console.log(_res)
+          // if(_res?.data?.user){
+          //   const _data = _res.data;
+          //   await onSignin({ u: _data.user, aToken: _data.accessToken, rToken: _data.refreshToken });
+          //   return () => {};
+          // }
         }
       } catch {}
-
-      onSignout();
+      // onSignout();
       return () => {};
     }
     onLoad();
@@ -111,8 +124,11 @@ export const AuthContextProvider = (props) => {
     <AuthContext.Provider 
       value={{
         status: status,
-        user: user,
         isSignedIn: user.isSignedIn() && status === 'authenticated',
+
+        user: user,
+        accessToken: accessToken,
+        refreshToken: refreshToken,
 
         onSignin: onSignin,
         onSignout: onSignout,

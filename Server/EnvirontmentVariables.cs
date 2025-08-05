@@ -9,8 +9,9 @@ public static class EnvirontmentVariables
 
   public static IServiceCollection AddEnvirontmentVariables(this WebApplicationBuilder builder) {
     List<string> keys = new List<string> {
-      "Caa:ProjectName", "Caa:ProjectCode", "Caa:Url",
-      "Caa:Username", "Caa:Password", "Caa:Config",
+      "TestAccounts",
+      "Caa:ProjectName", "Caa:ProjectCode", "Caa:Url", "Caa:Username", "Caa:Password", "Caa:Config",
+      "Jwt:Expire", "Jwt:Key", "Jwt:RefreshExpire", "Jwt:RefreshKey", "Jwt:Issuer", "Jwt:Audience",
     };
     foreach (string key in keys) {
       Environment.SetEnvironmentVariable(key, GetKeyValue(key, builder.Configuration));

@@ -2,6 +2,7 @@ using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using Server.DTOs;
+using Server.Helpers;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Server.Services{
@@ -38,8 +39,19 @@ namespace Server.Services{
     }
 
     public async Task<ResAuthSigninAD> AuthorizationAD(ReqAuthSigninAD req){
-      try
-      {
+      if (SUtility.GetTestAccounts().Contains(req.Username)) {
+        var _names = req.Name.Split(" ");
+        return new ResAuthSigninAD
+        {
+          Success = true,
+          Message = "เข้าสู่ระบบ CA&A สำเร็จ",
+          UserId = req.LocalAccountId,
+          Email = req.Username,
+          FirstName = _names?.Length > 0? _names[0]: "",
+          LastName = _names?.Length > 1? _names[1]: "",
+        };
+      }
+      try {
         var apiUrl = Environment.GetEnvironmentVariable("Caa:Url");
         var projectCode = Environment.GetEnvironmentVariable("Caa:ProjectCode");
 
@@ -55,11 +67,11 @@ namespace Server.Services{
           req_transaction_id = DateTime.Now.ToString("ddMMyyyyhhmmssfff"),
           state_name = "",
           req_parameters = new List<AzureObject1> {
-            new AzureObject1 {
-              k = "data",
-              v = requestBase64,
-            }
-          },
+          new AzureObject1 {
+            k = "data",
+            v = requestBase64,
+          }
+        },
           extra_xml = "",
         };
 

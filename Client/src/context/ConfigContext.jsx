@@ -1,4 +1,5 @@
 import { createContext, useState, useEffect } from 'react';
+import { makeRequest } from '@/helpers/api';
 
 const ConfigContext = createContext({
   isValid: false,
@@ -13,10 +14,7 @@ export const ConfigContextProvider = (props) => {
   useEffect(() => {
     const onLoad = async () => {
       try {
-        const _fetch = await fetch('/app-setting', {
-          method: 'GET',
-          headers: { 'Content-Type': 'application/json' },
-        });
+        const _fetch = await makeRequest('GET', '/app-setting');
         const _data = await _fetch.json();
         const _tenants = _data?.CaaConfig?.tenants || [];
         if(_tenants.length){

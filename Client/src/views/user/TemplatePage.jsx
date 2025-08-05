@@ -11,6 +11,7 @@ import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 
+import { makeRequest } from '@/helpers/api';
 import Template01 from '@/templates/Template01';
 import Template02 from '@/templates/Template02';
 import Template03 from '@/templates/Template03';
@@ -38,10 +39,7 @@ export default function TemplatePage() {
   const onLoadData = async (_crud, _dataId) => {
     try {
       setDisabledStatus(() => false);
-      const _fetchCount = await fetch('/email-template-count', {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json' },
-      });
+      const _fetchCount = await makeRequest('GET', '/email-template-count');
       const _count = await _fetchCount.json();
 
       if(_crud === 'create'){
@@ -53,10 +51,7 @@ export default function TemplatePage() {
       }
       if(['view','update'].indexOf(_crud) < 0 || !_dataId) return history('/templates');
 
-      const _fetch = await fetch(`/email-template/${_dataId}`, {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json' },
-      });
+      const _fetch = await makeRequest('GET', `/email-template/${_dataId}`);
       const _data = await _fetch.json();
       const _template = new EmailTemplateModel(_data);
       setTemplate(_template);
@@ -154,18 +149,10 @@ export default function TemplatePage() {
       Status: template.Status,
     });
     if(crud === 'create'){
-      const _fetch = await fetch('/email-template', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(_template),
-      });
+      const _fetch = await makeRequest('POST', '/email-template', _template);
       if(_fetch.ok) return history('/templates');
     }else if(crud === 'update'){
-      const _fetch = await fetch('/email-template', {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(_template),
-      });
+      const _fetch = await makeRequest('PATCH', '/email-template', _template);
       if(_fetch.ok) return history('/templates');
     }
   }

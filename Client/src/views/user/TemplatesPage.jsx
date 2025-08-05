@@ -9,16 +9,14 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 
+import { makeRequest } from '@/helpers/api';
 import { EmailTemplateModel } from '@/models';
 
 export default function TemplatesPage() {
   const [dataTable, setDataTable] = useState([]);
   const onLoadData = async (e=null) => {
     e?.preventDefault();
-    const _fetch = await fetch('/email-templates', {
-      method: 'GET',
-      headers: { 'Content-Type': 'application/json' },
-    });
+    const _fetch = await makeRequest('GET', '/email-templates');
     const _data = await _fetch.json();
     setDataTable((_data || []).map(d => new EmailTemplateModel(d)));
   };
@@ -36,10 +34,7 @@ export default function TemplatesPage() {
   const onSubmit = async (e=null) => {
     e?.preventDefault();
     if(process !== 'delete' || !data.Id) return;
-    const _fetch = await fetch(`/email-template/${data.Id}`, {
-      method: 'DELETE',
-      headers: { 'Content-Type': 'application/json' },
-    });
+    const _fetch = await makeRequest('DELETE', `/email-template/${data.Id}`);
     if(_fetch.ok){
       onLoadData();
       onProcess();
