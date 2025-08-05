@@ -1,5 +1,13 @@
+using Server.Models;
+
 namespace Server.DTOs
 {
+  public class MiddlewareAuth
+  {
+    public string? Type { get; set; }
+    public User? User { get; set; }
+  }
+
   public class ReqAuthSigninAD
   {
     public required string TenantId { get; set; }
@@ -19,9 +27,5 @@ namespace Server.DTOs
     public string? Email { get; set; }
     public string? FirstName { get; set; }
     public string? LastName { get; set; }
-  }
-  public class ReqAuthRefresh
-  {
-    public string? RefreshToken { get; set; }
   }
 }

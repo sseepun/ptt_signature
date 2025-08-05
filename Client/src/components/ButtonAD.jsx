@@ -15,6 +15,7 @@ export default function ButtonAD({ msalApplication, tenant, app, test=false, ...
   const signinProcess = async (e) => {
     e.preventDefault();
     try {
+      document.cookie = "msal.interaction.status=;";
       await instance.loginRedirect({
         scopes: [ 'User.Read' ],
         prompt: DEV_PROCESS? 'select_account': 'login',
@@ -55,29 +56,12 @@ export default function ButtonAD({ msalApplication, tenant, app, test=false, ...
     return;
   }
 
-  const clickSignin = (e=null) => {
-    e?.preventDefault();
-    onSignin({
-      Id: 1,
-      EmployeeId: '1234567',
-      Department: 'IT Department',
-      IsAdmin: 1,
-      Title: 'System Admin',
-      Prefix: 'Mr.',
-      FirstName: 'PTT',
-      LastName: 'Employee',
-      Email: 'employee@ptt.co.th',
-      Avatar: '/img/avatar/01.png',
-      Status: 1,
-    }, 'ACCESS_TOKEN', 'REFRESH_TOKEN');
-  }
-
   useEffect(() => {
     if(isAuthenticated && inProgress === 'none') signinComplete();
   }, [isAuthenticated, inProgress]);
 
   return (
-    <Button onClick={false? clickSignin: signinProcess} 
+    <Button onClick={signinProcess} 
       variant="contained" color="primary" fullWidth disableElevation 
       size="large" className="bradius tt-unset" style={{ maxWidth: '18rem' }} 
     >

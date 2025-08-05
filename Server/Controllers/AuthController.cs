@@ -68,11 +68,10 @@ namespace Server.Controllers
     }
 
     [HttpPatch("refresh")]
-    public ActionResult Refresh(ReqAuthRefresh req)
+    public ActionResult Refresh()
     {
-      Console.WriteLine(req.RefreshToken);
-      // User? _user = HttpContext.Items["User"] as User;
-      // if (_user == null) return Ok(false);
+      User? _user = HttpContext.Items["User"] as User;
+      if (_user == null) return Ok(false);
       return Ok(true);
     }
         

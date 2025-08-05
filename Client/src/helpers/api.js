@@ -6,6 +6,6 @@ export const makeRequest = (type='POST', target, input={}, accessToken='', forge
   return fetch(target, {
     method: type,
     headers: headers,
-    body: JSON.stringify(input),
+    body: type === 'GET'? null: JSON.stringify(input),
   });
 }

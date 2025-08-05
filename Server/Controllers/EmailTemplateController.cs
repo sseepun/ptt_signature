@@ -2,6 +2,7 @@ using Server.Models;
 using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
 using Server.DTOs;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Server.Controllers
 {
@@ -19,6 +20,7 @@ namespace Server.Controllers
     }
 
     [HttpGet("email-template-active")]
+    [Authorize(Roles = "Admin,User")]
     public ActionResult EmailTemplateActive()
     {
       EmailTemplate? data = _db.EmailTemplates
@@ -29,6 +31,7 @@ namespace Server.Controllers
     }
 
     [HttpGet("email-template-count")]
+    [Authorize(Roles = "Admin")]
     public ActionResult EmailTemplateCount()
     {
       var count = _db.EmailTemplates.Count();
@@ -36,6 +39,7 @@ namespace Server.Controllers
     }
 
     [HttpGet("email-templates")]
+    [Authorize(Roles = "Admin")]
     public ActionResult EmailTemplateList()
     {
       var data = _db.EmailTemplates
@@ -46,6 +50,7 @@ namespace Server.Controllers
     }
 
     [HttpGet("email-template/{Id}")]
+    [Authorize(Roles = "Admin")]
     public ActionResult EmailTemplateRead(int Id)
     {
       EmailTemplate? data = _db.EmailTemplates
@@ -56,6 +61,7 @@ namespace Server.Controllers
     }
 
     [HttpPost("email-template")]
+    [Authorize(Roles = "Admin")]
     public ActionResult EmailTemplateCreate(ReqEmailTemplate req)
     {
       if (req.Status == 1){
@@ -80,6 +86,7 @@ namespace Server.Controllers
     }
 
     [HttpPatch("email-template")]
+    [Authorize(Roles = "Admin")]
     public ActionResult EmailTemplateUpdate(ReqEmailTemplate req)
     {
       EmailTemplate? data = _db.EmailTemplates
@@ -104,6 +111,7 @@ namespace Server.Controllers
     }
 
     [HttpDelete("email-template/{Id}")]
+    [Authorize(Roles = "Admin")]
     public ActionResult EmailTemplateDelete(int Id)
     {
       EmailTemplate? data = _db.EmailTemplates

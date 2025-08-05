@@ -32,7 +32,6 @@ namespace Server.Helpers
         signingCredentials: credentials,
         claims: [
           new Claim("Id", user.Id.ToString()),
-          new Claim("IsAdmin", user.IsAdmin.ToString()),
         ]
       );
       return new JwtSecurityTokenHandler().WriteToken(token);
@@ -54,7 +53,6 @@ namespace Server.Helpers
         signingCredentials: credentials,
         claims: [
           new Claim("Id", user.Id.ToString()),
-          new Claim("IsAdmin", user.IsAdmin.ToString()),
         ]
       );
       return new JwtSecurityTokenHandler().WriteToken(token);

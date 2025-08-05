@@ -88,7 +88,7 @@ namespace Server.Services{
         var result = JsonDocument.Parse(decoded).RootElement;
         string? userId = result.GetProperty("user_id").GetString();
         string? email = result.GetProperty("email").GetString();
-        if (userId.IsNullOrEmpty() || email.IsNullOrEmpty()) return new ResAuthSigninAD { Success = false, Message = "ไม่พบอีเมลผู้ใช้ในระบบ CA&A" };
+        if (string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(email)) return new ResAuthSigninAD { Success = false, Message = "ไม่พบอีเมลผู้ใช้ในระบบ CA&A" };
 
         string firstName = ""; string lastName = "";
         foreach (var name in result.GetProperty("name").EnumerateArray())

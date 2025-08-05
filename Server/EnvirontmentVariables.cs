@@ -17,6 +17,7 @@ public static class EnvirontmentVariables
       Environment.SetEnvironmentVariable(key, GetKeyValue(key, builder.Configuration));
     }
 
+    Environment.SetEnvironmentVariable("ConnectionString", builder.Configuration.GetSection("ConnectionStrings:DefaultConnection").Value);
     return builder.Services;
   }
 }

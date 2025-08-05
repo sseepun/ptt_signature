@@ -102,15 +102,13 @@ export const AuthContextProvider = (props) => {
         _accessToken = CryptoJS.AES.decrypt(_accessToken, TOKEN_KEY).toString(CryptoJS.enc.Utf8);
         _refreshToken = CryptoJS.AES.decrypt(_refreshToken, REFRESH_KEY).toString(CryptoJS.enc.Utf8);
 
-        const _fetch = await makeRequest('PATCH', `refresh`, { refreshToken: _refreshToken });
+        const _fetch = await makeRequest('PATCH', `refresh`, {}, _accessToken, _refreshToken);
         if(_fetch.ok && _fetch.status === 200){
           const _res = await _fetch.json();
-          console.log(_res)
-          // if(_res?.data?.user){
-          //   const _data = _res.data;
-          //   await onSignin({ u: _data.user, aToken: _data.accessToken, rToken: _data.refreshToken });
-          //   return () => {};
-          // }
+          if(_res){
+            await onSignin({ u: _user, aToken: _accessToken, rToken: _refreshToken });
+            return () => {};
+          }
         }
       } catch {}
       // onSignout();

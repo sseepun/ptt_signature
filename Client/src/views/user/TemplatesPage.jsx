@@ -1,5 +1,6 @@
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
+import AuthContext from '@/context/AuthContext';
 import { Link } from 'react-router-dom';
 import { formatDate, formatTime } from '@/helpers/utility';
 
@@ -13,10 +14,12 @@ import { makeRequest } from '@/helpers/api';
 import { EmailTemplateModel } from '@/models';
 
 export default function TemplatesPage() {
+  const { accessToken } = useContext(AuthContext);
+
   const [dataTable, setDataTable] = useState([]);
   const onLoadData = async (e=null) => {
     e?.preventDefault();
-    const _fetch = await makeRequest('GET', '/email-templates');
+    const _fetch = await makeRequest('GET', '/email-templates', {}, accessToken);
     const _data = await _fetch.json();
     setDataTable((_data || []).map(d => new EmailTemplateModel(d)));
   };
@@ -34,14 +37,14 @@ export default function TemplatesPage() {
   const onSubmit = async (e=null) => {
     e?.preventDefault();
     if(process !== 'delete' || !data.Id) return;
-    const _fetch = await makeRequest('DELETE', `/email-template/${data.Id}`);
+    const _fetch = await makeRequest('DELETE', `/email-template/${data.Id}`, {}, accessToken);
     if(_fetch.ok){
       onLoadData();
       onProcess();
     }
   };
 
-  useEffect(() => {onLoadData(); }, []);
+  useEffect(() => { if(accessToken) onLoadData(); }, [accessToken]);
 
   return (<>
     <section className="section-padding">
@@ -115,12 +118,14 @@ export default function TemplatesPage() {
                           >
                             <EditIcon fontSize="small" />
                           </Button>
-                          <Button onClick={e => onProcess(e, 'delete', d)} 
-                            variant="contained" color="error" disableElevation size="small" 
-                            className="bradius tt-unset p-0" style={{ minWidth: 32, minHeight: 32 }} 
-                          >
-                            <DeleteOutlineIcon fontSize="small" />
-                          </Button>
+                          {d.Status === 0? (
+                            <Button onClick={e => onProcess(e, 'delete', d)} 
+                              variant="contained" color="error" disableElevation size="small" 
+                              className="bradius tt-unset p-0" style={{ minWidth: 32, minHeight: 32 }} 
+                            >
+                              <DeleteOutlineIcon fontSize="small" />
+                            </Button>
+                          ): (<></>)}
                         </td>
                       </tr>
                     );

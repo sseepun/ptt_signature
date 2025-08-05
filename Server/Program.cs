@@ -1,7 +1,10 @@
 using Server.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Server.Extensions;
 using Server.Services;
+using Server.AuthMiddleware;
+using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.AddEnvirontmentVariables();
@@ -22,6 +25,9 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<SystemDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+builder.Services.AddAuthentication(option => { option.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme; })
+    .AddJwtBearer(options => { options.TokenValidationParameters = new TokenValidationParameters{ ValidateIssuer = true, ValidateAudience = true, ValidateLifetime = true, ValidateIssuerSigningKey = true }; });
+
 var app = builder.Build();
 
 app.UseDefaultFiles();
@@ -34,7 +40,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseMiddleware<AuthMiddleware>();
 // app.UseHttpsRedirection();
+app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 app.MapFallbackToFile("/index.html");

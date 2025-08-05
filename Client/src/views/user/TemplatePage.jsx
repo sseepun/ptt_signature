@@ -1,6 +1,7 @@
 
-import { useState, useEffect, useRef, useMemo } from 'react';
+import { useState, useEffect, useRef, useMemo, useContext } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
+import AuthContext from '@/context/AuthContext';
 
 import {
   Button, TextField, Dialog, DialogTitle, DialogContent, DialogActions,
@@ -26,6 +27,8 @@ const availableBlocks = [
 ];
 
 export default function TemplatePage() {
+  const { accessToken } = useContext(AuthContext);
+
   const history = useNavigate();
   const params = useParams();
   const crud = params.crud || 'create';
@@ -39,7 +42,7 @@ export default function TemplatePage() {
   const onLoadData = async (_crud, _dataId) => {
     try {
       setDisabledStatus(() => false);
-      const _fetchCount = await makeRequest('GET', '/email-template-count');
+      const _fetchCount = await makeRequest('GET', '/email-template-count', {}, accessToken);
       const _count = await _fetchCount.json();
 
       if(_crud === 'create'){
@@ -51,7 +54,7 @@ export default function TemplatePage() {
       }
       if(['view','update'].indexOf(_crud) < 0 || !_dataId) return history('/templates');
 
-      const _fetch = await makeRequest('GET', `/email-template/${_dataId}`);
+      const _fetch = await makeRequest('GET', `/email-template/${_dataId}`, {}, accessToken);
       const _data = await _fetch.json();
       const _template = new EmailTemplateModel(_data);
       setTemplate(_template);
@@ -149,10 +152,10 @@ export default function TemplatePage() {
       Status: template.Status,
     });
     if(crud === 'create'){
-      const _fetch = await makeRequest('POST', '/email-template', _template);
+      const _fetch = await makeRequest('POST', '/email-template', _template, accessToken);
       if(_fetch.ok) return history('/templates');
     }else if(crud === 'update'){
-      const _fetch = await makeRequest('PATCH', '/email-template', _template);
+      const _fetch = await makeRequest('PATCH', '/email-template', _template, accessToken);
       if(_fetch.ok) return history('/templates');
     }
   }
@@ -169,7 +172,7 @@ export default function TemplatePage() {
     return () => window.removeEventListener('resize', updateSize);
   }, [ref]);
 
-  useEffect(() => { onLoadData(crud, dataId); }, [crud, dataId]);
+  useEffect(() => { if(accessToken) onLoadData(crud, dataId); }, [crud, dataId, accessToken]);
 
   return (<>
     <section className="section-padding">
@@ -180,7 +183,8 @@ export default function TemplatePage() {
               {crud==='create'? 'สร้าง': crud==='update'? 'แก้ไข': 'ดู'} Template
             </h4>
             <div className="form-input hide-mobile">
-              <input type="text" className="h4 fw-600" required 
+              <input type="text" required readOnly={crud==='view'} 
+                className={`h4 fw-600 ${crud==='view'? 'pe-none': ''}`}  
                 value={template.Name || ''} placeholder="ชื่อ Template" 
                 onChange={e => setTemplate({ ...template, Name: e.target.value })}
               />

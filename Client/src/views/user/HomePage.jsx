@@ -14,12 +14,12 @@ import { EmailTemplateModel } from '@/models';
 import html2canvas from 'html2canvas';
 
 export default function HomePage() {
-  const { user } = useContext(AuthContext);
+  const { user, accessToken } = useContext(AuthContext);
   const [template, setTemplate] = useState(new EmailTemplateModel());
 
-  const onLoadData = async (_user) => {
+  const onLoadData = async () => {
     try {
-      const _fetch = await makeRequest('GET', `/email-template-active`);
+      const _fetch = await makeRequest('GET', `/email-template-active`, {}, accessToken);
       if(_fetch.ok && _fetch.status === 200){
         const _data = await _fetch.json();
         setTemplate(new EmailTemplateModel(_data));
@@ -39,7 +39,7 @@ export default function HomePage() {
     return () => window.removeEventListener('resize', updateSize);
   }, [ref, template.Id]);
 
-  useEffect(() => { if(user?.Id) onLoadData(); }, [user?.Id]);
+  useEffect(() => { if(accessToken) onLoadData(); }, [accessToken]);
 
   const onDownload = async (e=null) => {
     e?.preventDefault();
