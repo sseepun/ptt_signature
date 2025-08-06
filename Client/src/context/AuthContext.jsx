@@ -102,7 +102,7 @@ export const AuthContextProvider = (props) => {
         _accessToken = CryptoJS.AES.decrypt(_accessToken, TOKEN_KEY).toString(CryptoJS.enc.Utf8);
         _refreshToken = CryptoJS.AES.decrypt(_refreshToken, REFRESH_KEY).toString(CryptoJS.enc.Utf8);
 
-        const _fetch = await makeRequest('PATCH', `/refresh`, {}, _accessToken, _refreshToken);
+        const _fetch = await makeRequest('PATCH', `/api/refresh`, {}, _accessToken, _refreshToken);
         if(_fetch.ok && _fetch.status === 200){
           const _res = await _fetch.json();
           if(_res){

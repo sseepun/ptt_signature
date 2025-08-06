@@ -7,6 +7,11 @@ export const alertChange = (type, message, errors=[]) => {
     title: message,
     text: errors.length? errors.join(' '): '',
     confirmButtonText: 'ตกลง',
+    customClass: {
+      confirmButton: 'h6',
+      cancelButton: 'h6',
+      denyButton: 'h6',
+    },
   };
   if(type === 'Danger'){
     MySwal.fire({ ...option, icon: 'error' });

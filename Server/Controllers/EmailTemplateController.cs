@@ -19,7 +19,7 @@ namespace Server.Controllers
       _logger = logger;
     }
 
-    [HttpGet("email-template-active")]
+    [HttpGet("api/email-template-active")]
     [Authorize(Roles = "Admin,User")]
     public ActionResult EmailTemplateActive()
     {
@@ -30,7 +30,7 @@ namespace Server.Controllers
       return Ok(data);
     }
 
-    [HttpGet("email-template-count")]
+    [HttpGet("api/email-template-count")]
     [Authorize(Roles = "Admin")]
     public ActionResult EmailTemplateCount()
     {
@@ -38,7 +38,7 @@ namespace Server.Controllers
       return Ok(count);
     }
 
-    [HttpGet("email-templates")]
+    [HttpGet("api/email-templates")]
     [Authorize(Roles = "Admin")]
     public ActionResult EmailTemplateList()
     {
@@ -49,7 +49,7 @@ namespace Server.Controllers
       return Ok(data);
     }
 
-    [HttpGet("email-template/{Id}")]
+    [HttpGet("api/email-template/{Id}")]
     [Authorize(Roles = "Admin")]
     public ActionResult EmailTemplateRead(int Id)
     {
@@ -60,7 +60,7 @@ namespace Server.Controllers
       return Ok(data);
     }
 
-    [HttpPost("email-template")]
+    [HttpPost("api/email-template")]
     [Authorize(Roles = "Admin")]
     public ActionResult EmailTemplateCreate(ReqEmailTemplate req)
     {
@@ -85,7 +85,7 @@ namespace Server.Controllers
       return Ok(new { Message = "สร้าง Template สำเร็จ" });
     }
 
-    [HttpPatch("email-template")]
+    [HttpPatch("api/email-template")]
     [Authorize(Roles = "Admin")]
     public ActionResult EmailTemplateUpdate(ReqEmailTemplate req)
     {
@@ -110,7 +110,7 @@ namespace Server.Controllers
       return Ok(new { Message = "แก้ไข Template สำเร็จ" });
     }
 
-    [HttpDelete("email-template/{Id}")]
+    [HttpDelete("api/email-template/{Id}")]
     [Authorize(Roles = "Admin")]
     public ActionResult EmailTemplateDelete(int Id)
     {

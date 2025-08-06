@@ -72,7 +72,7 @@ namespace Server.Controllers
       return user;
     }
 
-    [HttpPost("signin-ad")]
+    [HttpPost("api/signin-ad")]
     public async Task<ActionResult> SigninAD(ReqAuthSigninAD req)
     {
       ResAuthSigninAD res = await _azureAdService.AuthorizationAD(req);
@@ -84,7 +84,7 @@ namespace Server.Controllers
       return Ok(new { User = user });
     }
 
-    [HttpPatch("refresh")]
+    [HttpPatch("api/refresh")]
     public ActionResult Refresh()
     {
       User? _user = HttpContext.Items["User"] as User;

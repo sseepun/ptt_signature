@@ -11,6 +11,7 @@ import AddIcon from '@mui/icons-material/Add';
 import DeleteIconIcon from '@mui/icons-material/Delete';
 
 import { makeRequest } from '@/helpers/api';
+import { alertChange } from '@/helpers/alert';
 import { UserModel } from '@/models';
 
 export default function UsersPage() {
@@ -19,7 +20,7 @@ export default function UsersPage() {
   const [dataTable, setDataTable] = useState([]);
   const onLoadData = async (e=null) => {
     e?.preventDefault();
-    const _fetch = await makeRequest('GET', '/user-admins', {}, accessToken);
+    const _fetch = await makeRequest('GET', '/api/user-admins', {}, accessToken);
     const _data = await _fetch.json();
     setDataTable((_data || []).map(d => new UserModel(d)));
   };
@@ -43,25 +44,26 @@ export default function UsersPage() {
   const onSubmit = async (e=null) => {
     e?.preventDefault();
     if(process === 'create' && employeeCode){
-      const _fetch = await makeRequest('GET', `/user/${employeeCode}`, {}, accessToken);
+      const _fetch = await makeRequest('GET', `/api/user/${employeeCode}`, {}, accessToken);
+      if(!_fetch.ok || _fetch.status !== 200) return alertChange('Danger', 'ไม่พบผู้ใช้ในระบบ PIS');
       const _data = await _fetch.json();
-      if(_data?.EmployeeId){
-        setEmployee(new UserModel(_data));
-        setProcess('create-2');
-      }
-    }else if(process === 'create-2' && employee?.EmployeeId){
-      const _fetch = await makeRequest('POST', '/user-admin',
+      setEmployee(new UserModel(_data));
+      return setProcess('create-2');
+    }
+    if(process === 'create-2' && employee?.EmployeeId){
+      const _fetch = await makeRequest('POST', '/api/user-admin',
         { EmployeeId: employee.EmployeeId }, accessToken);
-      if(_fetch.ok){
-        await onLoadData();
-        onProcess();
-      }
-    }else if(process === 'delete' && data?.Id){
-      const _fetch = await makeRequest('DELETE', `/user-admin/${data.Id}`, {}, accessToken);
-      if(_fetch.ok){
-        await onLoadData();
-        onProcess();
-      }
+      if(!_fetch.ok || _fetch.status !== 200) return alertChange('Danger', 'เพิ่มสิทธิ์ผู้ใช้ไม่สำเร็จ');
+      alertChange('Success', 'เพิ่มสิทธิ์ผู้ใช้สำเร็จ');
+      onLoadData();
+      return onProcess();
+    }
+    if(process === 'delete' && data?.Id){
+      const _fetch = await makeRequest('DELETE', `/api/user-admin/${data.Id}`, {}, accessToken);
+      if(!_fetch.ok || _fetch.status !== 200) return alertChange('Danger', 'ลบสิทธิ์ผู้ใช้ไม่สำเร็จ');
+      alertChange('Success', 'ลบสิทธิ์ผู้ใช้สำเร็จ');
+      onLoadData();
+      return onProcess();
     }
   }
 
@@ -77,7 +79,7 @@ export default function UsersPage() {
             </h4>
             <Button onClick={e => onProcess(e, 'create')} 
               variant="contained" color="secondary" disableElevation 
-              startIcon={<AddIcon fontSize="large" />} 
+              className="bradius" startIcon={<AddIcon fontSize="large" />} 
             >
               เพิ่มสิทธิ์
             </Button>
@@ -223,9 +225,7 @@ export default function UsersPage() {
                     ></div>
                   </td>
                   <td>
-                    <p className="a h-color-p c-pointer">
-                      {employee.displayName()}
-                    </p>
+                    <p>{employee.displayName()}</p>
                     <p className="sm color-sgray">
                       อีเมล: {employee.Email}
                     </p>

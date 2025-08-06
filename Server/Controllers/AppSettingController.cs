@@ -15,13 +15,13 @@ namespace Server.Controllers
       _logger = logger;
     }
 
-    [HttpGet("")]
+    [HttpGet("api")]
     public ActionResult AppDefaultRead()
     {
       return Ok("PTT - E-Mail Signature API");
     }
 
-    [HttpGet("app-setting")]
+    [HttpGet("api/app-setting")]
     public ActionResult<ResAppConfig> AppSettingRead()
     {
       return Ok(new ResAppConfig

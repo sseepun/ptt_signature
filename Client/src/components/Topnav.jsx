@@ -6,12 +6,15 @@ import { Link } from 'react-router-dom';
 import { IconButton, Menu, MenuItem } from '@mui/material';
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 
+import { alertChange } from '@/helpers/alert';
+
 const Topnav = () => {
   const { user, onSignout } = useContext(AuthContext);
 
   const clickSignout = (e=null) => {
     e?.preventDefault();
     onSignout();
+    alertChange('Success', 'ออกจากระบบสำเร็จ');
   }
 
   const [popupAnchor, setPopupAnchor] = useState(null);

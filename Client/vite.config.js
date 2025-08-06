@@ -53,17 +53,17 @@ export default defineConfig({
     //   cert: fs.readFileSync(certFilePath),
     // }
     proxy: {
-      '^/app-setting': { target, secure: false },
-      '^/signin-ad': { target, secure: false },
-      '^/refresh': { target, secure: false },
-      '^/email-template-active': { target, secure: false },
-      '^/email-template-count': { target, secure: false },
-      '^/email-templates': { target, secure: false },
-      '^/email-template': { target, secure: false },
-      '^/user-info': { target, secure: false },
-      '^/user-admins': { target, secure: false },
-      '^/user-admin': { target, secure: false },
-      '^/user': { target, secure: false },
+      '^/api/app-setting': { target, secure: false },
+      '^/api/signin-ad': { target, secure: false },
+      '^/api/refresh': { target, secure: false },
+      '^/api/email-template-active': { target, secure: false },
+      '^/api/email-template-count': { target, secure: false },
+      '^/api/email-templates': { target, secure: false },
+      '^/api/email-template': { target, secure: false },
+      '^/api/user-info': { target, secure: false },
+      '^/api/user-admins': { target, secure: false },
+      '^/api/user-admin': { target, secure: false },
+      '^/api/user': { target, secure: false },
     },
   }
 })

@@ -20,14 +20,14 @@ export default function HomePage() {
 
   const onLoadData = async () => {
     await Promise.all([
-      makeRequest('GET', `/email-template-active`, {}, accessToken)
+      makeRequest('GET', `/api/email-template-active`, {}, accessToken)
         .then(async res => {
           if(res.ok && res.status === 200){
             const data = await res.json();
             setTemplate(new EmailTemplateModel(data));
           }
         }).catch(() => {}),
-      makeRequest('GET', `/user-info`, {}, accessToken)
+      makeRequest('GET', `/api/user-info`, {}, accessToken)
         .then(async res => {
           if(res.ok && res.status === 200){
             const data = await res.json();
@@ -47,7 +47,7 @@ export default function HomePage() {
     updateSize();
     window.addEventListener('resize', updateSize);
     return () => window.removeEventListener('resize', updateSize);
-  }, [ref, template.Id]);
+  }, [ref, template.Id, user.Id]);
 
   useEffect(() => { if(accessToken) onLoadData(); }, [accessToken]);
 

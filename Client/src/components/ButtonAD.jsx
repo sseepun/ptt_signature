@@ -1,7 +1,8 @@
-import { useEffect, useContext } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import AuthContext from '@/context/AuthContext';
 
 import { Button } from '@mui/material';
+import CircularProgress from '@mui/material/CircularProgress';
 
 import { DEV_PROCESS, APP_URL } from '@/actions/variables';
 import { useIsAuthenticated, useMsal } from '@azure/msal-react';
@@ -23,12 +24,14 @@ export default function ButtonAD({ msalApplication, tenant, app, test=false, ...
     } catch {}
   }
 
+  const [loading, setLoading] = useState(false);
   const signinComplete = async () => {
     try {
       if(accounts?.[0]?.localAccountId){
+        setLoading(() => true);
         const _account = accounts[0];
         const token = await instance.acquireTokenSilent({ ...app.tokenRequest, account: _account });
-        const _fetch = await makeRequest('POST', '/signin-ad', {
+        const _fetch = await makeRequest('POST', '/api/signin-ad', {
           TenantId: _account.tenantId,
           ClientId: app.client_id,
           AccessToken: token.accessToken,
@@ -40,6 +43,7 @@ export default function ButtonAD({ msalApplication, tenant, app, test=false, ...
         });
         const res = await _fetch.json();
         if(res?.User?.AccessToken){
+          document.cookie = "msal.interaction.status=;";
           onSignin({
             u: res.User,
             aToken: res.User.AccessToken,
@@ -51,6 +55,7 @@ export default function ButtonAD({ msalApplication, tenant, app, test=false, ...
         }
       }
     } catch {}
+    setLoading(() => false);
     instance.logoutRedirect({ postLogoutRedirectUri: APP_URL, onRedirectNavigate: (_) => false });
     onSignout();
     return;
@@ -60,12 +65,17 @@ export default function ButtonAD({ msalApplication, tenant, app, test=false, ...
     if(isAuthenticated && inProgress === 'none') signinComplete();
   }, [isAuthenticated, inProgress]);
 
-  return (
+  return (<>
     <Button onClick={signinProcess} 
       variant="contained" color="primary" fullWidth disableElevation 
       size="large" className="bradius tt-unset" style={{ maxWidth: '18rem' }} 
     >
       <span className="h6">เข้าสู่ระบบ</span>
     </Button>
-  );
+    <div className={`global-loader ${loading? 'active': ''}`}>
+      <div className="wrapper color-p">
+        <CircularProgress color="inherit" size={68} thickness={4} />
+      </div>
+    </div>
+  </>);
 }

@@ -21,7 +21,7 @@ namespace Server.Controllers
       _logger = logger;
     }
 
-    [HttpGet("user-info")]
+    [HttpGet("api/user-info")]
     [Authorize(Roles = "Admin,User")]
     public async Task<ActionResult> UserInfo()
     {
@@ -53,7 +53,7 @@ namespace Server.Controllers
       return Ok(res);
     }
 
-    [HttpGet("user-admins")]
+    [HttpGet("api/user-admins")]
     [Authorize(Roles = "Admin")]
     public ActionResult UserAdminList()
     {
@@ -65,12 +65,12 @@ namespace Server.Controllers
       return Ok(data);
     }
 
-    [HttpGet("user/{EmployeeCode}")]
+    [HttpGet("api/user/{EmployeeCode}")]
     [Authorize(Roles = "Admin")]
     public async Task<ActionResult> UserRead(string EmployeeCode)
     {
       var pisUsers = await _pisService.GetUsers(EmployeeCode);
-      if (pisUsers.Count < 1) return Ok(null);
+      if (pisUsers.Count < 1) return BadRequest(new { Message = $"ไม่พบผู้ใช้ในระบบ PIS" });
       
       var pisUser = pisUsers[0];
       User res = new User
@@ -87,7 +87,7 @@ namespace Server.Controllers
       return Ok(res);
     }
     
-    [HttpPost("user-admin")]
+    [HttpPost("api/user-admin")]
     [Authorize(Roles = "Admin")]
     public async Task<ActionResult> UserAdminCreate(ReqUserAdmin req)
     {
@@ -129,7 +129,7 @@ namespace Server.Controllers
       return Ok(new { Message = "เพิ่มสิทธิ์ผู้ใช้สำเร็จ" });
     }
 
-    [HttpDelete("user-admin/{Id}")]
+    [HttpDelete("api/user-admin/{Id}")]
     [Authorize(Roles = "Admin")]
     public ActionResult UserAdminDelete(int Id)
     {

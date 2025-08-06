@@ -11,6 +11,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 
 import { makeRequest } from '@/helpers/api';
+import { alertChange } from '@/helpers/alert';
 import { EmailTemplateModel } from '@/models';
 
 export default function TemplatesPage() {
@@ -19,7 +20,7 @@ export default function TemplatesPage() {
   const [dataTable, setDataTable] = useState([]);
   const onLoadData = async (e=null) => {
     e?.preventDefault();
-    const _fetch = await makeRequest('GET', '/email-templates', {}, accessToken);
+    const _fetch = await makeRequest('GET', '/api/email-templates', {}, accessToken);
     const _data = await _fetch.json();
     setDataTable((_data || []).map(d => new EmailTemplateModel(d)));
   };
@@ -37,11 +38,11 @@ export default function TemplatesPage() {
   const onSubmit = async (e=null) => {
     e?.preventDefault();
     if(process !== 'delete' || !data.Id) return;
-    const _fetch = await makeRequest('DELETE', `/email-template/${data.Id}`, {}, accessToken);
-    if(_fetch.ok){
-      onLoadData();
-      onProcess();
-    }
+    const _fetch = await makeRequest('DELETE', `/api/email-template/${data.Id}`, {}, accessToken);
+    if(!_fetch.ok || _fetch.status !== 200) return alertChange('Danger', 'ลบ Template ไม่สำเร็จ');
+    alertChange('Success', 'ลบ Template สำเร็จ');
+    onLoadData();
+    return onProcess();
   };
 
   useEffect(() => { if(accessToken) onLoadData(); }, [accessToken]);
@@ -56,7 +57,7 @@ export default function TemplatesPage() {
             </h4>
             <Button component={Link} to="/template/create" 
               variant="contained" color="secondary" disableElevation 
-              startIcon={<AddIcon fontSize="large" />} 
+              className="bradius" startIcon={<AddIcon fontSize="large" />} 
             >
               เพิ่ม
             </Button>

@@ -14,7 +14,7 @@ export const ConfigContextProvider = (props) => {
   useEffect(() => {
     const onLoad = async () => {
       try {
-        const _fetch = await makeRequest('GET', '/app-setting');
+        const _fetch = await makeRequest('GET', '/api/app-setting');
         const _data = await _fetch.json();
         const _tenants = _data?.CaaConfig?.tenants || [];
         if(_tenants.length){
