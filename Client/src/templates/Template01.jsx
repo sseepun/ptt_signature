@@ -31,44 +31,56 @@ const Template01 = ({ data, disabled=false, onClick=()=>{}, user=null }) => {
       >
         {thisData?.Field2?.value || (disabled? '': 'Field 2')}
       </h6>
-      <div className="blocks">
-        <div className="block">
-          <p onClick={e => handleClick(e, 'Field3')} className={classer} 
-            style={{ color: thisData?.Field3?.color || 'inherit' }} 
-          >
-            {thisData?.Field3?.value || (disabled? '': 'Field 3')}
-          </p>
-          <p onClick={e => handleClick(e, 'Field4')} className={classer} 
-            style={{ color: thisData?.Field4?.color || 'inherit' }} 
-          >
-            {thisData?.Field4?.value || (disabled? '': 'Field 4')}
-          </p>
-        </div>
-        <div className="block">
-          <p onClick={e => handleClick(e, 'Field5')} className={classer} 
-            style={{ color: thisData?.Field5?.color || 'inherit' }} 
-          >
-            {thisData?.Field5?.value || (disabled? '': 'Field 5')}
-          </p>
-          <p onClick={e => handleClick(e, 'Field6')} className={classer} 
-            style={{ color: thisData?.Field6?.color || 'inherit' }} 
-          >
-            {thisData?.Field6?.value || (disabled? '': 'Field 6')}
-          </p>
-        </div>
-        <div className="block">
-          <p onClick={e => handleClick(e, 'field7')} className={classer} 
-            style={{ color: thisData?.Field7?.color || 'inherit' }} 
-          >
-            {thisData?.Field7?.value || (disabled? '': 'Field 7')}
-          </p>
-          <p onClick={e => handleClick(e, 'Field8')} className={classer} 
-            style={{ color: thisData?.Field8?.color || 'inherit' }} 
-          >
-            {thisData?.Field8?.value || (disabled? '': 'Field 8')}
-          </p>
-        </div>
-      </div>
+      <table>
+        <tbody>
+          <tr>
+            <td>
+              <p onClick={e => handleClick(e, 'Field3')} className={classer} 
+                style={{ color: thisData?.Field3?.color || 'inherit' }} 
+              >
+                {thisData?.Field3?.value || (disabled? '': 'Field 3')}
+              </p>
+            </td>
+            <td>
+              <p onClick={e => handleClick(e, 'Field5')} className={classer} 
+                style={{ color: thisData?.Field5?.color || 'inherit' }} 
+              >
+                {thisData?.Field5?.value || (disabled? '': 'Field 5')}
+              </p>
+            </td>
+            <td>
+              <p onClick={e => handleClick(e, 'field7')} className={classer} 
+                style={{ color: thisData?.Field7?.color || 'inherit' }} 
+              >
+                {thisData?.Field7?.value || (disabled? '': 'Field 7')}
+              </p>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <p onClick={e => handleClick(e, 'Field4')} className={classer} 
+                style={{ color: thisData?.Field4?.color || 'inherit' }} 
+              >
+                {thisData?.Field4?.value || (disabled? '': 'Field 4')}
+              </p>
+            </td>
+            <td>
+              <p onClick={e => handleClick(e, 'Field6')} className={classer} 
+                style={{ color: thisData?.Field6?.color || 'inherit' }} 
+              >
+                {thisData?.Field6?.value || (disabled? '': 'Field 6')}
+              </p>
+            </td>
+            <td>
+              <p onClick={e => handleClick(e, 'Field8')} className={classer} 
+                style={{ color: thisData?.Field8?.color || 'inherit' }} 
+              >
+                {thisData?.Field8?.value || (disabled? '': 'Field 8')}
+              </p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   )
 }

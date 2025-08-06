@@ -118,14 +118,13 @@ export default function TemplatesPage() {
                           >
                             <EditIcon fontSize="small" />
                           </Button>
-                          {d.Status === 0? (
-                            <Button onClick={e => onProcess(e, 'delete', d)} 
-                              variant="contained" color="error" disableElevation size="small" 
-                              className="bradius tt-unset p-0" style={{ minWidth: 32, minHeight: 32 }} 
-                            >
-                              <DeleteOutlineIcon fontSize="small" />
-                            </Button>
-                          ): (<></>)}
+                          <Button onClick={e => onProcess(e, 'delete', d)} 
+                            disabled={d.Status === 1} 
+                            variant="contained" color="error" disableElevation size="small" 
+                            className="bradius tt-unset p-0" style={{ minWidth: 32, minHeight: 32 }} 
+                          >
+                            <DeleteOutlineIcon fontSize="small" />
+                          </Button>
                         </td>
                       </tr>
                     );

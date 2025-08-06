@@ -23,6 +23,8 @@ export class UserModel {
     this.FullNameEN = getValueOrDefault(data?.FullNameEN, null);
 
     this.Email = getValueOrDefault(data?.Email, null);
+    this.Telephone = getValueOrDefault(data?.Telephone, null);
+    this.Mobile = getValueOrDefault(data?.Mobile, null);
     this.Avatar = getValueOrDefault(data?.Avatar, '/img/avatar/01.png');
     
     this.Status = getValueOrDefault(data?.Status, 0);

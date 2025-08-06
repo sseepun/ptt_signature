@@ -330,7 +330,7 @@ export default function TemplatePage() {
       </Dialog>
 
       <Dialog open={blockIndex > -1 && dataKey? true: false} onClose={() => onTemplateClose()} 
-        fullWidth={true} maxWidth="xs" scroll="paper" 
+        fullWidth={true} maxWidth="md" scroll="paper" 
         PaperProps={{ component: 'form', onSubmit: onTemplateSubmit }} 
       >
         <DialogTitle component="div" className="p-0">
@@ -346,22 +346,40 @@ export default function TemplatePage() {
           </div>
         </DialogTitle>
         <DialogContent dividers={true} className="with-grids">
-          <div className="grids">
-            {data?.type === 'text'? (<>
-              <div className="grid sm-100">
-                <TextField label="ข้อมูล" variant="outlined" 
-                  value={data?.value || ''} fullWidth 
-                  onChange={e => onTemplateChange('value', e.target.value)} 
+          {data?.type === 'text'? (
+            <div className="grids">
+              <div className="grid sm-60 mt-0">
+                <div className="grids">
+                  <div className="grid sm-100">
+                    <TextField label="ข้อมูล" variant="outlined" 
+                      value={data?.value || ''} fullWidth 
+                      onChange={e => onTemplateChange('value', e.target.value)} 
+                    />
+                  </div>
+                  <div className="grid sm-50">
+                    <TextField label="เลือกสี" variant="outlined" type="color" 
+                      value={data?.color || ''} fullWidth 
+                      onChange={e => onTemplateChange('color', e.target.value)} 
+                      sx={{
+                        '& .MuiInputBase-input': {
+                          padding: 0, margin: '.375rem .375rem .25rem .375rem',
+                          height: 46, border: '1px solid #eeeeee',
+                        },
+                      }} 
+                    />
+                  </div>
+                </div>
+              </div>
+              <div className="grid sm-40">
+                <TextField label="ข้อมูลที่ใส่ได้" variant="outlined" multiline rows={6}
+                  fullWidth readOnly onChange={() => {}} 
+                  value={`[Prefix]\n[PrefixEN]\n[FirstName]\n[FirstNameEN]\n[LastName]\n[LastNameEN]`
+                    + `\n[Position]\n[PositionEN]\n[Department]\n[DepartmentEN]`
+                    + `\n[Email]\n[Telephone]\n[Mobile]`} 
                 />
               </div>
-              <div className="grid sm-100">
-                <input type="color" 
-                  value={data?.color || ''} 
-                  onChange={e => onTemplateChange('color', e.target.value)} 
-                />
-              </div>
-            </>): (<></>)}
-          </div>
+            </div>
+          ): (<></>)}
         </DialogContent>
         <DialogActions>
           <div className="btns mt-0">

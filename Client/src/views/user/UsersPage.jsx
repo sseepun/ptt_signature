@@ -1,5 +1,7 @@
 
-import { useState } from 'react';
+import { useState, useEffect, useContext } from 'react';
+import AuthContext from '@/context/AuthContext';
+import { formatDate, formatTime } from '@/helpers/utility';
 
 import {
   Button, IconButton, TextField,
@@ -8,44 +10,19 @@ import {
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIconIcon from '@mui/icons-material/Delete';
 
+import { makeRequest } from '@/helpers/api';
 import { UserModel } from '@/models';
 
 export default function UsersPage() {
-  const [users, setUsers] = useState([
-    new UserModel({
-      Id: 1,
-      EmployeeId: '1234567',
-      Department: 'IT Department',
-      IsAdmin: 1,
-      Title: 'Admin',
-      Prefix: 'Mr.',
-      FirstName: 'มานพ',
-      LastName: 'ผ่องโสภา',
-      Email: 'example@ptt.com',
-    }),
-    new UserModel({
-      Id: 2,
-      EmployeeId: '1234567',
-      Department: 'IT Department',
-      IsAdmin: 1,
-      Title: 'Admin',
-      Prefix: 'Mr.',
-      FirstName: 'มานพ',
-      LastName: 'ผ่องโสภา',
-      Email: 'example@ptt.com',
-    }),
-    new UserModel({
-      Id: 3,
-      EmployeeId: '1234567',
-      Department: 'IT Department',
-      IsAdmin: 1,
-      Title: 'Admin',
-      Prefix: 'Mr.',
-      FirstName: 'มานพ',
-      LastName: 'ผ่องโสภา',
-      Email: 'example@ptt.com',
-    }),
-  ]);
+  const { user, accessToken } = useContext(AuthContext);
+
+  const [dataTable, setDataTable] = useState([]);
+  const onLoadData = async (e=null) => {
+    e?.preventDefault();
+    const _fetch = await makeRequest('GET', '/user-admins', {}, accessToken);
+    const _data = await _fetch.json();
+    setDataTable((_data || []).map(d => new UserModel(d)));
+  };
 
   const [employeeCode, setEmployeeCode] = useState('');
   const [employee, setEmployee] = useState(new UserModel());
@@ -63,20 +40,32 @@ export default function UsersPage() {
     return setProcess('');
   }
 
-  const onSubmit = (e=null) => {
+  const onSubmit = async (e=null) => {
     e?.preventDefault();
     if(process === 'create' && employeeCode){
-      setEmployee(users[0]);
-      setProcess('create-2');
-    }else if(process === 'create-2' && employee?.Id){
-      const _users = [ ...users ];
-      _users.push(employee);
-      setUsers(_users);
-      onProcess();
+      const _fetch = await makeRequest('GET', `/user/${employeeCode}`, {}, accessToken);
+      const _data = await _fetch.json();
+      if(_data?.EmployeeId){
+        setEmployee(new UserModel(_data));
+        setProcess('create-2');
+      }
+    }else if(process === 'create-2' && employee?.EmployeeId){
+      const _fetch = await makeRequest('POST', '/user-admin',
+        { EmployeeId: employee.EmployeeId }, accessToken);
+      if(_fetch.ok){
+        await onLoadData();
+        onProcess();
+      }
     }else if(process === 'delete' && data?.Id){
-      console.log(data);
+      const _fetch = await makeRequest('DELETE', `/user-admin/${data.Id}`, {}, accessToken);
+      if(_fetch.ok){
+        await onLoadData();
+        onProcess();
+      }
     }
   }
+
+  useEffect(() => { if(accessToken) onLoadData(); }, [accessToken]);
 
   return (<>
     <section className="section-padding">
@@ -106,8 +95,8 @@ export default function UsersPage() {
                   <th className="fw-600 text-center" style={{ minWidth: 220, width: '40%'}}>
                     <p className="fw-600">ส่วนงาน</p>
                   </th>
-                  <th className="fw-600 text-center" style={{ minWidth: 170 }}>
-                    <p className="fw-600">วันที่ใช้งานล่าสุด</p>
+                  <th className="fw-600 text-center" style={{ minWidth: 165 }}>
+                    <p className="fw-600">ใช้งานล่าสุด</p>
                   </th>
                   <th className="fw-600 text-center" style={{ minWidth: 80 }}>
                     <p className="fw-600">ลบสิทธิ์</p>
@@ -115,37 +104,45 @@ export default function UsersPage() {
                 </tr>
               </thead>
               <tbody>
-                {users.map((d, i) => {
-                  return (
-                    <tr key={i}>
-                      <td>
-                        <div className="table-avatar" 
-                          style={{ backgroundImage: `url(${d.Avatar})` }} 
-                        ></div>
-                      </td>
-                      <td>
-                        <p>{d.displayName()}</p>
-                        <p className="sm color-sgray">
-                          อีเมล: {d.Email}
-                        </p>
-                      </td>
-                      <td>
-                        <p>{d.Department}</p>
-                        <p className="sm color-sgray">
-                          ตำแหน่ง : {d.Title}
-                        </p>
-                      </td>
-                      <td className="text-center">
-                        <p className="sm">30/07/2025 11:56 AM</p>
-                      </td>
-                      <td className="text-center">
-                        <IconButton onClick={e => onProcess(e, 'delete', d)} color="error">
-                          <DeleteIconIcon />
-                        </IconButton>
-                      </td>
-                    </tr>
-                  );
-                })}
+                {!dataTable.length? (
+                  <tr><td colSpan={5} className="text-center">
+                    <p className="pt-2 pb-2">ไม่พบข้อมูล</p>  
+                  </td></tr>
+                ): (
+                  dataTable.map((d, i) => {
+                    return (
+                      <tr key={i}>
+                        <td>
+                          <div className="table-avatar" 
+                            style={{ backgroundImage: `url(${d.Avatar})` }} 
+                          ></div>
+                        </td>
+                        <td>
+                          <p>{d.displayName()}</p>
+                          <p className="sm color-sgray">
+                            อีเมล: {d.Email}
+                          </p>
+                        </td>
+                        <td>
+                          <p>{d.Department}</p>
+                          <p className="sm color-sgray">
+                            ตำแหน่ง : {d.Title}
+                          </p>
+                        </td>
+                        <td className="text-center">
+                          <p>{formatDate(d.UpdatedAt)} {formatTime(d.UpdatedAt)}</p>
+                        </td>
+                        <td className="text-center">
+                          <IconButton onClick={e => onProcess(e, 'delete', d)} 
+                            color="error" disabled={user.Id === d.Id} 
+                          >
+                            <DeleteIconIcon />
+                          </IconButton>
+                        </td>
+                      </tr>
+                    );
+                  })
+                )}
               </tbody>
             </table>
           </div>

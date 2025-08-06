@@ -117,10 +117,11 @@ namespace Server.Controllers
       EmailTemplate? data = _db.EmailTemplates
         .Where(d => d.Id == Id && d.Status == 0)
         .FirstOrDefault();
-      if (data == null) return NotFound();
-
-      _db.EmailTemplates.Remove(data);
-      _db.SaveChanges();
+      if (data != null)
+      {
+        _db.EmailTemplates.Remove(data);
+        _db.SaveChanges();
+      }
       return Ok(new { Message = "ลบ Template สำเร็จ" });
     }
 

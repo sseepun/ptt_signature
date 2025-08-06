@@ -31,7 +31,7 @@ export default function HomePage() {
         .then(async res => {
           if(res.ok && res.status === 200){
             const data = await res.json();
-            setUser(new UserModel({ ...data, Id: 1 }));
+            setUser(new UserModel(data));
           }
         }).catch(() => {}),
     ]);
@@ -73,7 +73,7 @@ export default function HomePage() {
           {template.Blocks.map((d, i) => (
             <div key={`block_${i}`}>
               {d.Type === 1? (
-                <Template01 data={d?.Data} disabled={false} user={user} />
+                <Template01 data={d?.Data} disabled={true} user={user} />
               ): d.Type === 2? (
                 <Template02 data={d?.Data} disabled={true} user={user} />
               ): d.Type === 3? (

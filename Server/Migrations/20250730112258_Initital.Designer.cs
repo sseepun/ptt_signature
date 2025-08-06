@@ -18,7 +18,7 @@ namespace email_signature.Server.Migrations
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
-#pragma warning disable 612, 618
+            #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "9.0.7")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
@@ -64,58 +64,62 @@ namespace email_signature.Server.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("AccessToken")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Avatar")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime?>("CreatedAt")
-                        .HasColumnType("datetime");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<long?>("EmployeeId")
-                        .HasColumnType("nvarchar(128)");
-
-                    b.Property<string>("Department")
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("FirstName")
-                        .HasColumnType("nvarchar(256)");
-
                     b.Property<int>("IsAdmin")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasDefaultValue(0);
 
+                    b.Property<string>("Prefix")
+                        .HasColumnType("nvarchar(32)");
+                    b.Property<string>("PrefixEN")
+                        .HasColumnType("nvarchar(32)");
+                    b.Property<string>("FirstName")
+                        .HasColumnType("nvarchar(256)");
+                    b.Property<string>("FirstNameEN")
+                        .HasColumnType("nvarchar(256)");
                     b.Property<string>("LastName")
                         .HasColumnType("nvarchar(256)");
+                    b.Property<string>("LastNameEN")
+                        .HasColumnType("nvarchar(256)");
 
-                    b.Property<string>("Prefix")
-                        .HasColumnType("nvarchar(64)");
+                    b.Property<long?>("EmployeeId")
+                        .HasColumnType("nvarchar(32)");
+                    b.Property<string>("Department")
+                        .HasColumnType("nvarchar(256)");
+                    b.Property<string>("Title")
+                        .HasColumnType("nvarchar(128)");
+                    b.Property<string>("TitleEN")
+                        .HasColumnType("nvarchar(128)");
 
-                    b.Property<string>("RefreshToken")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(256)");
+                    b.Property<string>("Telephone")
+                        .HasColumnType("nvarchar(32)");
+                    b.Property<string>("Mobile")
+                        .HasColumnType("nvarchar(32)");
+                    b.Property<string>("Avatar")
+                        .HasColumnType("text");
 
                     b.Property<int>("Status")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasDefaultValue(1);
 
-                    b.Property<string>("Title")
-                        .HasColumnType("nvarchar(256)");
-
+                    b.Property<DateTime?>("CreatedAt")
+                        .HasColumnType("datetime");
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime");
+
+                    b.Property<string>("AccessToken")
+                        .HasColumnType("nvarchar(max)");
+                    b.Property<string>("RefreshToken")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.ToTable("Users");
                 });
-#pragma warning restore 612, 618
+            #pragma warning restore 612, 618
         }
     }
 }

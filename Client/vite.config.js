@@ -56,11 +56,14 @@ export default defineConfig({
       '^/app-setting': { target, secure: false },
       '^/signin-ad': { target, secure: false },
       '^/refresh': { target, secure: false },
-      '^/user-info': { target, secure: false },
       '^/email-template-active': { target, secure: false },
       '^/email-template-count': { target, secure: false },
       '^/email-templates': { target, secure: false },
       '^/email-template': { target, secure: false },
+      '^/user-info': { target, secure: false },
+      '^/user-admins': { target, secure: false },
+      '^/user-admin': { target, secure: false },
+      '^/user': { target, secure: false },
     },
   }
 })
