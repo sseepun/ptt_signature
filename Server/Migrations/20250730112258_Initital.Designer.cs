@@ -78,7 +78,7 @@ namespace email_signature.Server.Migrations
                         .HasColumnType("nvarchar(256)");
 
                     b.Property<long?>("EmployeeId")
-                        .HasColumnType("bigint");
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("Department")
                         .HasColumnType("nvarchar(256)");

@@ -1,5 +1,4 @@
 using Server.Models;
-using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
 using Server.DTOs;
 using Server.Services;
@@ -29,9 +28,10 @@ namespace Server.Controllers
       User? user = _db.Users.Where(d => d.Email == req.Email && d.Status == 1).FirstOrDefault();
       if (user == null)
       {
+        var _testIndex = SUtility.GetTestAccounts().IndexOf(req.Email ?? "");
         User newUser = new User
         {
-          EmployeeId = 1000000,
+          EmployeeId = req.EmployeeId,
           IsAdmin = SUtility.GetTestAccounts().Contains(req.Email ?? "") ? 1 : 0,
           FirstName = req.FirstName,
           LastName = req.LastName,
@@ -47,6 +47,7 @@ namespace Server.Controllers
         if (user == null) return null;
       }
 
+      user.EmployeeId = req.EmployeeId;
       user.AccessToken = SUtility.GenerateAccessToken(user);
       user.RefreshToken = SUtility.GenerateRefreshToken(user);
       user.UpdatedAt = DateTime.Now;

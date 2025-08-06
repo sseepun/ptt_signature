@@ -251,15 +251,17 @@ export default function TemplatePage() {
                 )}
               </div>
             ))}
-            {disabled? (<></>): (
+          </div>
+          {disabled? (<></>): (
+            <div className="templates">
               <div className="template-add" onClick={e => onProcess(e, 'create')}>
                 <div className="wrapper text-center">
                   <AddCircleOutlineIcon style={{ fontSize: '3rem' }} />
                   <p className="lg">เพิ่ม Signature Block</p>
                 </div>
               </div>
-            )}
-          </div>
+            </div>
+          )}
           <div className="btns pt-6">
             {['create', 'update'].indexOf(crud) > -1? (
               <Button type="submit" disabled={!blocks.length} 

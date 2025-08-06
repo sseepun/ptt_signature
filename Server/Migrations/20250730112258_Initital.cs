@@ -34,7 +34,7 @@ namespace email_signature.Server.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    EmployeeId = table.Column<long>(type: "bigint", nullable: true),
+                    EmployeeId = table.Column<long>(type: "nvarchar(128)", nullable: true),
                     Department = table.Column<string>(type: "nvarchar(256)", nullable: true),
                     IsAdmin = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
                     Title = table.Column<string>(type: "nvarchar(256)", nullable: true),

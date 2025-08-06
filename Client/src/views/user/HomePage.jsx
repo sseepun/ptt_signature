@@ -9,22 +9,32 @@ import Template01 from '@/templates/Template01';
 import Template02 from '@/templates/Template02';
 import Template03 from '@/templates/Template03';
 import Template04 from '@/templates/Template04';
-import { EmailTemplateModel } from '@/models';
+import { EmailTemplateModel, UserModel } from '@/models';
 
 import html2canvas from 'html2canvas';
 
 export default function HomePage() {
-  const { user, accessToken } = useContext(AuthContext);
+  const { accessToken } = useContext(AuthContext);
   const [template, setTemplate] = useState(new EmailTemplateModel());
+  const [user, setUser] = useState(new UserModel());
 
   const onLoadData = async () => {
-    try {
-      const _fetch = await makeRequest('GET', `/email-template-active`, {}, accessToken);
-      if(_fetch.ok && _fetch.status === 200){
-        const _data = await _fetch.json();
-        setTemplate(new EmailTemplateModel(_data));
-      }
-    } catch {}
+    await Promise.all([
+      makeRequest('GET', `/email-template-active`, {}, accessToken)
+        .then(async res => {
+          if(res.ok && res.status === 200){
+            const data = await res.json();
+            setTemplate(new EmailTemplateModel(data));
+          }
+        }).catch(() => {}),
+      makeRequest('GET', `/user-info`, {}, accessToken)
+        .then(async res => {
+          if(res.ok && res.status === 200){
+            const data = await res.json();
+            setUser(new UserModel({ ...data, Id: 1 }));
+          }
+        }).catch(() => {}),
+    ]);
   };
 
   const ref = useRef(null);
@@ -53,7 +63,7 @@ export default function HomePage() {
     _link.click();
   };
     
-  return !template.isValid()? (<></>): (
+  return !template.isValid() || !user.Id? (<></>): (
     <section className="section-padding">
       <div className="container">
         <h5 className="pb-2">

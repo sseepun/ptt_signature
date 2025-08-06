@@ -10,6 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.AddEnvirontmentVariables();
 builder.Services.AddHttpClient();
 builder.Services.AddScoped<AzureAdService>();
+builder.Services.AddScoped<PisService>();
 
 // Add services to the container.
 builder.Services
@@ -22,6 +23,7 @@ builder.Services
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddTransient<SystemDbContext>();
 builder.Services.AddDbContext<SystemDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 

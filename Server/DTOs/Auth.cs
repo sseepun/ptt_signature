@@ -23,6 +23,7 @@ namespace Server.DTOs
   {
     public bool Success { get; set; } = true;
     public string? Message { get; set; }
+    public string? EmployeeId { get; set; }
     public string? UserId { get; set; }
     public string? Email { get; set; }
     public string? FirstName { get; set; }

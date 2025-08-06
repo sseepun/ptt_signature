@@ -40,11 +40,18 @@ namespace Server.Services{
 
     public async Task<ResAuthSigninAD> AuthorizationAD(ReqAuthSigninAD req){
       if (SUtility.GetTestAccounts().Contains(req.Username)) {
+        var _testIndex = SUtility.GetTestAccounts().IndexOf(req.Username);
         var _names = req.Name.Split(" ");
         return new ResAuthSigninAD
         {
           Success = true,
           Message = "เข้าสู่ระบบ CA&A สำเร็จ",
+          EmployeeId = _testIndex == 0 ? "600191"
+            : _testIndex == 1 ? "420051"
+            : _testIndex == 2 ? "310051"
+            : _testIndex == 3 ? "630036"
+            : _testIndex == 4 ? "480142"
+            : null,
           UserId = req.LocalAccountId,
           Email = req.Username,
           FirstName = _names?.Length > 0? _names[0]: "",
@@ -101,6 +108,7 @@ namespace Server.Services{
         {
           Success = true,
           Message = "เข้าสู่ระบบ CA&A สำเร็จ",
+          EmployeeId = result.GetProperty("employee_id").GetString(),
           UserId = userId,
           Email = email,
           FirstName = firstName,

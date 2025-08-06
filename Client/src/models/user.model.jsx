@@ -9,10 +9,18 @@ export class UserModel {
 
     this.IsAdmin = getValueOrDefault(data?.IsAdmin, 0);
 
-    this.Title = getValueOrDefault(data?.Title, null);
     this.Prefix = getValueOrDefault(data?.Prefix, null);
+    this.PrefixEN = getValueOrDefault(data?.PrefixEN, null);
     this.FirstName = getValueOrDefault(data?.FirstName, null);
+    this.FirstNameEN = getValueOrDefault(data?.FirstNameEN, null);
     this.LastName = getValueOrDefault(data?.LastName, null);
+    this.LastNameEN = getValueOrDefault(data?.LastNameEN, null);
+
+    this.Title = getValueOrDefault(data?.Title, null);
+    this.TitleEN = getValueOrDefault(data?.TitleEN, null);
+
+    this.FullName = getValueOrDefault(data?.FullName, null);
+    this.FullNameEN = getValueOrDefault(data?.FullNameEN, null);
 
     this.Email = getValueOrDefault(data?.Email, null);
     this.Avatar = getValueOrDefault(data?.Avatar, '/img/avatar/01.png');
