@@ -82,7 +82,7 @@ namespace Server.Controllers
       };
       _db.EmailTemplates.Add(data);
       _db.SaveChanges();
-      return Ok(new { Message = "สร้าง Template สำเร็จ" });
+      return Ok(new { Message = "เพิ่ม Template สำเร็จ" });
     }
 
     [HttpPatch("api/email-template")]

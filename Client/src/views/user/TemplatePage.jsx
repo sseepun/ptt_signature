@@ -186,7 +186,7 @@ export default function TemplatePage() {
         <form onSubmit={onSubmit}>
           <div className="template-header">
             <h4 className="fw-600">
-              {crud==='create'? 'สร้าง': crud==='update'? 'แก้ไข': 'ดู'} Template
+              {crud==='create'? 'เพิ่ม': crud==='update'? 'แก้ไข': 'ดู'} Template
             </h4>
             <div className="form-input hide-mobile">
               <input type="text" required readOnly={crud==='view'} 
@@ -274,7 +274,7 @@ export default function TemplatePage() {
                 variant="contained" color="secondary" disableElevation 
                 size="large" className="bradius tt-unset mr-2" style={{ minWidth: '7.5rem' }} 
               >
-                <span className="h6">{crud==='create'? 'สร้าง': 'แก้ไข'}</span>
+                <span className="h6">{crud==='create'? 'เพิ่ม': 'แก้ไข'}</span>
               </Button>
             ): (<></>)}
             <Button component={Link} to="/templates" 
