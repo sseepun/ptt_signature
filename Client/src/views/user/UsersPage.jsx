@@ -88,8 +88,8 @@ export default function UsersPage() {
             <table className="table">
               <thead>
                 <tr>
-                  <th className="fw-600 text-center" style={{ minWidth: 90 }}>
-                    <p className="fw-600">รูปโปรไฟล์</p>
+                  <th className="fw-600 text-center" style={{ minWidth: 65 }}>
+                    <p className="fw-600">#</p>
                   </th>
                   <th className="fw-600 text-center" style={{ minWidth: 240, width: '60%' }}>
                     <p className="fw-600">ชื่อ-นามสกุล</p>
@@ -115,9 +115,7 @@ export default function UsersPage() {
                     return (
                       <tr key={i}>
                         <td>
-                          <div className="table-avatar" 
-                            style={{ backgroundImage: `url(${d.Avatar})` }} 
-                          ></div>
+                          <p className="text-center">{i + 1}</p>
                         </td>
                         <td>
                           <p>{d.displayName()}</p>
@@ -206,8 +204,8 @@ export default function UsersPage() {
             <table className="table">
               <thead>
                 <tr>
-                  <th className="fw-600 text-center" style={{ minWidth: 90 }}>
-                    <p className="fw-600">รุปโปรไฟล์</p>
+                  <th className="fw-600 text-center" style={{ minWidth: 65 }}>
+                    <p className="fw-600">#</p>
                   </th>
                   <th className="fw-600 text-center" style={{ minWidth: 240, width: '60%' }}>
                     <p className="fw-600">ชื่อ-นามสกุล</p>
@@ -220,9 +218,7 @@ export default function UsersPage() {
               <tbody>
                 <tr>
                   <td>
-                    <div className="table-avatar" 
-                      style={{ backgroundImage: `url(${employee.Avatar})` }} 
-                    ></div>
+                    <p className="text-center">1</p>
                   </td>
                   <td>
                     <p>{employee.displayName()}</p>

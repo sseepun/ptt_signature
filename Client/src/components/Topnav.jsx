@@ -4,6 +4,7 @@ import AuthContext from '@/context/AuthContext';
 import { Link } from 'react-router-dom';
 
 import { IconButton, Menu, MenuItem } from '@mui/material';
+import SettingsIcon from '@mui/icons-material/Settings';
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 
 import { alertChange } from '@/helpers/alert';
@@ -50,7 +51,7 @@ const Topnav = () => {
         <div className="options">
           <div className="option" onClick={e => onPopupOpen(e, 1)}>
             <IconButton className="p-1">
-              <div className="avatar" style={{ backgroundImage: `url(${user.Avatar})` }}></div>
+              <SettingsIcon sx={{ fontSize: 32 }} />
             </IconButton>
           </div>
           {user.isAdmin()? (

@@ -45,10 +45,9 @@ namespace Server.Controllers
         Department = _user.Department,
         Title = pisUser.POSNAME,
         TitleEN = _user.TitleEN,
-        Email = _user.Email,
-        Telephone = _user.Telephone,
-        Mobile = _user.Mobile,
-        Avatar = _user.Avatar,
+        Email = pisUser.EmailAddr ?? _user.Email,
+        Telephone = pisUser.OFFICETEL ?? _user.Telephone,
+        Mobile = pisUser.Mobile ?? _user.Mobile,
       };
       return Ok(res);
     }
@@ -83,6 +82,9 @@ namespace Server.Controllers
         LastNameEN = pisUser.LNAME_ENG,
         EmployeeId = pisUser.CODE,
         Title = pisUser.POSNAME,
+        Email = pisUser.EmailAddr ?? "",
+        Telephone = pisUser.OFFICETEL ?? "",
+        Mobile = pisUser.Mobile ?? "",
       };
       return Ok(res);
     }
@@ -119,6 +121,9 @@ namespace Server.Controllers
         LastNameEN = pisUser.LNAME_ENG,
         EmployeeId = pisUser.CODE,
         Title = pisUser.POSNAME,
+        Email = pisUser.EmailAddr ?? "",
+        Telephone = pisUser.OFFICETEL ?? "",
+        Mobile = pisUser.Mobile ?? "",
         Status = 1,
         CreatedAt = DateTime.Now,
         UpdatedAt = DateTime.Now,

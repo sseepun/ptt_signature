@@ -61,6 +61,9 @@ namespace Server.Controllers
         user.LastNameEN = pisUser.LNAME_ENG;
         user.EmployeeId = pisUser.CODE;
         user.Title = pisUser.POSNAME;
+        user.Email = pisUser.EmailAddr;
+        user.Telephone = pisUser.OFFICETEL;
+        user.Mobile = pisUser.Mobile;
       }
 
       user.EmployeeId = req.EmployeeId;

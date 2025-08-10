@@ -23,6 +23,10 @@ namespace Server.DTOs
     public string? POSCODE { get; set; }
     public string? FULLNAMETH { get; set; }
     public string? FULLNAMEENG { get; set; }
+
+    public string? EmailAddr { get; set; }
+    public string? OFFICETEL { get; set; }
+    public string? Mobile { get; set; }
   }
     
 }

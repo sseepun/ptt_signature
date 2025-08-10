@@ -24,7 +24,7 @@ nav.topnav .menu > *{
 }
 
 nav.topnav .options{display:flex;}
-nav.topnav .option{display:flex; align-items:center; height:100%; margin:0 0 0 1.25rem;}
+nav.topnav .option{display:flex; align-items:center; height:100%; margin:0 0 0 1rem;}
 nav.topnav .avatar{
   width:2.625rem; height:2.625rem; border-radius:50%;
   background-size:cover; background-position:center;

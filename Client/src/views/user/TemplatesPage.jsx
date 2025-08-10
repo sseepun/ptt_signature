@@ -66,7 +66,7 @@ export default function TemplatesPage() {
             <table className="table">
               <thead>
                 <tr>
-                  <th className="fw-600 text-center" style={{ minWidth: 70 }}>
+                  <th className="fw-600 text-center" style={{ minWidth: 65 }}>
                     <p className="fw-600">#</p>
                   </th>
                   <th className="fw-600 text-center" style={{ minWidth: 240, width: '100%' }}>
