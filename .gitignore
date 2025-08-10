@@ -26,3 +26,4 @@ yarn-error.log*
 # Custom
 bin/
 obj/
+Server/publish
