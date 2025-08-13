@@ -28,5 +28,23 @@ namespace Server.DTOs
     public string? OFFICETEL { get; set; }
     public string? Mobile { get; set; }
   }
+
+
+  public class PisDepartmentsMain
+  {
+    public required PisDepartments Entries {get; set;}
+  }
+  public class PisDepartments
+  {
+    public required List<PisDepartment> Entry {get; set;}
+  }
+  public class PisDepartment
+  {
+    public string? unitcode { get; set; }
+    public string? unitname { get; set; }
+    public string? engname { get; set; }
+    public string? longname { get; set; }
+    public string? unitabbr { get; set; }
+  }
     
 }

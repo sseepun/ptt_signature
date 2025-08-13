@@ -7,6 +7,7 @@ export const getValueOrDefault = (val, _default='') => {
 export const replaceRules = (obj, user) => {
   if(obj?.type === 'text' && user?.Id){
     obj.value = `${obj.value ?? ''}`
+      .replace(/\[EmployeeId\]/g, user.EmployeeId || '')
       .replace(/\[Prefix\]/g, user.Prefix || '')
       .replace(/\[PrefixEN\]/g, user.PrefixEN || '')
       .replace(/\[FirstName\]/g, user.FirstName || '')
@@ -14,12 +15,13 @@ export const replaceRules = (obj, user) => {
       .replace(/\[LastName\]/g, user.LastName || '')
       .replace(/\[LastNameEN\]/g, user.LastNameEN || '')
       .replace(/\[Position\]/g, user.Title || '')
-      .replace(/\[PositionEN\]/g, user.TitleEN || '')
-      .replace(/\[Department\]/g, user.Department || '')
-      .replace(/\[DepartmentEN\]/g, user.DepartmentEN || '')
       .replace(/\[Email\]/g, user.Email || '')
       .replace(/\[Telephone\]/g, '+66 93 919-4699')
-      .replace(/\[Mobile\]/g, '+66 93 919-4699');
+      .replace(/\[Mobile\]/g, '+66 93 919-4699')
+      .replace(/\[Department\]/g, user.Department || '')
+      .replace(/\[DepartmentEN\]/g, user.DepartmentEN || '')
+      .replace(/\[DepartmentLong\]/g, user.DepartmentLong || '')
+      .replace(/\[DepartmentAbbr\]/g, user.DepartmentAbbr || '');
   }
   return obj;
 }

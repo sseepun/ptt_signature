@@ -5,8 +5,6 @@ export class UserModel {
     this.Id = getValueOrDefault(data?.Id, null);
     
     this.EmployeeId = getValueOrDefault(data?.EmployeeId, null);
-    this.Department = getValueOrDefault(data?.Department, null);
-
     this.IsAdmin = getValueOrDefault(data?.IsAdmin, 0);
 
     this.Prefix = getValueOrDefault(data?.Prefix, null);
@@ -31,6 +29,12 @@ export class UserModel {
 
     this.CreatedAt = getValueOrDefault(data?.CreatedAt, null);
     this.UpdatedAt = getValueOrDefault(data?.UpdatedAt, null);
+
+    this.DepartmentCode = getValueOrDefault(data?.DepartmentCode, null);
+    this.Department = getValueOrDefault(data?.Department, null);
+    this.DepartmentEN = getValueOrDefault(data?.DepartmentEN, null);
+    this.DepartmentLong = getValueOrDefault(data?.DepartmentLong, null);
+    this.DepartmentAbbr = getValueOrDefault(data?.DepartmentAbbr, null);
   }
 
   isValid(){ return this.Id? true: false; }

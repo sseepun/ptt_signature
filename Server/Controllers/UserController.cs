@@ -32,24 +32,16 @@ namespace Server.Controllers
       if (pisUsers.Count < 1) return Ok(null);
 
       var pisUser = pisUsers[0];
-      User res = new User
-      {
-        Id = _user.Id,
-        Prefix = pisUser.INAME,
-        PrefixEN = pisUser.INAME_ENG,
-        FirstName = pisUser.FNAME,
-        FirstNameEN = pisUser.FNAME_ENG,
-        LastName = pisUser.LNAME,
-        LastNameEN = pisUser.LNAME_ENG,
-        EmployeeId = pisUser.CODE,
-        Department = _user.Department,
-        Title = pisUser.POSNAME,
-        TitleEN = _user.TitleEN,
-        Email = pisUser.EmailAddr ?? _user.Email,
-        Telephone = pisUser.OFFICETEL ?? _user.Telephone,
-        Mobile = pisUser.Mobile ?? _user.Mobile,
-      };
-      return Ok(res);
+      pisUser.Id = _user.Id;
+      if (string.IsNullOrEmpty(pisUser.Email)) pisUser.Email = _user.Email;
+      if (string.IsNullOrEmpty(pisUser.Telephone)) pisUser.Telephone = _user.Telephone;
+      if (string.IsNullOrEmpty(pisUser.Mobile)) pisUser.Mobile = _user.Mobile;
+      if (string.IsNullOrEmpty(pisUser.DepartmentCode)) pisUser.DepartmentCode = _user.DepartmentCode;
+      if (string.IsNullOrEmpty(pisUser.Department)) pisUser.Department = _user.Department;
+      if (string.IsNullOrEmpty(pisUser.DepartmentEN)) pisUser.DepartmentEN = _user.DepartmentEN;
+      if (string.IsNullOrEmpty(pisUser.DepartmentLong)) pisUser.DepartmentLong = _user.DepartmentLong;
+      if (string.IsNullOrEmpty(pisUser.DepartmentAbbr)) pisUser.DepartmentAbbr = _user.DepartmentAbbr;
+      return Ok(pisUser);
     }
 
     [HttpGet("api/user-admins")]
@@ -72,21 +64,7 @@ namespace Server.Controllers
       if (pisUsers.Count < 1) return BadRequest(new { Message = $"ไม่พบผู้ใช้ในระบบ PIS" });
       
       var pisUser = pisUsers[0];
-      User res = new User
-      {
-        Prefix = pisUser.INAME,
-        PrefixEN = pisUser.INAME_ENG,
-        FirstName = pisUser.FNAME,
-        FirstNameEN = pisUser.FNAME_ENG,
-        LastName = pisUser.LNAME,
-        LastNameEN = pisUser.LNAME_ENG,
-        EmployeeId = pisUser.CODE,
-        Title = pisUser.POSNAME,
-        Email = pisUser.EmailAddr ?? "",
-        Telephone = pisUser.OFFICETEL ?? "",
-        Mobile = pisUser.Mobile ?? "",
-      };
-      return Ok(res);
+      return Ok(pisUser);
     }
     
     [HttpPost("api/user-admin")]
@@ -110,25 +88,11 @@ namespace Server.Controllers
       if(pisUsers.Count < 1) return BadRequest(new { Message = $"ไม่พบผู้ใช้ในระบบ PIS" });
 
       var pisUser = pisUsers[0];
-      User newUser = new User
-      {
-        IsAdmin = 1,
-        Prefix = pisUser.INAME,
-        PrefixEN = pisUser.INAME_ENG,
-        FirstName = pisUser.FNAME,
-        FirstNameEN = pisUser.FNAME_ENG,
-        LastName = pisUser.LNAME,
-        LastNameEN = pisUser.LNAME_ENG,
-        EmployeeId = pisUser.CODE,
-        Title = pisUser.POSNAME,
-        Email = pisUser.EmailAddr ?? "",
-        Telephone = pisUser.OFFICETEL ?? "",
-        Mobile = pisUser.Mobile ?? "",
-        Status = 1,
-        CreatedAt = DateTime.Now,
-        UpdatedAt = DateTime.Now,
-      };
-      _db.Users.Add(newUser);
+      pisUser.IsAdmin = 1;
+      pisUser.Status = 1;
+      pisUser.CreatedAt = DateTime.Now;
+      pisUser.UpdatedAt = DateTime.Now;
+      _db.Users.Add(pisUser);
       _db.SaveChanges();
 
       return Ok(new { Message = "เพิ่มสิทธิ์ผู้ใช้สำเร็จ" });

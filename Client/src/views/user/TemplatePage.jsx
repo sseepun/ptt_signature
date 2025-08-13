@@ -414,15 +414,15 @@ export default function TemplatePage() {
               <div className="grid sm-40">
                 <p>ข้อมูลที่ใส่ได้</p>
                 {[
-                  '[Prefix]','[PrefixEN]','[FirstName]','[FirstNameEN]','[LastName]','[LastNameEN]',
-                  '[Position]','[PositionEN]','[Department]','[DepartmentEN]',
-                  '[Email]','[Telephone]','[Mobile]'
+                  'Prefix','PrefixEN','FirstName','FirstNameEN','LastName','LastNameEN',
+                  'EmployeeId','Position','Email','Telephone','Mobile',
+                  'Department','DepartmentEN','DepartmentLong','DepartmentAbbr',
                 ].map((d, i) => (
                   <Chip key={`chip_${i}`} label={d} className="mt-1 mr-1" 
                     disabled={data?.value?.includes(d)} 
                     size="small" color="primary" onClick={e => {
                       e.preventDefault();
-                      onTemplateChange('value', `${data?.value || ''} ${d}`.trim())
+                      onTemplateChange('value', `${data?.value || ''} [${d}]`.trim())
                     }} 
                   />
                 ))}

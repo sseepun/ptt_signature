@@ -53,17 +53,22 @@ namespace Server.Controllers
       var pisUser = pisUsers.Count > 0 ? pisUsers[0] : null;
       if (pisUser != null)
       {
-        user.Prefix = pisUser.INAME;
-        user.PrefixEN = pisUser.INAME_ENG;
-        user.FirstName = pisUser.FNAME;
-        user.FirstNameEN = pisUser.FNAME_ENG;
-        user.LastName = pisUser.LNAME;
-        user.LastNameEN = pisUser.LNAME_ENG;
-        user.EmployeeId = pisUser.CODE;
-        user.Title = pisUser.POSNAME;
-        if(!string.IsNullOrEmpty(pisUser.EmailAddr)) user.Email = pisUser.EmailAddr;
-        user.Telephone = pisUser.OFFICETEL;
+        user.Prefix = pisUser.Prefix;
+        user.PrefixEN = pisUser.PrefixEN;
+        user.FirstName = pisUser.FirstName;
+        user.FirstNameEN = pisUser.FirstNameEN;
+        user.LastName = pisUser.LastName;
+        user.LastNameEN = pisUser.LastNameEN;
+        user.EmployeeId = pisUser.EmployeeId;
+        user.Title = pisUser.Title;
+        if(!string.IsNullOrEmpty(pisUser.Email)) user.Email = pisUser.Email;
+        user.Telephone = pisUser.Telephone;
         user.Mobile = pisUser.Mobile;
+        if(!string.IsNullOrEmpty(pisUser.DepartmentCode)) user.DepartmentCode = pisUser.DepartmentCode;
+        if(!string.IsNullOrEmpty(pisUser.Department)) user.Department = pisUser.Department;
+        if(!string.IsNullOrEmpty(pisUser.DepartmentEN)) user.DepartmentEN = pisUser.DepartmentEN;
+        if(!string.IsNullOrEmpty(pisUser.DepartmentLong)) user.DepartmentLong = pisUser.DepartmentLong;
+        if(!string.IsNullOrEmpty(pisUser.DepartmentAbbr)) user.DepartmentAbbr = pisUser.DepartmentAbbr;
       }
 
       user.EmployeeId = req.EmployeeId;

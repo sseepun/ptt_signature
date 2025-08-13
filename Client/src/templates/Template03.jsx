@@ -7,9 +7,9 @@ const Template03 = ({ data, disabled=false, onClick=()=>{}, user=null }) => {
     return {
       Field1: data?.Field1 || { type: 'background', value: '/img/template/03-bg.jpg' },
       Field2: data?.Field2 || { type: 'image', value: '/img/template/03-logo.png' },
-      Field3: replaceRules(data?.Field3 || { type: 'text', value: '[FirstNameEN] [LastNameEN]', color: '#1B1560' }, user),
-      Field4: replaceRules(data?.Field4 || { type: 'text', value: '[PositionEN]', color: '#02adee' }, user),
-      Field5: replaceRules(data?.Field5 || { type: 'text', value: '[DepartmentEN]', color: '#02adee' }, user),
+      Field3: replaceRules(data?.Field3 || { type: 'text', value: '[Prefix] [FirstName] [LastName]', color: '#1B1560' }, user),
+      Field4: replaceRules(data?.Field4 || { type: 'text', value: '[Position]', color: '#02adee' }, user),
+      Field5: replaceRules(data?.Field5 || { type: 'text', value: '[Department]', color: '#02adee' }, user),
       Field6: replaceRules(data?.Field6 || { type: 'text', value: 'T. ', color: '#1B1560' }, user),
       Field7: replaceRules(data?.Field7 || { type: 'text', value: '[Telephone]', color: '#02adee' }, user),
       Field8: replaceRules(data?.Field8 || { type: 'text', value: ' / M. ', color: '#1B1560' }, user),

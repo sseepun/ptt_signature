@@ -15,7 +15,6 @@ public partial class User
     public string? LastNameEN { get; set; }
 
     public string? EmployeeId { get; set; }
-    public string? Department { get; set; }
     public string? Title { get; set; }
     public string? TitleEN { get; set; }
 
@@ -31,4 +30,10 @@ public partial class User
 
     public string? AccessToken { get; set; }
     public string? RefreshToken { get; set; }
+
+    public string? DepartmentCode { get; set; }
+    public string? Department { get; set; }
+    public string? DepartmentEN { get; set; }
+    public string? DepartmentLong { get; set; }
+    public string? DepartmentAbbr { get; set; }
 }
