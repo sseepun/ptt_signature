@@ -44,13 +44,13 @@ const Topnav = () => {
         {user.isAdmin()? (
           <div className="menu-container">
             <div className="menu">
-              <Link to="/">หน้าแรก</Link>
+              <Link to="/backend">หน้าแรก</Link>
             </div>
             <div className="menu">
-              <Link to="/templates">จัดการ Template</Link>
+              <Link to="/backend/templates">จัดการ Template</Link>
             </div>
             <div className="menu">
-              <Link to="/users">จัดการสิทธิ์ผู้ใช้</Link>
+              <Link to="/backend/users">จัดการสิทธิ์ผู้ใช้</Link>
             </div>
           </div>
         ): (<></>)}
@@ -95,13 +95,13 @@ const Topnav = () => {
         anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }} 
         transformOrigin={{ vertical: 'top', horizontal: 'right' }} 
       >
-        <MenuItem className="default-p pr-5" component={Link} to="/">
+        <MenuItem className="default-p pr-5" component={Link} to="/backend">
           <span className="p pt-1 pb-1">หน้าแรก</span>
         </MenuItem>
-        <MenuItem className="default-p pr-5" component={Link} to="/templates">
+        <MenuItem className="default-p pr-5" component={Link} to="/backend/templates">
           <span className="p pt-1 pb-1">จัดการ Template</span>
         </MenuItem>
-        <MenuItem className="default-p pr-5" component={Link} to="/users">
+        <MenuItem className="default-p pr-5" component={Link} to="/backend/users">
           <span className="p pt-1 pb-1">จัดการสิทธิ์ผู้ใช้</span>
         </MenuItem>
       </Menu>

@@ -55,7 +55,7 @@ export default function TemplatesPage() {
             <h4 className="fw-600 mr-4">
               การจัดการ Templates
             </h4>
-            <Button component={Link} to="/template/create" 
+            <Button component={Link} to="/backend/template/create" 
               variant="contained" color="secondary" disableElevation 
               className="bradius" startIcon={<AddIcon fontSize="large" />} 
             >
@@ -96,7 +96,7 @@ export default function TemplatesPage() {
                           <p>{i + 1}</p>
                         </td>
                         <td>
-                          <Link to={`/template/view/${d.Id}`} className="p h-color-p">
+                          <Link to={`/backend/template/view/${d.Id}`} className="p h-color-p">
                             {d.Name}
                           </Link>
                         </td>
@@ -107,13 +107,13 @@ export default function TemplatesPage() {
                           {d.displayStatus()}
                         </td>
                         <td className="text-center">
-                          <Button component={Link} to={`/template/view/${d.Id}`} 
+                          <Button component={Link} to={`/backend/template/view/${d.Id}`} 
                             variant="contained" color="success" disableElevation size="small" 
                             className="bradius tt-unset p-0 mr-1" style={{ minWidth: 32, minHeight: 32 }} 
                           >
                             <VisibilityIcon fontSize="small" />
                           </Button>
-                          <Button component={Link} to={`/template/update/${d.Id}`} 
+                          <Button component={Link} to={`/backend/template/update/${d.Id}`} 
                             variant="contained" color="warning" disableElevation size="small" 
                             className="bradius tt-unset p-0 mr-1" style={{ minWidth: 32, minHeight: 32 }} 
                           >

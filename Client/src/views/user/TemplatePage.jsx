@@ -53,7 +53,7 @@ export default function TemplatePage() {
         }
         return setBlocks([ availableBlocks[0], availableBlocks[1] ]);
       }
-      if(['view','update'].indexOf(_crud) < 0 || !_dataId) return history('/templates');
+      if(['view','update'].indexOf(_crud) < 0 || !_dataId) return history('/backend/templates');
 
       const _fetch = await makeRequest('GET', `/api/email-template/${_dataId}`, {}, accessToken);
       const _data = await _fetch.json();
@@ -62,7 +62,7 @@ export default function TemplatePage() {
       if(_count < 2 || _template.Status) setDisabledStatus(() => true);
       setBlocks(_template.Blocks);
     } catch {
-      return history('/templates');
+      return history('/backend/templates');
     }
   };
 
@@ -156,7 +156,7 @@ export default function TemplatePage() {
       const _fetch = await makeRequest('POST', '/api/email-template', _template, accessToken);
       if(!_fetch.ok || _fetch.status !== 200) return alertChange('Danger', 'เพิ่ม Template ไม่สำเร็จ');
       alertChange('Success', 'เพิ่ม Template สำเร็จ');
-      return history('/templates');
+      return history('/backend/templates');
     }
     if(crud === 'update'){
       const _fetch = await makeRequest('PATCH', '/api/email-template', _template, accessToken);
@@ -277,7 +277,7 @@ export default function TemplatePage() {
                 <span className="h6">{crud==='create'? 'เพิ่ม': 'แก้ไข'}</span>
               </Button>
             ): (<></>)}
-            <Button component={Link} to="/templates" 
+            <Button component={Link} to="/backend/templates" 
               variant="contained" color="default" disableElevation 
               size="large" className="bradius tt-unset" style={{ minWidth: '7.5rem' }} 
             >
