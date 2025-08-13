@@ -93,6 +93,14 @@ namespace Server.Controllers
     {
       User? _user = HttpContext.Items["User"] as User;
       if (_user == null) return Ok(true);
+      return Ok(true);
+    }
+
+    [HttpPost("api/signout")]
+    public ActionResult Signout()
+    {
+      User? _user = HttpContext.Items["User"] as User;
+      if (_user == null) return Ok(true);
       
       User? user = _db.Users
         .Where(d => d.Id == _user.Id)
@@ -102,14 +110,6 @@ namespace Server.Controllers
       user.AccessToken = null;
       user.RefreshToken = null;
       _db.SaveChanges();
-      return Ok(true);
-    }
-
-    [HttpPost("api/signout")]
-    public ActionResult Signout()
-    {
-      User? _user = HttpContext.Items["User"] as User;
-      if (_user == null) return Ok(true);
       return Ok(true);
     }
         

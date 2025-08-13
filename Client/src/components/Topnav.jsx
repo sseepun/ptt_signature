@@ -7,8 +7,26 @@ import { IconButton, Menu, MenuItem } from '@mui/material';
 import SettingsIcon from '@mui/icons-material/Settings';
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 
+import CryptoJS from 'crypto-js';
 import { makeRequest } from '@/helpers/api';
 import { alertChange } from '@/helpers/alert';
+import { Storage } from '@/helpers/storage';
+import { APP_PREFIX, TOKEN_KEY } from '@/actions/variables';
+
+import { MsalProvider } from '@azure/msal-react';
+import { PublicClientApplication } from '@azure/msal-browser';
+import { AzureMsalCreateConfig } from '@/helpers/azure';
+import ButtonSignoutAD from '@/components/ButtonSignoutAD';
+
+export const RenderSignoutAzureAD = (msalApplication=null, tenant=null, app=null, test=false) => {
+  return !msalApplication || !tenant || !app? (<></>): (
+    tenant.b2c === 'N'? (
+      <MsalProvider instance={msalApplication}>
+        <ButtonSignoutAD msalApplication={msalApplication} tenant={tenant} app={app} test={test} />
+      </MsalProvider>
+    ): (<></>)
+  );
+}
 
 const Topnav = () => {
   const { user, accessToken, onSignout } = useContext(AuthContext);
@@ -37,6 +55,30 @@ const Topnav = () => {
 
   const location = useLocation();
   useEffect(() => { setPopupAnchor(null); setPopupActive(0); }, [location?.pathname]);
+
+  const [tenant, setTenant] = useState(null);
+  const [msalApp, setMsalApp] = useState(null);
+  const [msalIntance, setMsalInstance] = useState(null);
+  useEffect(() => {
+    try {
+      let _tenant = Storage.getItem(`${APP_PREFIX}_MSAL_TENANT`);
+      if(!_tenant) return;
+      _tenant = CryptoJS.AES.decrypt(_tenant, TOKEN_KEY).toString(CryptoJS.enc.Utf8);
+      _tenant = JSON.parse(_tenant);
+
+      let _msalApp = Storage.getItem(`${APP_PREFIX}_MSAL_APP`);
+      if(!_msalApp) return;
+      _msalApp = CryptoJS.AES.decrypt(_msalApp, TOKEN_KEY).toString(CryptoJS.enc.Utf8);
+      _msalApp = JSON.parse(_msalApp);
+
+      setTenant(_tenant);
+      setMsalApp(_msalApp);
+
+      const _msalConfig = AzureMsalCreateConfig(_tenant, _msalApp);
+      const _msalInstance = new PublicClientApplication(_msalConfig);
+      setMsalInstance(_msalInstance);
+    } catch {}
+  }, []);
 
   return(<>
     <nav className="topnav">
@@ -84,10 +126,14 @@ const Topnav = () => {
           <span>ระดับ :</span> {user.displayRole()}
         </p>
       </div>
-      <MenuItem onClick={clickSignout} className="default-p pr-5">
-        <LogoutRoundedIcon fontSize="small" className="mr-3" />
-        <span className="p pt-1 pb-1">ออกจากระบบ</span>
-      </MenuItem>
+      {tenant && msalApp && msalIntance? (
+        RenderSignoutAzureAD(msalIntance, tenant, msalApp)
+      ): (
+        <MenuItem onClick={clickSignout} className="default-p pr-5">
+          <LogoutRoundedIcon fontSize="small" className="mr-3" />
+          <span className="p pt-1 pb-1">ออกจากระบบ</span>
+        </MenuItem>
+      )}
     </Menu>
 
     {user.isAdmin()? (

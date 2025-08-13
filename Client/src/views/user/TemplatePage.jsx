@@ -11,6 +11,7 @@ import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import CircularProgress from '@mui/material/CircularProgress';
 
 import { makeRequest } from '@/helpers/api';
 import { alertChange } from '@/helpers/alert';
@@ -29,6 +30,7 @@ const availableBlocks = [
 
 export default function TemplatePage() {
   const { accessToken } = useContext(AuthContext);
+  const [loading, setLoading] = useState(false);
 
   const history = useNavigate();
   const params = useParams();
@@ -96,12 +98,38 @@ export default function TemplatePage() {
     e?.preventDefault();
     setBlockIndex(-1);
     setDataKey(null);
-    return setData(null);
+    // return setData(null);
+    return;
   }
 
   const onTemplateChange = (key, value) => {
     if(blockIndex < 0 || !dataKey || !key) return;
     setData({ ...data, [key]: value });
+  }
+  const onTemplateFileChange = async (file) => {
+    if(!file) return;
+
+    setLoading(() => true);
+    const toDataURL = (url, callback) => {
+      let _xhr = new XMLHttpRequest();
+      _xhr.onload = () => {
+        let _reader = new FileReader();
+        _reader.onloadend = () => callback(_reader.result);
+        _reader.readAsDataURL(_xhr.response);
+      };
+      _xhr.open('GET', url);
+      _xhr.responseType = 'blob';
+      _xhr.send();
+    }
+    try {
+      toDataURL(URL.createObjectURL(file), dataUrl => {
+        setData({ ...data, value: dataUrl });
+        // setData({ ...data, preview: URL.createObjectURL(file), toUpload: file });
+        setLoading(() => false);
+      });
+    } catch {
+      setLoading(() => false);
+    }
   }
   const onTemplateDelete = (e=null, i=-1) => {
     e?.preventDefault();
@@ -153,16 +181,20 @@ export default function TemplatePage() {
       Status: template.Status,
     });
     if(crud === 'create'){
+      setLoading(() => true);
       const _fetch = await makeRequest('POST', '/api/email-template', _template, accessToken);
       if(!_fetch.ok || _fetch.status !== 200) return alertChange('Danger', 'เพิ่ม Template ไม่สำเร็จ');
+      setLoading(() => false);
       alertChange('Success', 'เพิ่ม Template สำเร็จ');
       return history('/backend/templates');
     }
     if(crud === 'update'){
+      setLoading(() => true);
       const _fetch = await makeRequest('PATCH', '/api/email-template', _template, accessToken);
       if(!_fetch.ok || _fetch.status !== 200) return alertChange('Danger', 'แก้ไข Template ไม่สำเร็จ');
+      setLoading(() => false);
       alertChange('Success', 'แก้ไข Template สำเร็จ');
-      return history('/templates');
+      return history('/backend/templates');
     }
   }
 
@@ -211,7 +243,9 @@ export default function TemplatePage() {
               />
             </div>
           </div>
-          <div ref={ref} className="templates border-1 bcolor-fgray mt-6" style={{ '--scale': scale }}>
+          <div ref={ref} style={{ '--scale': scale }} 
+            className={`templates border-1 mt-6 ${blocks.length? 'bcolor-fgray': ''}`} 
+          >
             {blocks.map((d, i) => (
               <div key={`block_${i}_${d.Counting ?? 0}`} className={disabled? '': 'template-editor'}>
                 {d.Type === 1? (
@@ -335,9 +369,10 @@ export default function TemplatePage() {
         </DialogActions>
       </Dialog>
 
-      <Dialog open={blockIndex > -1 && dataKey? true: false} onClose={() => onTemplateClose()} 
-        fullWidth={true} maxWidth="md" scroll="paper" 
+      <Dialog open={blockIndex > -1 && dataKey? true: false} 
+        onClose={() => onTemplateClose()} fullWidth={true} scroll="paper" 
         PaperProps={{ component: 'form', onSubmit: onTemplateSubmit }} 
+        maxWidth={['image','background'].indexOf(data?.type) > -1? 'sm': 'md'} 
       >
         <DialogTitle component="div" className="p-0">
           <div className="dialog-header">
@@ -393,6 +428,24 @@ export default function TemplatePage() {
                 ))}
               </div>
             </div>
+          ): ['image','background'].indexOf(data?.type) > -1? (
+            <div className="grids">
+              <div className="grid sm-100">
+                <img className="img border-1 bradius bcolor-fgray" 
+                  src={data?.preview || data?.value} alt="Background" 
+                />
+              </div>
+              <div className="grid sm-100 mt-4">
+                <Button component="label" variant="contained" color="primary" disableElevation 
+                  size="large" className="bradius tt-unset" style={{ minWidth: '7.5rem' }} 
+                >
+                  <span className="h6">เปลี่ยนภาพ</span>
+                  <input type="file" accept=".png,.jpg,.jpeg" hidden 
+                    onChange={e => onTemplateFileChange(e.target?.files?.[0])} 
+                  />
+                </Button>
+              </div>
+            </div>
           ): (<></>)}
         </DialogContent>
         <DialogActions>
@@ -412,5 +465,11 @@ export default function TemplatePage() {
         </DialogActions>
       </Dialog>
     </>)}
+
+    <div className={`global-loader ${loading? 'active': ''}`}>
+      <div className="wrapper color-p">
+        <CircularProgress color="inherit" size={68} thickness={4} />
+      </div>
+    </div>
   </>)
 }

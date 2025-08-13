@@ -9,7 +9,8 @@ export default function RouteFrontend() {
   const { status } = useContext(AuthContext);
   
   return status === 'unauthenticated'? (<>
-    <Suspense fallback={<PageLoading />}>
+    {/* <Suspense fallback={<PageLoading />}>?] */}
+    <Suspense fallback={<></>}>
       <Routes>
         <Route path="/" element={<SignInPage />} />
         <Route path="*" element={<Navigate replace to="/" />} />

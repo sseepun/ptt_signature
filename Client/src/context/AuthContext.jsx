@@ -3,7 +3,7 @@ import { UserModel } from '@/models';
 
 import CryptoJS from 'crypto-js';
 import { Storage } from '@/helpers/storage';
-import { API_URL, APP_PREFIX, TOKEN_KEY, REFRESH_KEY } from '@/actions/variables';
+import { APP_PREFIX, TOKEN_KEY, REFRESH_KEY } from '@/actions/variables';
 import { makeRequest } from '@/helpers/api';
 
 const AuthContext = createContext({
@@ -102,7 +102,7 @@ export const AuthContextProvider = (props) => {
         _accessToken = CryptoJS.AES.decrypt(_accessToken, TOKEN_KEY).toString(CryptoJS.enc.Utf8);
         _refreshToken = CryptoJS.AES.decrypt(_refreshToken, REFRESH_KEY).toString(CryptoJS.enc.Utf8);
 
-        const _fetch = await makeRequest('PATCH', `/api/refresh`, {}, _accessToken, _refreshToken);
+        const _fetch = await makeRequest('PATCH', `/api/refresh`, {}, _accessToken);
         if(_fetch.ok && _fetch.status === 200){
           const _res = await _fetch.json();
           if(_res){

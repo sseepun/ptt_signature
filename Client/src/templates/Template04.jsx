@@ -22,9 +22,9 @@ const Template04 = ({ data, disabled=false, onClick=()=>{}, user=null }) => {
     <div className="template template-04">
       <img className={`${classer} img`} alt="Background" 
         onClick={e => handleClick(e, 'Field1')} 
-        src={thisData?.Field1?.value || '/img/template/04-bg.jpg'} 
+        src={thisData?.Field1?.preview || thisData?.Field1?.value || '/img/template/04-bg.jpg'} 
       />
-      <div className="wrapper">
+      <div className="wrapper pe-none">
         <div className="block">
           <h6 onClick={e => handleClick(e, 'Field3')} className={classer} 
             style={{ color: thisData?.Field3?.color || 'inherit' }} 
@@ -54,7 +54,7 @@ const Template04 = ({ data, disabled=false, onClick=()=>{}, user=null }) => {
         </div>
         <img className={`${classer} logo`} alt="Logo" 
           onClick={e => handleClick(e, 'Field2')} 
-          src={thisData?.Field2?.value || '/img/template/04-logo.png'} 
+          src={thisData?.Field2?.preview || thisData?.Field2?.value || '/img/template/04-logo.png'} 
         />
       </div>
     </div>

@@ -18,12 +18,12 @@ const Template02 = ({ data, disabled=false, onClick=()=>{}, user=null }) => {
     <div className="template template-02">
       <img className={`${classer} img`} alt="Background" 
         onClick={e => handleClick(e, 'Field1')} 
-        src={thisData?.Field1?.value || '/img/template/02-bg.jpg'} 
+        src={thisData?.Field1?.preview || thisData?.Field1?.value || '/img/template/02-bg.jpg'} 
       />
       <div className="wrapper">
         <img className={`${classer} logo`} alt="Logo" 
           onClick={e => handleClick(e, 'Field2')} 
-          src={thisData?.Field2?.value || '/img/template/02-logo.png'} 
+          src={thisData?.Field2?.preview || thisData?.Field2?.value || '/img/template/02-logo.png'} 
         />
         <p onClick={e => handleClick(e, 'Field3')} className={classer} 
           style={{ color: thisData?.Field3?.color || 'inherit' }} 

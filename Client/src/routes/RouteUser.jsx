@@ -9,7 +9,8 @@ export default function RouteUser() {
   
   const LazyRoute = ({ dom: Element }) => <Element />;
   return status === 'authenticated'? (<>
-    <Suspense fallback={<PageLoading />}>
+    {/* <Suspense fallback={<PageLoading />}>?] */}
+    <Suspense fallback={<></>}>
       <Routes>
         <Route path="/backend" element={<LazyRoute dom={lazy(() => import('@/views/user/HomePage'))} />} />
 

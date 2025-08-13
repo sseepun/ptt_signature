@@ -3,6 +3,7 @@ import AuthContext from '@/context/AuthContext';
 
 import { Button } from '@mui/material';
 import DownloadIcon from '@mui/icons-material/Download';
+import CircularProgress from '@mui/material/CircularProgress';
 
 import { makeRequest } from '@/helpers/api';
 import Template01 from '@/templates/Template01';
@@ -63,37 +64,45 @@ export default function HomePage() {
     _link.click();
   };
     
-  return !template.isValid() || !user.Id? (<></>): (
-    <section className="section-padding">
-      <div className="container">
-        <h5 className="pb-2">
-          คุณสามารถดาวน์โหลด E-Mail Signature ของคุณได้ที่นี่
-        </h5>
-        <div ref={ref} className="templates border-1 bcolor-fgray mt-6" style={{ '--scale': scale }}>
-          {template.Blocks.map((d, i) => (
-            <div key={`block_${i}`}>
-              {d.Type === 1? (
-                <Template01 data={d?.Data} disabled={true} user={user} />
-              ): d.Type === 2? (
-                <Template02 data={d?.Data} disabled={true} user={user} />
-              ): d.Type === 3? (
-                <Template03 data={d?.Data} disabled={true} user={user} />
-              ): d.Type === 4? (
-                <Template04 data={d?.Data} disabled={true} user={user} />
-              ): (<></>)}
-            </div>
-          ))}
+  return (<>
+    {!template.isValid() || !user.Id? (<></>): (
+      <section className="section-padding">
+        <div className="container">
+          <h5 className="pb-2">
+            คุณสามารถดาวน์โหลด E-Mail Signature ของคุณได้ที่นี่
+          </h5>
+          <div ref={ref} className="templates border-1 bcolor-fgray mt-6" style={{ '--scale': scale }}>
+            {template.Blocks.map((d, i) => (
+              <div key={`block_${i}`}>
+                {d.Type === 1? (
+                  <Template01 data={d?.Data} disabled={true} user={user} />
+                ): d.Type === 2? (
+                  <Template02 data={d?.Data} disabled={true} user={user} />
+                ): d.Type === 3? (
+                  <Template03 data={d?.Data} disabled={true} user={user} />
+                ): d.Type === 4? (
+                  <Template04 data={d?.Data} disabled={true} user={user} />
+                ): (<></>)}
+              </div>
+            ))}
+          </div>
+          <div className="mt-6 pt-1">
+            <Button onClick={onDownload} 
+              variant="contained" color="secondary" fullWidth disableElevation 
+              size="large" className="bradius tt-unset" style={{ maxWidth: '11rem' }} 
+              startIcon={<DownloadIcon fontSize="large" />} 
+            >
+              <span className="h6">ดาวน์โหลด</span>
+            </Button>
+          </div>
         </div>
-        <div className="mt-6 pt-1">
-          <Button onClick={onDownload} 
-            variant="contained" color="secondary" fullWidth disableElevation 
-            size="large" className="bradius tt-unset" style={{ maxWidth: '11rem' }} 
-            startIcon={<DownloadIcon fontSize="large" />} 
-          >
-            <span className="h6">ดาวน์โหลด</span>
-          </Button>
-        </div>
+      </section>
+    )}
+
+    <div className={`global-loader bg-transparent ${!template.isValid() || !user.Id? 'active': ''}`}>
+      <div className="wrapper color-p">
+        <CircularProgress color="inherit" size={68} thickness={4} />
       </div>
-    </section>
-  )
+    </div>
+  </>)
 }

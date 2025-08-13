@@ -167,6 +167,7 @@ p.xxxs, .p.xxxs, li.xxxs, label.xxxs{font-size:.5rem;}
   transition:opacity .25s;
 }
 .global-loader.active{pointer-events:auto; opacity:1;}
+.global-loader.bg-transparent{background-color:transparent;}
 
 
 /* Hamburger */

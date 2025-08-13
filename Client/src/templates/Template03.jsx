@@ -26,12 +26,12 @@ const Template03 = ({ data, disabled=false, onClick=()=>{}, user=null }) => {
     <div className="template template-03">
       <img className={`${classer} img`} alt="Background" 
         onClick={e => handleClick(e, 'Field1')} 
-        src={thisData?.Field1?.value || '/img/template/03-bg.jpg'} 
+        src={thisData?.Field1?.preview || thisData?.Field1?.value || '/img/template/03-bg.jpg'} 
       />
-      <div className="wrapper">
+      <div className="wrapper pe-none">
         <img className={`${classer} logo`} alt="Logo" 
           onClick={e => handleClick(e, 'Field2')} 
-          src={thisData?.Field2?.value || '/img/template/03-logo.png'} 
+          src={thisData?.Field2?.preview || thisData?.Field2?.value || '/img/template/03-logo.png'} 
         />
         <div className="block">
           <h6 onClick={e => handleClick(e, 'Field3')} className={classer} 
