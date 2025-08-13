@@ -5,7 +5,7 @@ import AuthContext from '@/context/AuthContext';
 
 import {
   Button, TextField, Dialog, DialogTitle, DialogContent, DialogActions,
-  FormControlLabel, Switch,
+  FormControlLabel, Switch, Chip,
 } from '@mui/material';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
@@ -377,12 +377,20 @@ export default function TemplatePage() {
                 </div>
               </div>
               <div className="grid sm-40">
-                <TextField label="ข้อมูลที่ใส่ได้" variant="outlined" multiline rows={6}
-                  fullWidth readOnly onChange={() => {}} 
-                  value={`[Prefix]\n[PrefixEN]\n[FirstName]\n[FirstNameEN]\n[LastName]\n[LastNameEN]`
-                    + `\n[Position]\n[PositionEN]\n[Department]\n[DepartmentEN]`
-                    + `\n[Email]\n[Telephone]\n[Mobile]`} 
-                />
+                <p>ข้อมูลที่ใส่ได้</p>
+                {[
+                  '[Prefix]','[PrefixEN]','[FirstName]','[FirstNameEN]','[LastName]','[LastNameEN]',
+                  '[Position]','[PositionEN]','[Department]','[DepartmentEN]',
+                  '[Email]','[Telephone]','[Mobile]'
+                ].map((d, i) => (
+                  <Chip key={`chip_${i}`} label={d} className="mt-1 mr-1" 
+                    disabled={data?.value?.includes(d)} 
+                    size="small" color="primary" onClick={e => {
+                      e.preventDefault();
+                      onTemplateChange('value', `${data?.value || ''} ${d}`.trim())
+                    }} 
+                  />
+                ))}
               </div>
             </div>
           ): (<></>)}

@@ -607,6 +607,10 @@ div:where(.swal2-container) button:where(.swal2-styled):where(.swal2-confirm){
   box-shadow:rgba(145,158,171,.14) 0px 3px 6px 2px!important;
 }
 
+.MuiButtonBase-root.MuiChip-root.MuiChip-sizeSmall{
+  display:inline-block; height:auto; font-size:.75rem; padding:.375rem .25rem;
+}
+
 .MuiDialog-root .MuiPaper-root{
   margin:1rem; width:calc(100% - 2rem); border:0; border-radius:var(--bradius);
 }

@@ -110,7 +110,7 @@ namespace Server.Services{
           Message = "เข้าสู่ระบบ CA&A สำเร็จ",
           EmployeeId = result.GetProperty("employee_id").GetString(),
           UserId = userId,
-          Email = email,
+          Email = string.IsNullOrEmpty(email) ? req.Username : email,
           FirstName = firstName,
           LastName = lastName,
         };

@@ -111,7 +111,7 @@ export const AuthContextProvider = (props) => {
           }
         }
       } catch {}
-      // onSignout();
+      onSignout();
       return () => {};
     }
     onLoad();

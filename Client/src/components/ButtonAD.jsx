@@ -16,7 +16,7 @@ export default function ButtonAD({ msalApplication, tenant, app, test=false, ...
   const signinProcess = async (e) => {
     e.preventDefault();
     try {
-      document.cookie = "msal.interaction.status=;";
+      document.cookie = 'msal.interaction.status=;';
       await instance.loginRedirect({
         scopes: [ 'User.Read' ],
         prompt: DEV_PROCESS? 'select_account': 'login',
@@ -43,7 +43,7 @@ export default function ButtonAD({ msalApplication, tenant, app, test=false, ...
         });
         const res = await _fetch.json();
         if(res?.User?.AccessToken){
-          document.cookie = "msal.interaction.status=;";
+          document.cookie = 'msal.interaction.status=;';
           onSignin({
             u: res.User,
             aToken: res.User.AccessToken,

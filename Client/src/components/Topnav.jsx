@@ -7,13 +7,19 @@ import { IconButton, Menu, MenuItem } from '@mui/material';
 import SettingsIcon from '@mui/icons-material/Settings';
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 
+import { makeRequest } from '@/helpers/api';
 import { alertChange } from '@/helpers/alert';
 
 const Topnav = () => {
-  const { user, onSignout } = useContext(AuthContext);
+  const { user, accessToken, onSignout } = useContext(AuthContext);
 
-  const clickSignout = (e=null) => {
+  const clickSignout = async (e=null) => {
     e?.preventDefault();
+    if(!accessToken) return;
+    try {
+      await makeRequest('POST', '/api/signout', {}, accessToken);
+    } catch {}
+    document.cookie = 'msal.interaction.status=;';
     onSignout();
     alertChange('Success', 'ออกจากระบบสำเร็จ');
   }

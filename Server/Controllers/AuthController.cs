@@ -61,7 +61,7 @@ namespace Server.Controllers
         user.LastNameEN = pisUser.LNAME_ENG;
         user.EmployeeId = pisUser.CODE;
         user.Title = pisUser.POSNAME;
-        user.Email = pisUser.EmailAddr;
+        if(!string.IsNullOrEmpty(pisUser.EmailAddr)) user.Email = pisUser.EmailAddr;
         user.Telephone = pisUser.OFFICETEL;
         user.Mobile = pisUser.Mobile;
       }
@@ -81,6 +81,7 @@ namespace Server.Controllers
       ResAuthSigninAD res = await _azureAdService.AuthorizationAD(req);
       if (!res.Success) return BadRequest(new { Message = res.Message });
 
+      res.Email = string.IsNullOrEmpty(res.Email)? req.Username: res.Email;
       User? user = await SigninProcess(res);
       if (user == null) return BadRequest(new { Message = $"ไม่พบผู้ใช้ในระบบที่ใช้อีเมล {res.Email}" });
 
@@ -91,7 +92,24 @@ namespace Server.Controllers
     public ActionResult Refresh()
     {
       User? _user = HttpContext.Items["User"] as User;
-      if (_user == null) return Ok(false);
+      if (_user == null) return Ok(true);
+      
+      User? user = _db.Users
+        .Where(d => d.Id == _user.Id)
+        .FirstOrDefault();
+      if(user == null) return Ok(true);
+
+      user.AccessToken = null;
+      user.RefreshToken = null;
+      _db.SaveChanges();
+      return Ok(true);
+    }
+
+    [HttpPost("api/signout")]
+    public ActionResult Signout()
+    {
+      User? _user = HttpContext.Items["User"] as User;
+      if (_user == null) return Ok(true);
       return Ok(true);
     }
         
