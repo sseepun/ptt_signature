@@ -8,6 +8,7 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 
 import CryptoJS from 'crypto-js';
+import { useIdleTimer } from 'react-idle-timer';
 import { makeRequest } from '@/helpers/api';
 import { alertChange } from '@/helpers/alert';
 import { Storage } from '@/helpers/storage';
@@ -22,7 +23,9 @@ export const RenderSignoutAzureAD = (msalApplication=null, tenant=null, app=null
   return !msalApplication || !tenant || !app? (<></>): (
     tenant.b2c === 'N'? (
       <MsalProvider instance={msalApplication}>
-        <ButtonSignoutAD msalApplication={msalApplication} tenant={tenant} app={app} test={test} />
+        <ButtonSignoutAD test={test} 
+          msalApplication={msalApplication} tenant={tenant} app={app} 
+        />
       </MsalProvider>
     ): (<></>)
   );
@@ -31,7 +34,7 @@ export const RenderSignoutAzureAD = (msalApplication=null, tenant=null, app=null
 const Topnav = () => {
   const { user, accessToken, onSignout } = useContext(AuthContext);
 
-  const clickSignout = async (e=null) => {
+  const clickSignout = async (e=null, type=0) => {
     e?.preventDefault();
     if(!accessToken) return;
     try {
@@ -39,8 +42,15 @@ const Topnav = () => {
     } catch {}
     document.cookie = 'msal.interaction.status=;';
     onSignout();
-    alertChange('Success', 'ออกจากระบบสำเร็จ');
+    if(type === 1) alertChange('Warning', 'Session Timeout ออกจากระบบเนื่องจากไม่มีการใช้งาน');
+    else alertChange('Success', 'ออกจากระบบสำเร็จ');
   }
+
+  const signoutTime = 1000 *60 *15;
+  const onIdle = () => {
+    clickSignout(null, 1);
+  }
+  useIdleTimer({ timeout: signoutTime, onIdle: onIdle });
 
   const [popupAnchor, setPopupAnchor] = useState(null);
   const [popupActive, setPopupActive] = useState(0);
@@ -127,7 +137,7 @@ const Topnav = () => {
         </p>
       </div>
       {tenant && msalApp && msalIntance? (
-        RenderSignoutAzureAD(msalIntance, tenant, msalApp)
+        RenderSignoutAzureAD(msalIntance, tenant, msalApp) 
       ): (
         <MenuItem onClick={clickSignout} className="default-p pr-5">
           <LogoutRoundedIcon fontSize="small" className="mr-3" />

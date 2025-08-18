@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import AuthContext from '@/context/AuthContext';
 
 import { MenuItem } from '@mui/material';
@@ -13,8 +13,8 @@ export default function ButtonSignoutAD({ msalApplication, tenant, app, test=fal
   const { accessToken, onSignout } = useContext(AuthContext);
   const { instance } = useMsal();
 
-  const signoutProcess = async (e) => {
-    e.preventDefault();
+  const signoutProcess = async (e=null) => {
+    e?.preventDefault();
     instance.logoutRedirect({ postLogoutRedirectUri: APP_URL, onRedirectNavigate: (_) => false });
     try {
       await makeRequest('POST', '/api/signout', {}, accessToken);

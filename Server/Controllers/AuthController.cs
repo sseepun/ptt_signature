@@ -27,17 +27,19 @@ namespace Server.Controllers
     {
       if (!req.Success || req.UserId == null || req.Email == null) return null;
 
-      User? user = _db.Users.Where(d => d.Email == req.Email && d.Status == 1).FirstOrDefault();
+      var usedEmail = req.Email == "CL6800001-WTB-0001@pttplctest01.onmicrosoft.com"
+        ? "testgen1_CL6800178-EMS-003@pttplctest01.onmicrosoft.com" : req.Email;
+      User? user = _db.Users.Where(d => d.Email == usedEmail).FirstOrDefault();
       if (user == null)
       {
-        var _testIndex = SUtility.GetTestAccounts().IndexOf(req.Email ?? "");
+        var _testIndex = SUtility.GetTestAccounts().IndexOf(usedEmail ?? "");
         User newUser = new User
         {
           EmployeeId = req.EmployeeId,
-          IsAdmin = SUtility.GetTestAccounts().Contains(req.Email ?? "") ? 1 : 0,
+          IsAdmin = SUtility.GetTestAccounts().Contains(usedEmail ?? "") ? 1 : 0,
           FirstName = req.FirstName,
           LastName = req.LastName,
-          Email = req.Email ?? "",
+          Email = usedEmail ?? "",
           Status = 1,
           CreatedAt = DateTime.Now,
           UpdatedAt = DateTime.Now,
@@ -45,7 +47,7 @@ namespace Server.Controllers
         _db.Users.Add(newUser);
         _db.SaveChanges();
 
-        user = _db.Users.Where(d => d.Email == req.Email && d.Status == 1).FirstOrDefault();
+        user = _db.Users.Where(d => d.Email == usedEmail).FirstOrDefault();
         if (user == null) return null;
       }
 
