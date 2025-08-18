@@ -42,7 +42,6 @@ namespace email_signature.Server.Migrations
                     LastName = table.Column<string>(type: "nvarchar(256)", nullable: true),
                     LastNameEN = table.Column<string>(type: "nvarchar(256)", nullable: true),
                     EmployeeId = table.Column<long>(type: "nvarchar(32)", nullable: true),
-                    Department = table.Column<string>(type: "nvarchar(256)", nullable: true),
                     Title = table.Column<string>(type: "nvarchar(128)", nullable: true),
                     TitleEN = table.Column<string>(type: "nvarchar(128)", nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", nullable: true),
@@ -53,7 +52,12 @@ namespace email_signature.Server.Migrations
                     CreatedAt = table.Column<DateTime>(type: "datetime", nullable: true),
                     UpdatedAt = table.Column<DateTime>(type: "datetime", nullable: true),
                     AccessToken = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    RefreshToken = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    RefreshToken = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DepartmentCode = table.Column<string>(type: "nvarchar(16)", nullable: true),
+                    Department = table.Column<string>(type: "nvarchar(256)", nullable: true),
+                    DepartmentEN = table.Column<string>(type: "nvarchar(256)", nullable: true),
+                    DepartmentLong = table.Column<string>(type: "nvarchar(256)", nullable: true),
+                    DepartmentAbbr = table.Column<string>(type: "nvarchar(32)", nullable: true),
                 },
                 constraints: table =>
                 {

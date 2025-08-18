@@ -89,7 +89,7 @@
   margin:calc(.875rem * var(--scale)) calc(-1rem * var(--scale)) 0 0;
 }
 .template-01 table td{
-  white-space:nowrap; padding:0 calc(1rem * var(--scale)) 0 0;
+  white-space:nowrap; padding:0 calc(1rem * var(--scale)) 0 0; vertical-align:baseline;
 }
 .template-01 table td:nth-child(1n){width:31%;}
 .template-01 table td:nth-child(2n){width:50%;}

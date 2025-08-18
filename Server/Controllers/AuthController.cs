@@ -61,7 +61,8 @@ namespace Server.Controllers
         user.LastNameEN = pisUser.LastNameEN;
         user.EmployeeId = pisUser.EmployeeId;
         user.Title = pisUser.Title;
-        if(!string.IsNullOrEmpty(pisUser.Email)) user.Email = pisUser.Email;
+        if(!SUtility.GetTestEmployeeIds().Contains(pisUser.Email ?? "") 
+        && !string.IsNullOrEmpty(pisUser.Email)) user.Email = pisUser.Email;
         user.Telephone = pisUser.Telephone;
         user.Mobile = pisUser.Mobile;
         if(!string.IsNullOrEmpty(pisUser.DepartmentCode)) user.DepartmentCode = pisUser.DepartmentCode;

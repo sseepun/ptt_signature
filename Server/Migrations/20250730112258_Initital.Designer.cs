@@ -84,8 +84,6 @@ namespace email_signature.Server.Migrations
 
                     b.Property<long?>("EmployeeId")
                         .HasColumnType("nvarchar(32)");
-                    b.Property<string>("Department")
-                        .HasColumnType("nvarchar(256)");
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(128)");
                     b.Property<string>("TitleEN")
@@ -114,6 +112,17 @@ namespace email_signature.Server.Migrations
                         .HasColumnType("nvarchar(max)");
                     b.Property<string>("RefreshToken")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DepartmentCode")
+                        .HasColumnType("nvarchar(16)");
+                    b.Property<string>("Department")
+                        .HasColumnType("nvarchar(256)");
+                    b.Property<string>("DepartmentEN")
+                        .HasColumnType("nvarchar(256)");
+                    b.Property<string>("DepartmentLong")
+                        .HasColumnType("nvarchar(256)");
+                    b.Property<string>("DepartmentAbbr")
+                        .HasColumnType("nvarchar(32)");
 
                     b.HasKey("Id");
 

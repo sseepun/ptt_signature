@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { replaceRules } from '@/helpers/utility';
 
-const Template01 = ({ data, disabled=false, onClick=()=>{}, user=null }) => {
+const Template01 = ({ data, disabled=false, onClick=()=>{}, user=null, textWrap=false }) => {
   const classer = disabled? '': 'editable';
   const thisData = useMemo(() => {
     return {
@@ -19,6 +19,7 @@ const Template01 = ({ data, disabled=false, onClick=()=>{}, user=null }) => {
     e?.preventDefault();
     if(!disabled) onClick(field, thisData?.[field] || null);
   }
+  const styles = textWrap? { whiteSpace: 'wrap' }: {};
   return (
     <div className="template template-01">
       <h6 onClick={e => handleClick(e, 'Field1')} className={classer} 
@@ -34,21 +35,21 @@ const Template01 = ({ data, disabled=false, onClick=()=>{}, user=null }) => {
       <table>
         <tbody>
           <tr>
-            <td>
+            <td style={styles}>
               <p onClick={e => handleClick(e, 'Field3')} className={classer} 
                 style={{ color: thisData?.Field3?.color || 'inherit' }} 
               >
                 {thisData?.Field3?.value || (disabled? '': 'Field 3')}
               </p>
             </td>
-            <td>
+            <td style={styles}>
               <p onClick={e => handleClick(e, 'Field5')} className={classer} 
                 style={{ color: thisData?.Field5?.color || 'inherit' }} 
               >
                 {thisData?.Field5?.value || (disabled? '': 'Field 5')}
               </p>
             </td>
-            <td>
+            <td style={styles}>
               <p onClick={e => handleClick(e, 'field7')} className={classer} 
                 style={{ color: thisData?.Field7?.color || 'inherit' }} 
               >
@@ -57,21 +58,21 @@ const Template01 = ({ data, disabled=false, onClick=()=>{}, user=null }) => {
             </td>
           </tr>
           <tr>
-            <td>
+            <td style={styles}>
               <p onClick={e => handleClick(e, 'Field4')} className={classer} 
                 style={{ color: thisData?.Field4?.color || 'inherit' }} 
               >
                 {thisData?.Field4?.value || (disabled? '': 'Field 4')}
               </p>
             </td>
-            <td>
+            <td style={styles}>
               <p onClick={e => handleClick(e, 'Field6')} className={classer} 
                 style={{ color: thisData?.Field6?.color || 'inherit' }} 
               >
                 {thisData?.Field6?.value || (disabled? '': 'Field 6')}
               </p>
             </td>
-            <td>
+            <td style={styles}>
               <p onClick={e => handleClick(e, 'Field8')} className={classer} 
                 style={{ color: thisData?.Field8?.color || 'inherit' }} 
               >

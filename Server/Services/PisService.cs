@@ -56,7 +56,7 @@ namespace Server.Services {
         if (string.IsNullOrEmpty(url)) return new PisDepartment();
 
         string endpoint = "/Unit/S4/1.0.0/Unit";
-        var request = new HttpRequestMessage(HttpMethod.Get, url + endpoint + $"?Search_UnitCode={unitCode}");
+        var request = new HttpRequestMessage(HttpMethod.Get, $"{url}{endpoint}?Search_UnitCode={unitCode}");
         request.Headers.Add("Authorization", "Bearer " + token);
         request.Headers.Add("Accept", "application/json");
 
@@ -112,7 +112,7 @@ namespace Server.Services {
         if (string.IsNullOrEmpty(url)) return new List<User>();
 
         string endpoint = "/PersonelInfo/S4/1.0.0/PersonelInfo";
-        var request = new HttpRequestMessage(HttpMethod.Get, url + endpoint + $"?Search_EmployeeCode={employeeId}");
+        var request = new HttpRequestMessage(HttpMethod.Get, $"{url}{endpoint}?Search_EmployeeCode={employeeId}");
         request.Headers.Add("Authorization", "Bearer " + token);
         request.Headers.Add("Accept", "application/json");
 

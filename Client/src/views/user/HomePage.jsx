@@ -40,10 +40,16 @@ export default function HomePage() {
 
   const ref = useRef(null);
   const [scale, setScale] = useState(1);
+  const [textWrap, setTextWrap] = useState(false);
   useEffect(() => {
     const updateSize = () => {
       const _width = ref?.current?.offsetWidth || 0;
-      setScale(() => Math.round((_width? _width/1266: 1) *100)/100);
+      const _scale = Math.round((_width? _width/1266: 1) *100)/100;
+      setScale(() => _scale);
+      if(ref?.current){
+        if(ref.current.scrollWidth - 32*_scale > ref.current.offsetWidth) setTextWrap(() => true);
+        else setTextWrap(() => false);
+      }
     }
     updateSize();
     window.addEventListener('resize', updateSize);
@@ -75,7 +81,7 @@ export default function HomePage() {
             {template.Blocks.map((d, i) => (
               <div key={`block_${i}`}>
                 {d.Type === 1? (
-                  <Template01 data={d?.Data} disabled={true} user={user} />
+                  <Template01 data={d?.Data} disabled={true} user={user} textWrap={textWrap} />
                 ): d.Type === 2? (
                   <Template02 data={d?.Data} disabled={true} user={user} />
                 ): d.Type === 3? (
@@ -99,7 +105,7 @@ export default function HomePage() {
       </section>
     )}
 
-    <div className={`global-loader bg-transparent ${!template.isValid() || !user.Id? 'active': ''}`}>
+    <div className={`global-loader bg-transparent pe-none ${!template.isValid() || !user.Id? 'active': ''}`}>
       <div className="wrapper color-p">
         <CircularProgress color="inherit" size={68} thickness={4} />
       </div>

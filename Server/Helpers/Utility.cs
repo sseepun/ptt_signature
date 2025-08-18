@@ -15,6 +15,11 @@ namespace Server.Helpers
       var testAccounts = Environment.GetEnvironmentVariable("TestAccounts") ?? "";
       return testAccounts.Split(",").ToList();
     }
+    public static List<string> GetTestEmployeeIds()
+    {
+      var testEmployeeIds = Environment.GetEnvironmentVariable("TestEmployeeIds") ?? "";
+      return testEmployeeIds.Split(",").ToList();
+    }
     
     public static string GenerateAccessToken(User user) {
       var expires = DateTime.Now.AddDays(Convert.ToDouble(

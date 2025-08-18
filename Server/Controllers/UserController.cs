@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using Server.Services;
 using Server.DTOs;
+using Server.Helpers;
 
 namespace Server.Controllers
 {
@@ -33,7 +34,8 @@ namespace Server.Controllers
 
       var pisUser = pisUsers[0];
       pisUser.Id = _user.Id;
-      if (string.IsNullOrEmpty(pisUser.Email)) pisUser.Email = _user.Email;
+      if (!SUtility.GetTestEmployeeIds().Contains(pisUser.Email ?? "")
+      && string.IsNullOrEmpty(pisUser.Email)) pisUser.Email = _user.Email;
       if (string.IsNullOrEmpty(pisUser.Telephone)) pisUser.Telephone = _user.Telephone;
       if (string.IsNullOrEmpty(pisUser.Mobile)) pisUser.Mobile = _user.Mobile;
       if (string.IsNullOrEmpty(pisUser.DepartmentCode)) pisUser.DepartmentCode = _user.DepartmentCode;

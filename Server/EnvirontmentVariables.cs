@@ -9,7 +9,7 @@ public static class EnvirontmentVariables
 
   public static IServiceCollection AddEnvirontmentVariables(this WebApplicationBuilder builder) {
     List<string> keys = new List<string> {
-      "TestAccounts",
+      "TestAccounts", "TestEmployeeIds",
       "Jwt:Expire", "Jwt:Key", "Jwt:RefreshExpire", "Jwt:RefreshKey", "Jwt:Issuer", "Jwt:Audience",
       "Pis:TokenUrl", "Pis:TokenUsername", "Pis:TokenPassword", "Pis:Url",
       "Caa:ProjectName", "Caa:ProjectCode", "Caa:Url", "Caa:Username", "Caa:Password", "Caa:Config",

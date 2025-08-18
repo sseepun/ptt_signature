@@ -292,7 +292,7 @@ export default function TemplatePage() {
               </div>
             ))}
           </div>
-          {disabled? (<></>): (
+          {disabled || blocks.length > 3? (<></>): (
             <div className="templates">
               <div className="template-add" onClick={e => onProcess(e, 'create')}>
                 <div className="wrapper text-center">
@@ -393,7 +393,7 @@ export default function TemplatePage() {
                 <div className="grids">
                   <div className="grid sm-100">
                     <TextField label="ข้อมูล" variant="outlined" 
-                      value={data?.value || ''} fullWidth 
+                      value={data?.value || ''} fullWidth inputProps={{ maxLength: 128 }}  
                       onChange={e => onTemplateChange('value', e.target.value)} 
                     />
                   </div>
