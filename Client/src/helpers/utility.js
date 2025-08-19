@@ -6,6 +6,7 @@ export const getValueOrDefault = (val, _default='') => {
 
 export const replaceRules = (obj, user) => {
   if(obj?.type === 'text' && user?.Id){
+    console.log(user)
     obj.value = `${obj.value ?? ''}`
       .replace(/\[EmployeeId\]/g, user.EmployeeId || '')
       .replace(/\[Prefix\]/g, user.Prefix || '')
@@ -16,8 +17,8 @@ export const replaceRules = (obj, user) => {
       .replace(/\[LastNameEN\]/g, user.LastNameEN || '')
       .replace(/\[Position\]/g, user.Title || '')
       .replace(/\[Email\]/g, user.Email || '')
-      .replace(/\[Telephone\]/g, '+66 93 919-4699')
-      .replace(/\[Mobile\]/g, '+66 93 919-4699')
+      .replace(/\[Telephone\]/g, user.Telephone || user.Mobile || '')
+      .replace(/\[Mobile\]/g, user.Mobile || user.Telephone || '')
       .replace(/\[Department\]/g, user.Department || '')
       .replace(/\[DepartmentEN\]/g, user.DepartmentEN || '')
       .replace(/\[DepartmentLong\]/g, user.DepartmentLong || '')

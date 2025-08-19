@@ -89,6 +89,7 @@ export default function TemplatePage() {
   const [data, setData] = useState(null);
 
   const onTemplate = (i=-1, k='', d=null) => {
+    console.log(123, i, k, d)
     if(i < 0 || !k || !d) return onTemplateClose();
     setBlockIndex(i);
     setDataKey(k);
@@ -191,9 +192,9 @@ export default function TemplatePage() {
     if(crud === 'update'){
       setLoading(() => true);
       const _fetch = await makeRequest('PATCH', '/api/email-template', _template, accessToken);
-      if(!_fetch.ok || _fetch.status !== 200) return alertChange('Danger', 'แก้ไข Template ไม่สำเร็จ');
+      if(!_fetch.ok || _fetch.status !== 200) return alertChange('Danger', 'บันทึก Template ไม่สำเร็จ');
       setLoading(() => false);
-      alertChange('Success', 'แก้ไข Template สำเร็จ');
+      alertChange('Success', 'บันทึก Template สำเร็จ');
       return history('/backend/templates');
     }
   }
@@ -231,7 +232,7 @@ export default function TemplatePage() {
               <FormControlLabel className="m-0" 
                 label={template.Status===1? 'เปิดใช้งาน': 'ปิดใช้งาน'} 
                 control={<Switch color="success" 
-                  checked={template.Status} disabled={disabledStatus} 
+                  checked={template.Status} disabled={crud==='view' || disabledStatus} 
                   onChange={e => setTemplate({ ...template, Status: e.target.checked? 1: 0 })} 
                 />} 
               />
@@ -308,7 +309,7 @@ export default function TemplatePage() {
                 variant="contained" color="secondary" disableElevation 
                 size="large" className="bradius tt-unset mr-2" style={{ minWidth: '7.5rem' }} 
               >
-                <span className="h6">{crud==='create'? 'เพิ่ม': 'แก้ไข'}</span>
+                <span className="h6">{crud==='create'? 'เพิ่ม': 'บันทึก'}</span>
               </Button>
             ): (<></>)}
             <Button component={Link} to="/backend/templates" 
@@ -358,12 +359,6 @@ export default function TemplatePage() {
               size="large" className="bradius tt-unset mr-2" style={{ minWidth: '7.5rem' }} 
             >
               <span className="h6">เพิ่ม</span>
-            </Button>
-            <Button onClick={onProcess} 
-              variant="contained" color="default" disableElevation 
-              size="large" className="bradius tt-unset" style={{ minWidth: '7.5rem' }} 
-            >
-              <span className="h6">ปิด</span>
             </Button>
           </div>
         </DialogActions>
@@ -453,13 +448,7 @@ export default function TemplatePage() {
             <Button type="submit" variant="contained" color="secondary" disableElevation 
               size="large" className="bradius tt-unset mr-2" style={{ minWidth: '7.5rem' }} 
             >
-              <span className="h6">แก้ไข</span>
-            </Button>
-            <Button onClick={onTemplateClose} 
-              variant="contained" color="default" disableElevation 
-              size="large" className="bradius tt-unset" style={{ minWidth: '7.5rem' }} 
-            >
-              <span className="h6">ปิด</span>
+              <span className="h6">บันทึก</span>
             </Button>
           </div>
         </DialogActions>

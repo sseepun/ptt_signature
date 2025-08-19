@@ -50,7 +50,7 @@ const Template01 = ({ data, disabled=false, onClick=()=>{}, user=null, textWrap=
               </p>
             </td>
             <td style={styles}>
-              <p onClick={e => handleClick(e, 'field7')} className={classer} 
+              <p onClick={e => handleClick(e, 'Field7')} className={classer} 
                 style={{ color: thisData?.Field7?.color || 'inherit' }} 
               >
                 {thisData?.Field7?.value || (disabled? '': 'Field 7')}
