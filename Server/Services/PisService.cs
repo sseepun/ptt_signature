@@ -72,12 +72,37 @@ namespace Server.Services {
       return new PisDepartment();
   }
 
+    public async Task<PisPosition> GetPosition(string token, string? posCode) {
+      try {
+        if(string.IsNullOrEmpty(token) || string.IsNullOrEmpty(posCode)) return new PisPosition();
+
+        var url = GetVariable("Url");
+        if (string.IsNullOrEmpty(url)) return new PisPosition();
+
+        string endpoint = "/Position/S4/1.0.0/Position";
+        var request = new HttpRequestMessage(HttpMethod.Get, $"{url}{endpoint}?Search_PositionCode={posCode}");
+        request.Headers.Add("Authorization", "Bearer " + token);
+        request.Headers.Add("Accept", "application/json");
+
+        var client = _clientFactory.CreateClient();
+        var response = await client.SendAsync(request);
+        if(!response.IsSuccessStatusCode) return new PisPosition();
+
+        var content = await response.Content.ReadAsStringAsync();
+        var resultData = JsonConvert.DeserializeObject<PisPositionsMain>(content);
+        var result = resultData?.Entries.Entry ?? new List<PisPosition>();
+        return result.FirstOrDefault() ?? new PisPosition();
+      } catch (Exception ex) { Console.WriteLine($"\nPhone Directory Get Positions Error : {ex.Message}\n{ex.StackTrace}"); }
+      return new PisPosition();
+  }
+
     public async Task<List<User>> ResultUsers(string token, List<PisUser> resultData)
     {
       List<User> result = new List<User>();
       foreach (PisUser entry in resultData)
       {
         var department = await GetDepartment(token, entry.UNITCODE);
+        var position = await GetPosition(token, entry.POSCODE);
         result.Add(new User
         {
           Prefix = entry.INAME,
@@ -87,7 +112,8 @@ namespace Server.Services {
           LastName = entry.LNAME,
           LastNameEN = entry.LNAME_ENG,
           EmployeeId = entry.CODE,
-          Title = entry.POSNAME,
+          Title = position.t_name ?? "",
+          TitleEN = position.e_name ?? "",
           Email = entry.EmailAddr ?? "",
           Telephone = entry.OFFICETEL ?? "",
           Mobile = entry.Mobile ?? "",

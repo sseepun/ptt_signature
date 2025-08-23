@@ -8,7 +8,7 @@ const Template01 = ({ data, disabled=false, onClick=()=>{}, user=null, textWrap=
       Field1: replaceRules(data?.Field1 || { type: 'text', value: '[Prefix] [FirstName] [LastName]', color: '#1B1560' }, user),
       Field2: replaceRules(data?.Field2 || { type: 'text', value: '[PrefixEN] [FirstNameEN] [LastNameEN]', color: '#1B1560' }, user),
       Field3: replaceRules(data?.Field3 || { type: 'text', value: '[Position]', color: '#666666' }, user),
-      Field4: replaceRules(data?.Field4 || { type: 'text', value: '[EmployeeId]', color: '#666666' }, user),
+      Field4: replaceRules(data?.Field4 || { type: 'text', value: '[PositionEN]', color: '#666666' }, user),
       Field5: replaceRules(data?.Field5 || { type: 'text', value: '[Department]', color: '#666666' }, user),
       Field6: replaceRules(data?.Field6 || { type: 'text', value: '[DepartmentEN]', color: '#666666' }, user),
       Field7: replaceRules(data?.Field7 || { type: 'text', value: 'T [Telephone]', color: '#666666' }, user),

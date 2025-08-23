@@ -47,4 +47,20 @@ namespace Server.DTOs
     public string? unitabbr { get; set; }
   }
     
+
+  public class PisPositionsMain
+  {
+    public required PisPositions Entries {get; set;}
+  }
+  public class PisPositions
+  {
+    public required List<PisPosition> Entry {get; set;}
+  }
+  public class PisPosition
+  {
+    public string? poscode { get; set; }
+    public string? t_name { get; set; }
+    public string? e_name { get; set; }
+  }
+    
 }

@@ -16,6 +16,7 @@ export const replaceRules = (obj, user) => {
       .replace(/\[LastName\]/g, user.LastName || '')
       .replace(/\[LastNameEN\]/g, user.LastNameEN || '')
       .replace(/\[Position\]/g, user.Title || '')
+      .replace(/\[PositionEN\]/g, user.TitleEN || '')
       .replace(/\[Email\]/g, user.Email || '')
       .replace(/\[Telephone\]/g, user.Telephone || user.Mobile || '')
       .replace(/\[Mobile\]/g, user.Mobile || user.Telephone || '')

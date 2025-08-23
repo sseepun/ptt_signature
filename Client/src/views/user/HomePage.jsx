@@ -58,11 +58,12 @@ export default function HomePage() {
 
   useEffect(() => { if(accessToken) onLoadData(); }, [accessToken]);
 
+  const downloadRef = useRef(null);
   const onDownload = async (e=null) => {
     e?.preventDefault();
-    if(!ref?.current) return;
+    if(!downloadRef?.current) return;
 
-    const _canvas = await html2canvas(ref.current);
+    const _canvas = await html2canvas(downloadRef.current);
     const _dataURL = _canvas.toDataURL('image/png');
     const _link = document.createElement('a');
     _link.href = _dataURL;
@@ -78,19 +79,21 @@ export default function HomePage() {
             คุณสามารถดาวน์โหลด E-Mail Signature ของคุณได้ที่นี่
           </h5>
           <div ref={ref} className="templates border-1 bcolor-fgray mt-6" style={{ '--scale': scale }}>
-            {template.Blocks.map((d, i) => (
-              <div key={`block_${i}`}>
-                {d.Type === 1? (
-                  <Template01 data={d?.Data} disabled={true} user={user} textWrap={textWrap} />
-                ): d.Type === 2? (
-                  <Template02 data={d?.Data} disabled={true} user={user} />
-                ): d.Type === 3? (
-                  <Template03 data={d?.Data} disabled={true} user={user} />
-                ): d.Type === 4? (
-                  <Template04 data={d?.Data} disabled={true} user={user} />
-                ): (<></>)}
-              </div>
-            ))}
+            <div ref={downloadRef}>
+              {template.Blocks.map((d, i) => (
+                <div key={`block_${i}`}>
+                  {d.Type === 1? (
+                    <Template01 data={d?.Data} disabled={true} user={user} textWrap={textWrap} />
+                  ): d.Type === 2? (
+                    <Template02 data={d?.Data} disabled={true} user={user} />
+                  ): d.Type === 3? (
+                    <Template03 data={d?.Data} disabled={true} user={user} />
+                  ): d.Type === 4? (
+                    <Template04 data={d?.Data} disabled={true} user={user} />
+                  ): (<></>)}
+                </div>
+              ))}
+            </div>
           </div>
           <div className="mt-6 pt-1">
             <Button onClick={onDownload} 
