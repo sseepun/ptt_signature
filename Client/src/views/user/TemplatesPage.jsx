@@ -53,7 +53,7 @@ export default function TemplatesPage() {
         <div className="ss-box lg">
           <div className="d-flex ai-center jc-space-between">
             <h4 className="fw-600 mr-4">
-              การจัดการ Templates
+              จัดการ Template
             </h4>
             <Button component={Link} to="/backend/template/create" 
               variant="contained" color="secondary" disableElevation 

@@ -118,7 +118,7 @@ namespace Server.Services {
           Telephone = entry.OFFICETEL ?? "",
           Mobile = entry.Mobile ?? "",
           DepartmentCode = department.unitcode,
-          Department = department.unitname,
+          Department = department.longname,
           DepartmentEN = department.engname,
           DepartmentLong = department.longname,
           DepartmentAbbr = department.unitabbr,

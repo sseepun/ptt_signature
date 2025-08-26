@@ -411,7 +411,7 @@ export default function TemplatePage() {
                 {[
                   'Prefix','PrefixEN','FirstName','FirstNameEN','LastName','LastNameEN',
                   'EmployeeId','Position','PositionEN','Email','Telephone','Mobile',
-                  'Department','DepartmentEN','DepartmentLong','DepartmentAbbr',
+                  'Department','DepartmentEN','DepartmentAbbr',
                 ].map((d, i) => (
                   <Chip key={`chip_${i}`} label={d} className="mt-1 mr-1" 
                     disabled={data?.value?.includes(d)} 

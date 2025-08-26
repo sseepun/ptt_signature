@@ -75,21 +75,22 @@ namespace Server.Controllers
     {
       if (string.IsNullOrEmpty(req.EmployeeId)) return BadRequest(new { Message = $"ไม่พบผู้ใช้ในระบบ PIS" });
 
+      var pisUsers = await _pisService.GetUsers(req.EmployeeId);
+      if(pisUsers.Count < 1) return BadRequest(new { Message = $"ไม่พบผู้ใช้ในระบบ PIS" });
+      var pisUser = pisUsers[0];
+
       User? user = _db.Users
         .Where(d => d.EmployeeId == req.EmployeeId)
         .FirstOrDefault();
       if (user != null)
       {
+        user.Department = pisUser.Department;
         user.IsAdmin = 1;
         user.Status = 1;
         _db.SaveChanges();
         return Ok(new { Message = "เพิ่มสิทธิ์ผู้ใช้สำเร็จ" });
       }
 
-      var pisUsers = await _pisService.GetUsers(req.EmployeeId);
-      if(pisUsers.Count < 1) return BadRequest(new { Message = $"ไม่พบผู้ใช้ในระบบ PIS" });
-
-      var pisUser = pisUsers[0];
       pisUser.IsAdmin = 1;
       pisUser.Status = 1;
       pisUser.CreatedAt = DateTime.Now;

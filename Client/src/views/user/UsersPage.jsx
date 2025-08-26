@@ -167,7 +167,7 @@ export default function UsersPage() {
           </div>
         </DialogTitle>
         <DialogContent dividers={true}>
-          <TextField label="รหัสผนักงาน" required fullWidth variant="outlined" 
+          <TextField label="รหัสพนักงาน" required fullWidth variant="outlined" 
             value={employeeCode} onChange={e => setEmployeeCode(e.target.value)} 
           />
         </DialogContent>
