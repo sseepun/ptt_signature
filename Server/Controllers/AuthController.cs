@@ -27,8 +27,7 @@ namespace Server.Controllers
     {
       if (!req.Success || req.UserId == null || req.Email == null) return null;
 
-      var usedEmail = req.Email == "CL6800001-WTB-0001@pttplctest01.onmicrosoft.com"
-        ? "testgen1_CL6800178-EMS-003@pttplctest01.onmicrosoft.com" : req.Email;
+      var usedEmail = string.IsNullOrEmpty(req.Email) ? "" : req.Email.ToLower();
       User? user = _db.Users.Where(d => d.Email == usedEmail).FirstOrDefault();
       if (user == null)
       {
