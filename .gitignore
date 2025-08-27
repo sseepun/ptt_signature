@@ -27,3 +27,6 @@ yarn-error.log*
 bin/
 obj/
 Server/publish
+
+appsettings.json
+appsettings.*.json
