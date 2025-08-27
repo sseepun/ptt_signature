@@ -30,3 +30,5 @@ Server/publish
 
 appsettings.json
 appsettings.*.json
+
+Properties/launchSettings.BAK.json
