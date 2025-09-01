@@ -35,7 +35,7 @@ export default function TemplatePage() {
   const history = useNavigate();
   const params = useParams();
   const crud = params.crud || 'create';
-  const dataId = params?.['*'] || null;
+  const dataId = params['*'] || null;
 
   const disabled = useMemo(() => ['view'].indexOf(crud) > -1, [crud]);
   const [disabledStatus, setDisabledStatus] = useState(false);
