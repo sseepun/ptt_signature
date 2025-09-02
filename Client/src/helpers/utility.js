@@ -6,7 +6,6 @@ export const getValueOrDefault = (val, _default='') => {
 
 export const replaceRules = (obj, user) => {
   if(obj?.type === 'text' && user?.Id){
-    console.log(user)
     obj.value = `${obj.value ?? ''}`
       .replace(/\[EmployeeId\]/g, user.EmployeeId || '')
       .replace(/\[Prefix\]/g, user.Prefix || '')

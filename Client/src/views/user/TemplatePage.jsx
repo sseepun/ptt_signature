@@ -89,7 +89,6 @@ export default function TemplatePage() {
   const [data, setData] = useState(null);
 
   const onTemplate = (i=-1, k='', d=null) => {
-    console.log(123, i, k, d)
     if(i < 0 || !k || !d) return onTemplateClose();
     setBlockIndex(i);
     setDataKey(k);

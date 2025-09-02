@@ -3,9 +3,13 @@ export const makeRequest = (type='POST', target, input={}, accessToken='', forge
   let headers = { 'Content-Type': 'application/json' };
   if(accessToken) headers['Authorization'] = `Bearer ${accessToken}`;
   if(forgery) headers['X-CSRF-TOKEN'] = forgery;
+
+  if(type === 'GET') return fetch(target, { method: 'GET', headers: headers });
+
+  
   return fetch(target, {
     method: type,
     headers: headers,
-    body: type === 'GET'? null: JSON.stringify(input),
+    body: JSON.stringify(input),
   });
 }

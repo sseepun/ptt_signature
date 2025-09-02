@@ -17,13 +17,18 @@ namespace Server.Services {
   }
 
   public class PisService {
+    private readonly SystemDbContext _db;
     private IHttpClientFactory _clientFactory;
-    public PisService(IHttpClientFactory clientFactory) {
-        _clientFactory = clientFactory;
+    public PisService(SystemDbContext db, IHttpClientFactory clientFactory) {
+      _db = db;
+      _clientFactory = clientFactory;
     }
 
     public string? GetVariable(string key) {
-      return Environment.GetEnvironmentVariable($"Pis:{key}");
+      var config = _db.Configs
+        .Where(d => d.Name == $"Pis{key}")
+        .FirstOrDefault();
+      return config == null ? "" : config.Value;
     }
     
     public async Task<string?> GetAuthToken() {
