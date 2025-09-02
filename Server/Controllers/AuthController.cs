@@ -62,15 +62,15 @@ namespace Server.Controllers
         user.LastNameEN = pisUser.LastNameEN;
         user.EmployeeId = pisUser.EmployeeId;
         user.Title = pisUser.Title;
-        if(!SUtility.GetTestEmployeeIds().Contains(pisUser.Email ?? "") 
+        if (!SUtility.GetTestEmployeeIds().Contains(pisUser.Email ?? "")
         && !string.IsNullOrEmpty(pisUser.Email)) user.Email = pisUser.Email;
         user.Telephone = pisUser.Telephone;
         user.Mobile = pisUser.Mobile;
-        if(!string.IsNullOrEmpty(pisUser.DepartmentCode)) user.DepartmentCode = pisUser.DepartmentCode;
-        if(!string.IsNullOrEmpty(pisUser.Department)) user.Department = pisUser.Department;
-        if(!string.IsNullOrEmpty(pisUser.DepartmentEN)) user.DepartmentEN = pisUser.DepartmentEN;
-        if(!string.IsNullOrEmpty(pisUser.DepartmentLong)) user.DepartmentLong = pisUser.DepartmentLong;
-        if(!string.IsNullOrEmpty(pisUser.DepartmentAbbr)) user.DepartmentAbbr = pisUser.DepartmentAbbr;
+        if (!string.IsNullOrEmpty(pisUser.DepartmentCode)) user.DepartmentCode = pisUser.DepartmentCode;
+        if (!string.IsNullOrEmpty(pisUser.Department)) user.Department = pisUser.Department;
+        if (!string.IsNullOrEmpty(pisUser.DepartmentEN)) user.DepartmentEN = pisUser.DepartmentEN;
+        if (!string.IsNullOrEmpty(pisUser.DepartmentLong)) user.DepartmentLong = pisUser.DepartmentLong;
+        if (!string.IsNullOrEmpty(pisUser.DepartmentAbbr)) user.DepartmentAbbr = pisUser.DepartmentAbbr;
       }
 
       user.EmployeeId = req.EmployeeId;
@@ -88,7 +88,7 @@ namespace Server.Controllers
       ResAuthSigninAD res = await _azureAdService.AuthorizationAD(req);
       if (!res.Success) return BadRequest(new { Message = res.Message });
 
-      res.Email = string.IsNullOrEmpty(res.Email)? req.Username: res.Email;
+      res.Email = string.IsNullOrEmpty(res.Email) ? req.Username : res.Email;
       User? user = await SigninProcess(res);
       if (user == null) return BadRequest(new { Message = $"ไม่พบผู้ใช้ในระบบที่ใช้อีเมล {res.Email}" });
 
@@ -108,17 +108,28 @@ namespace Server.Controllers
     {
       User? _user = HttpContext.Items["User"] as User;
       if (_user == null) return Ok(true);
-      
+
       User? user = _db.Users
         .Where(d => d.Id == _user.Id)
         .FirstOrDefault();
-      if(user == null) return Ok(true);
+      if (user == null) return Ok(true);
 
       user.AccessToken = null;
       user.RefreshToken = null;
       _db.SaveChanges();
       return Ok(true);
     }
-        
+
+    private string GetDomain(){
+        string _url = Environment.GetEnvironmentVariable("FrontendUrl") ?? "";
+        string[] _urls1 = _url.Replace("http://", "").Replace("https://", "").Split("/");
+        string _urls2 = _urls1[0].Split(':')[0];
+        string[] _urls3 = _urls2.Split('.');
+        if(_urls3.Length == 4) return System.Net.WebUtility.HtmlEncode($"{_urls3[1]}.{_urls3[2]}.{_urls3[3]}");
+        if(_urls3.Length == 3) return System.Net.WebUtility.HtmlEncode($"{_urls3[0]}.{_urls3[1]}.{_urls3[2]}");
+        if(_urls3.Length == 2) return System.Net.WebUtility.HtmlEncode($"{_urls3[0]}.{_urls3[1]}");
+        return System.Net.WebUtility.HtmlEncode(_urls3[0]);
+    }
+    
   }
 }

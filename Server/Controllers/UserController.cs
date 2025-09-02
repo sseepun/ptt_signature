@@ -101,12 +101,12 @@ namespace Server.Controllers
       return Ok(new { Message = "เพิ่มสิทธิ์ผู้ใช้สำเร็จ" });
     }
 
-    [HttpDelete("api/user-admin/{Id}")]
+    [HttpDelete("api/user-admin")]
     [Authorize(Roles = "Admin")]
-    public ActionResult UserAdminDelete(int Id)
+    public ActionResult UserAdminDelete(ReqUserAdminlDelete req)
     {
       User? user = _db.Users
-        .Where(d => d.Id == Id)
+        .Where(d => d.Id == req.Id)
         .FirstOrDefault();
       if (user != null)
       { 

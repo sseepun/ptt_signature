@@ -38,7 +38,7 @@ export default function TemplatesPage() {
   const onSubmit = async (e=null) => {
     e?.preventDefault();
     if(process !== 'delete' || !data.Id) return;
-    const _fetch = await makeRequest('DELETE', `/api/email-template/${data.Id}`, {}, accessToken);
+    const _fetch = await makeRequest('DELETE', `/api/email-template`, { Id: data.Id }, accessToken);
     if(!_fetch.ok || _fetch.status !== 200) return alertChange('Danger', 'ลบ Template ไม่สำเร็จ');
     alertChange('Success', 'ลบ Template สำเร็จ');
     onLoadData();

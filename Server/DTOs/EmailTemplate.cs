@@ -7,4 +7,8 @@ namespace Server.DTOs
     public required string Template { get; set; }
     public int Status { get; set; } = 0;
   }
+  public class ReqEmailDelete
+  {
+    public required int Id { get; set; }
+  }
 }

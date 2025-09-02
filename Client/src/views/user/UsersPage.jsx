@@ -59,7 +59,7 @@ export default function UsersPage() {
       return onProcess();
     }
     if(process === 'delete' && data?.Id){
-      const _fetch = await makeRequest('DELETE', `/api/user-admin/${data.Id}`, {}, accessToken);
+      const _fetch = await makeRequest('DELETE', `/api/user-admin`, { Id: data.Id }, accessToken);
       if(!_fetch.ok || _fetch.status !== 200) return alertChange('Danger', 'ลบสิทธิ์ผู้ใช้ไม่สำเร็จ');
       alertChange('Success', 'ลบสิทธิ์ผู้ใช้สำเร็จ');
       onLoadData();

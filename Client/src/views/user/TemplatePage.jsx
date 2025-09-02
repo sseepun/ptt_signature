@@ -183,16 +183,16 @@ export default function TemplatePage() {
     if(crud === 'create'){
       setLoading(() => true);
       const _fetch = await makeRequest('POST', '/api/email-template', _template, accessToken);
-      if(!_fetch.ok || _fetch.status !== 200) return alertChange('Danger', 'เพิ่ม Template ไม่สำเร็จ');
       setLoading(() => false);
+      if(!_fetch.ok || _fetch.status !== 200) return alertChange('Danger', 'เพิ่ม Template ไม่สำเร็จ');
       alertChange('Success', 'เพิ่ม Template สำเร็จ');
       return history('/backend/templates');
     }
     if(crud === 'update'){
       setLoading(() => true);
       const _fetch = await makeRequest('PATCH', '/api/email-template', _template, accessToken);
-      if(!_fetch.ok || _fetch.status !== 200) return alertChange('Danger', 'บันทึก Template ไม่สำเร็จ');
       setLoading(() => false);
+      if(!_fetch.ok || _fetch.status !== 200) return alertChange('Danger', 'บันทึก Template ไม่สำเร็จ');
       alertChange('Success', 'บันทึก Template สำเร็จ');
       return history('/backend/templates');
     }

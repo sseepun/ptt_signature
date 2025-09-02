@@ -111,12 +111,12 @@ namespace Server.Controllers
       return Ok(new { Message = "แก้ไข Template สำเร็จ" });
     }
 
-    [HttpDelete("api/email-template/{Id}")]
+    [HttpDelete("api/email-template")]
     [Authorize(Roles = "Admin")]
-    public ActionResult EmailTemplateDelete(int Id)
+    public ActionResult EmailTemplateDelete(ReqEmailDelete req)
     {
       EmailTemplate? data = _db.EmailTemplates
-        .Where(d => d.Id == Id && d.Status == 0)
+        .Where(d => d.Id == req.Id && d.Status == 0)
         .FirstOrDefault();
       if (data != null)
       {

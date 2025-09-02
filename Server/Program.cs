@@ -5,6 +5,7 @@ using Server.Extensions;
 using Server.Services;
 using Server.AuthMiddleware;
 using Microsoft.IdentityModel.Tokens;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.AddEnvirontmentVariables();
