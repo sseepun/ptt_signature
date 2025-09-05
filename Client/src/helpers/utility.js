@@ -1,4 +1,4 @@
-import momentTZ from 'moment-timezone';
+import moment from 'moment';
 
 export const getValueOrDefault = (val, _default='') => {
   return val ?? _default;
@@ -29,8 +29,8 @@ export const replaceRules = (obj, user) => {
 
 export const formatDate = (value=null, format='DD/MM/YYYY', thai=false) => {
   let string;
-  if(!value) string = momentTZ(new Date()).tz('Asia/Bangkok').format(format);
-  else string = momentTZ(new Date(String(value))).tz('Asia/Bangkok').format(format);
+  if(!value) string = moment(value).format(format);
+  else string = moment(value).format(format);
   if(string){
     if(thai){
       string = string.split('/');
@@ -42,8 +42,8 @@ export const formatDate = (value=null, format='DD/MM/YYYY', thai=false) => {
 }
 export const formatTime = (value=null, format='HH:mm') => {
   let string;
-  if(!value) string = momentTZ(new Date()).tz('Asia/Bangkok').format(format);
-  else string = momentTZ(new Date(String(value))).tz('Asia/Bangkok').format(format);
+  if(!value) string = moment(value).format(format);
+  else string = moment(value).format(format);
   if(string) return string;
   return '';
 }

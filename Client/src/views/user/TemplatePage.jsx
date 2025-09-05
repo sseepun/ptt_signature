@@ -57,7 +57,7 @@ export default function TemplatePage() {
       }
       if(['view','update'].indexOf(_crud) < 0 || !_dataId) return history('/backend/templates');
 
-      const _fetch = await makeRequest('GET', `/api/email-template/${_dataId}`, {}, accessToken);
+      const _fetch = await makeRequest('GET', `/api/email-template`, { Id: _dataId }, accessToken);
       const _data = await _fetch.json();
       const _template = new EmailTemplateModel(_data);
       setTemplate(_template);

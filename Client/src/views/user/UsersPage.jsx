@@ -44,7 +44,7 @@ export default function UsersPage() {
   const onSubmit = async (e=null) => {
     e?.preventDefault();
     if(process === 'create' && employeeCode){
-      const _fetch = await makeRequest('GET', `/api/user/${employeeCode}`, {}, accessToken);
+      const _fetch = await makeRequest('GET', `/api/user`, { Id: employeeCode }, accessToken);
       if(!_fetch.ok || _fetch.status !== 200) return alertChange('Danger', 'ไม่พบผู้ใช้ในระบบ PIS');
       const _data = await _fetch.json();
       setEmployee(new UserModel(_data));

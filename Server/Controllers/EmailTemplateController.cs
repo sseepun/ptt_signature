@@ -23,9 +23,11 @@ namespace Server.Controllers
     [Authorize(Roles = "Admin,User")]
     public ActionResult EmailTemplateActive()
     {
+      Console.WriteLine(123);
       EmailTemplate? data = _db.EmailTemplates
         .Where(d => d.Status == 1)
         .FirstOrDefault();
+      Console.WriteLine(data);
       if (data == null) return NotFound();
       return Ok(data);
     }
