@@ -1,5 +1,4 @@
 using Server.Models;
-using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
 using Server.DTOs;
 using Microsoft.AspNetCore.Authorization;
@@ -43,6 +42,13 @@ namespace Server.Controllers
     public ActionResult EmailTemplateList()
     {
       var data = _db.EmailTemplates
+        .Select(d => new EmailTemplate {
+          Id = d.Id,
+          Name = d.Name,
+          Status = d.Status,
+          CreatedAt = d.CreatedAt,
+          UpdatedAt = d.UpdatedAt,
+        })
         .OrderByDescending(d => d.Status)
         .ThenByDescending(d => d.UpdatedAt)
         .ToList();

@@ -7,12 +7,11 @@ import { IconButton, Menu, MenuItem } from '@mui/material';
 import SettingsIcon from '@mui/icons-material/Settings';
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 
-import CryptoJS from 'crypto-js';
 import { useIdleTimer } from 'react-idle-timer';
 import { makeRequest } from '@/helpers/api';
 import { alertChange } from '@/helpers/alert';
 import { Storage } from '@/helpers/storage';
-import { APP_PREFIX, TOKEN_KEY } from '@/actions/variables';
+import { APP_PREFIX } from '@/actions/variables';
 
 import { MsalProvider } from '@azure/msal-react';
 import { PublicClientApplication } from '@azure/msal-browser';
@@ -71,15 +70,11 @@ const Topnav = () => {
   const [msalIntance, setMsalInstance] = useState(null);
   useEffect(() => {
     try {
-      let _tenant = Storage.getItem(`${APP_PREFIX}_MSAL_TENANT`);
+      const _tenant = Storage.getItem(`${APP_PREFIX}_MSAL_TENANT`);
       if(!_tenant) return;
-      _tenant = CryptoJS.AES.decrypt(_tenant, TOKEN_KEY).toString(CryptoJS.enc.Utf8);
-      _tenant = JSON.parse(_tenant);
 
-      let _msalApp = Storage.getItem(`${APP_PREFIX}_MSAL_APP`);
+      const _msalApp = Storage.getItem(`${APP_PREFIX}_MSAL_APP`);
       if(!_msalApp) return;
-      _msalApp = CryptoJS.AES.decrypt(_msalApp, TOKEN_KEY).toString(CryptoJS.enc.Utf8);
-      _msalApp = JSON.parse(_msalApp);
 
       setTenant(_tenant);
       setMsalApp(_msalApp);

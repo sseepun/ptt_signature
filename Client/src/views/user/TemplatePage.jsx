@@ -15,6 +15,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 
 import { makeRequest } from '@/helpers/api';
 import { alertChange } from '@/helpers/alert';
+import { APP_URL } from '@/actions/variables';
 import Template01 from '@/templates/Template01';
 import Template02 from '@/templates/Template02';
 import Template03 from '@/templates/Template03';
@@ -109,8 +110,12 @@ export default function TemplatePage() {
   const onTemplateFileChange = async (file) => {
     if(!file) return;
 
-    setLoading(() => true);
-    const toDataURL = (url, callback) => {
+    const toDataURL = (_file, callback) => {
+      if(['image/jpeg','image/jpg','image/png'].indexOf(_file?.type) < 0) return callback(null);
+
+      const url = URL.createObjectURL(file);
+      if(url.indexOf(`blob:${APP_URL}`) !== 0) return callback(null);
+
       let _xhr = new XMLHttpRequest();
       _xhr.onload = () => {
         let _reader = new FileReader();
@@ -121,10 +126,11 @@ export default function TemplatePage() {
       _xhr.responseType = 'blob';
       _xhr.send();
     }
+
+    setLoading(() => true);
     try {
-      toDataURL(URL.createObjectURL(file), dataUrl => {
-        setData({ ...data, value: dataUrl });
-        // setData({ ...data, preview: URL.createObjectURL(file), toUpload: file });
+      toDataURL(file, dataUrl => {
+        if(dataUrl) setData({ ...data, value: dataUrl });
         setLoading(() => false);
       });
     } catch {

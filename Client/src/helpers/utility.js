@@ -1,4 +1,3 @@
-import moment from 'moment';
 
 export const getValueOrDefault = (val, _default='') => {
   return val ?? _default;
@@ -27,23 +26,14 @@ export const replaceRules = (obj, user) => {
   return obj;
 }
 
-export const formatDate = (value=null, format='DD/MM/YYYY', thai=false) => {
-  let string;
-  if(!value) string = moment(value).format(format);
-  else string = moment(value).format(format);
-  if(string){
-    if(thai){
-      string = string.split('/');
-      return `${string[0]}/${string[1]}/${parseInt(string[2])+543}`;
-    }
-    return string;
-  }
-  return '';
+export const formatDate = (value=null) => {
+  const _date = new Date(value || null);
+  return _date.getDate().toString().padStart(2, '0') 
+    + '/' + (_date.getMonth() + 1).toString().padStart(2, '0')
+    + '/' + _date.getFullYear();
 }
-export const formatTime = (value=null, format='HH:mm') => {
-  let string;
-  if(!value) string = moment(value).format(format);
-  else string = moment(value).format(format);
-  if(string) return string;
-  return '';
+export const formatTime = (value=null) => {
+  const _date = new Date(value || null);
+  return _date.getHours().toString().padStart(2, '0')
+    + ':' + _date.getMinutes().toString().padStart(2, '0');
 }

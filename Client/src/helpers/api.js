@@ -25,10 +25,9 @@ const _apiHeader = (accessToken='', forgery='') => {
 export const makeRequest = (type='POST', target, input={}, accessToken='', forgery='') => {
   const headers = _apiHeader(accessToken, forgery);
   let url = ApiUrls[target];
-  console.log(type, url)
+  if(!url) return null;
   if(type === 'GET'){
     if(input?.Id) url += `/${input.Id}`;
-  console.log(123)
     return fetch(url, { method: 'GET', headers: headers });
   }
   return fetch(url, { method: type, headers: headers, body: JSON.stringify(input) });
