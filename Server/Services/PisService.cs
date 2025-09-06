@@ -1,7 +1,6 @@
 using System.Text;
 using System.Text.Json;
 using Server.DTOs;
-using Newtonsoft.Json;
 using Server.Models;
 
 namespace Server.Services {
@@ -70,12 +69,12 @@ namespace Server.Services {
         if(!response.IsSuccessStatusCode) return new PisDepartment();
 
         var content = await response.Content.ReadAsStringAsync();
-        var resultData = JsonConvert.DeserializeObject<PisDepartmentsMain>(content);
+        var resultData = JsonSerializer.Deserialize<PisDepartmentsMain>(content);
         var result = resultData?.Entries.Entry ?? new List<PisDepartment>();
         return result.FirstOrDefault() ?? new PisDepartment();
       } catch (Exception ex) { Console.WriteLine($"\nPhone Directory Get Departments Error : {ex.Message}\n{ex.StackTrace}"); }
       return new PisDepartment();
-  }
+    }
 
     public async Task<PisPosition> GetPosition(string token, string? posCode) {
       try {
@@ -94,12 +93,12 @@ namespace Server.Services {
         if(!response.IsSuccessStatusCode) return new PisPosition();
 
         var content = await response.Content.ReadAsStringAsync();
-        var resultData = JsonConvert.DeserializeObject<PisPositionsMain>(content);
+        var resultData = JsonSerializer.Deserialize<PisPositionsMain>(content);
         var result = resultData?.Entries.Entry ?? new List<PisPosition>();
         return result.FirstOrDefault() ?? new PisPosition();
       } catch (Exception ex) { Console.WriteLine($"\nPhone Directory Get Positions Error : {ex.Message}\n{ex.StackTrace}"); }
       return new PisPosition();
-  }
+    }
 
     public async Task<List<User>> ResultUsers(string token, List<PisUser> resultData)
     {
@@ -152,8 +151,8 @@ namespace Server.Services {
         if (!response.IsSuccessStatusCode) return new List<User>();
 
         var content = await response.Content.ReadAsStringAsync();
-        var resultData = JsonConvert.DeserializeObject<PisUsersMain>(content);
-        var result = await ResultUsers(token, resultData?.entries.entry ?? new List<PisUser>());
+        var resultData = JsonSerializer.Deserialize<PisUsersMain>(content);
+        var result = await ResultUsers(token, resultData?.Entries.Entry ?? new List<PisUser>());
         return result;
       }
       catch (Exception ex) { Console.WriteLine($"\nPhone Directory Get Users Error : {ex.Message}\n{ex.StackTrace}"); }

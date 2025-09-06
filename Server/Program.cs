@@ -12,12 +12,8 @@ builder.Services.AddHttpClient();
 builder.Services.AddScoped<AzureAdService>();
 builder.Services.AddScoped<PisService>();
 
-builder.Services
-    .AddControllers()
-    .AddJsonOptions(options => {
-        options.JsonSerializerOptions.PropertyNamingPolicy = null;
-    });
-// builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddControllers()
+    .AddJsonOptions(options => { options.JsonSerializerOptions.PropertyNamingPolicy = null; });
 
 builder.Services.AddTransient<SystemDbContext>();
 builder.Services.AddDbContext<SystemDbContext>(options =>

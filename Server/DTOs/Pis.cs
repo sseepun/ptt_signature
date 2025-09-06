@@ -3,11 +3,11 @@ namespace Server.DTOs
 
   public class PisUsersMain
   {
-    public required PisUsers entries { get; set; }
+    public required PisUsers Entries { get; set; }
   }
   public class PisUsers
   {
-    public required List<PisUser> entry { get; set; }
+    public required List<PisUser> Entry { get; set; }
   }
   public class PisUser
   {
