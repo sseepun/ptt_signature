@@ -169,11 +169,13 @@ export default function UsersPage() {
         <DialogContent dividers={true}>
           <TextField label="รหัสพนักงาน" required fullWidth variant="outlined" 
             value={employeeCode} onChange={e => setEmployeeCode(e.target.value)} 
+            inputProps={{ minLength: 6, maxLength: 6 }} 
+            placeholder="กรอกรหัสพนักงาน 6 หลัก" 
           />
         </DialogContent>
         <DialogActions>
           <div className="btns mt-0">
-            <Button type="submit" disabled={!employeeCode} 
+            <Button type="submit" disabled={!employeeCode || employeeCode?.length !== 6} 
               variant="contained" color="secondary" disableElevation 
               size="large" className="bradius tt-unset mr-2" style={{ minWidth: '7.5rem' }} 
             >

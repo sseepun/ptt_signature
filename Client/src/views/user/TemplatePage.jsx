@@ -314,7 +314,7 @@ export default function TemplatePage() {
                 variant="contained" color="secondary" disableElevation 
                 size="large" className="bradius tt-unset mr-2" style={{ minWidth: '7.5rem' }} 
               >
-                <span className="h6">{crud==='create'? 'เพิ่ม': 'บันทึก'}</span>
+                <span className="h6">บันทึก</span>
               </Button>
             ): (<></>)}
             <Button component={Link} to="/backend/templates" 

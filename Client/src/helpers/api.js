@@ -15,15 +15,14 @@ const ApiUrls = {
   '/api/user': '/api/user',
 };
 
-const _apiHeader = (accessToken='', forgery='') => {
+const _apiHeader = (accessToken='') => {
   let headers = { 'Content-Type': 'application/json' };
   if(accessToken) headers['Authorization'] = `Bearer ${accessToken}`;
-  if(forgery) headers['X-CSRF-TOKEN'] = forgery;
   return headers;
 }
 
-export const makeRequest = (type='POST', target, input={}, accessToken='', forgery='') => {
-  const headers = _apiHeader(accessToken, forgery);
+export const makeRequest = (type='POST', target, input={}, accessToken='') => {
+  const headers = _apiHeader(accessToken);
   let url = ApiUrls[target];
   if(!url) return null;
   if(type === 'GET'){

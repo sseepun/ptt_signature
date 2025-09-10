@@ -83,14 +83,12 @@ export const AuthContextProvider = (props) => {
     const onLoad = async () => {
       if(status !== 'loading') return () => {};
 
-      let _user = Storage.getItem(`${APP_PREFIX}_USER`);
+      const _user = new UserModel(Storage.getItem(`${APP_PREFIX}_USER`) || {});
       const _accessToken = Storage.getItem(`${APP_PREFIX}_ACCESS`);
       const _refreshToken = Storage.getItem(`${APP_PREFIX}_REFRESH`);
       if(!_accessToken || !_refreshToken || !_user){ onSignout(); return () => {}; }
 
       try {
-        _user = new UserModel(_user || {});
-
         const _fetch = await makeRequest('PATCH', '/api/refresh', {}, _accessToken);
         if(_fetch.ok && _fetch.status === 200){
           const _res = await _fetch.json();

@@ -15,7 +15,7 @@ import { EmailTemplateModel, UserModel } from '@/models';
 import html2canvas from 'html2canvas';
 
 export default function HomePage() {
-  const { accessToken } = useContext(AuthContext);
+  const { accessToken, onSignout } = useContext(AuthContext);
   const [template, setTemplate] = useState(new EmailTemplateModel());
   const [user, setUser] = useState(new UserModel());
 
@@ -25,16 +25,17 @@ export default function HomePage() {
         .then(async res => {
           if(res.ok && res.status === 200){
             const data = await res.json();
-            setTemplate(new EmailTemplateModel(data));
+            return setTemplate(new EmailTemplateModel(data));
           }
         }).catch(() => {}),
       makeRequest('GET', `/api/user-info`, {}, accessToken)
         .then(async res => {
           if(res.ok && res.status === 200){
             const data = await res.json();
-            setUser(new UserModel(data));
+            return setUser(new UserModel(data));
           }
-        }).catch(() => {}),
+          return onSignout();
+        }).catch(() => onSignout()),
     ]);
   };
 
