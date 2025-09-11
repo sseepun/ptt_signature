@@ -86,7 +86,7 @@ export const AuthContextProvider = (props) => {
       const _user = new UserModel(Storage.getItem(`${APP_PREFIX}_USER`) || {});
       const _accessToken = Storage.getItem(`${APP_PREFIX}_ACCESS`);
       const _refreshToken = Storage.getItem(`${APP_PREFIX}_REFRESH`);
-      if(!_accessToken || !_refreshToken || !_user){ onSignout(); return () => {}; }
+      if(!_user.Id || !_accessToken || !_refreshToken){ onSignout(); return () => {}; }
 
       try {
         const _fetch = await makeRequest('PATCH', '/api/refresh', {}, _accessToken);

@@ -116,13 +116,17 @@ export default function TemplatePage() {
       const url = URL.createObjectURL(file);
       if(url.indexOf(`blob:${APP_URL}`) !== 0) return callback(null);
 
+      const cleanUrl = url.replace(`blob:${APP_URL}`, '');
+      const allowedChars = /^[a-zA-Z0-9_-]+$/;
+      if(!allowedChars.test(cleanUrl)) return callback(null);
+
       let _xhr = new XMLHttpRequest();
       _xhr.onload = () => {
         let _reader = new FileReader();
         _reader.onloadend = () => callback(_reader.result);
         _reader.readAsDataURL(_xhr.response);
       };
-      _xhr.open('GET', url);
+      _xhr.open('GET', `blob:${APP_URL}${cleanUrl}`);
       _xhr.responseType = 'blob';
       _xhr.send();
     }
