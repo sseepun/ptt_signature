@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef, useMemo, useContext } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import AuthContext from '@/context/AuthContext';
@@ -108,39 +107,36 @@ export default function TemplatePage() {
     setData({ ...data, [key]: value });
   }
   const onTemplateFileChange = async (file) => {
-    if(!file) return;
+    if (!file) return;
 
-    const toDataURL = (_file, callback) => {
-      if(['image/jpeg','image/jpg','image/png'].indexOf(_file?.type) < 0) return callback(null);
+    const ALLOWED = new Set(['image/jpeg', 'image/jpg', 'image/png']);
+    const MAX_SIZE = 5 * 1024 * 1024; // 5MB
 
-      const url = URL.createObjectURL(file);
-      if(url.indexOf(`blob:${APP_URL}`) !== 0) return callback(null);
-
-      const cleanUrl = url.replace(`blob:${APP_URL}`, '');
-      const allowedChars = /^[a-zA-Z0-9_-]+$/;
-      if(!allowedChars.test(cleanUrl)) return callback(null);
-
-      let _xhr = new XMLHttpRequest();
-      _xhr.onload = () => {
-        let _reader = new FileReader();
-        _reader.onloadend = () => callback(_reader.result);
-        _reader.readAsDataURL(_xhr.response);
-      };
-      _xhr.open('GET', `blob:${APP_URL}${cleanUrl}`);
-      _xhr.responseType = 'blob';
-      _xhr.send();
+    if (!ALLOWED.has(file.type) || file.size > MAX_SIZE) {
+      alertChange('Danger', 'รองรับเฉพาะไฟล์ .jpg/.jpeg/.png และขนาดไม่เกิน 5MB');
+      return;
     }
 
-    setLoading(() => true);
-    try {
-      toDataURL(file, dataUrl => {
-        if(dataUrl) setData({ ...data, value: dataUrl });
-        setLoading(() => false);
+    const readAsDataURL = (f) =>
+      new Promise<string>((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onerror = () => reject(new Error('อ่านไฟล์ไม่สำเร็จ'));
+        reader.onload = () => resolve(typeof reader.result === 'string' ? reader.result : '');
+        reader.readAsDataURL(f);
       });
+
+    setLoading(true);
+    try {
+      const dataUrl = await readAsDataURL(file);
+      if (dataUrl) {
+        setData((prev) => ({ ...(prev || {}), value: dataUrl, preview: dataUrl }));
+      }
     } catch {
-      setLoading(() => false);
+      alertChange('Danger', 'ไม่สามารถอ่านไฟล์รูปภาพได้');
+    } finally {
+      setLoading(false);
     }
-  }
+  };
   const onTemplateDelete = (e=null, i=-1) => {
     e?.preventDefault();
     if(i < 0) return;
