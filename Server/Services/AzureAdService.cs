@@ -8,6 +8,7 @@ using Microsoft.IdentityModel.Tokens;
 namespace Server.Services{
   public class AzureObjectRes{
     public bool Success { get; set; } = false;
+    public string? Message { get; set; }
     public JsonElement? json { get; set; }
   }
   public class AzureObject1{
@@ -23,19 +24,24 @@ namespace Server.Services{
 
     private async Task<AzureObjectRes> GetResponse(HttpRequestMessage request, string resultKey)
     {
-      try {
+      try
+      {
         var client = _clientFactory.CreateClient();
         var response = await client.SendAsync(request);
-        if(!response.IsSuccessStatusCode) return new AzureObjectRes { Success = false };
+        if (!response.IsSuccessStatusCode) return new AzureObjectRes { Success = false };
 
         var content = await response.Content.ReadAsStringAsync();
         var json = JsonDocument.Parse(content).RootElement;
         Console.WriteLine($"\nAzure AD Response : {json.GetRawText()}");
-        if (json.GetProperty(resultKey).GetString() != "SUCCESS") return new AzureObjectRes { Success = false };
+        if (json.GetProperty(resultKey).GetString() != "SUCCESS") return new AzureObjectRes { Success = false, Message = json.GetProperty("result_desc").GetString() };
 
         return new AzureObjectRes { Success = true, json = json };
-      } catch(Exception ex) { Console.WriteLine($"\nAzure AD Get Response Error : {ex.Message}\n{ex.StackTrace}"); }
-      return new AzureObjectRes { Success = false };
+      }
+      catch (Exception ex)
+      {
+        Console.WriteLine($"\nAzure AD Get Response Error : {ex.Message}\n{ex.StackTrace}");
+        return new AzureObjectRes { Success = false, Message = ex.Message };
+      }
     }
 
     public async Task<ResAuthSigninAD> AuthorizationAD(ReqAuthSigninAD req){
@@ -58,7 +64,8 @@ namespace Server.Services{
           LastName = _names?.Length > 1? _names[1]: "",
         };
       }
-      try {
+      try
+      {
         var apiUrl = Environment.GetEnvironmentVariable("Caa:Url");
         var projectCode = Environment.GetEnvironmentVariable("Caa:ProjectCode");
 
@@ -75,10 +82,10 @@ namespace Server.Services{
           state_name = "",
           req_parameters = new List<AzureObject1> {
           new AzureObject1 {
-            k = "data",
-            v = requestBase64,
-          }
-        },
+              k = "data",
+              v = requestBase64,
+            }
+          },
           extra_xml = "",
         };
 
@@ -86,7 +93,7 @@ namespace Server.Services{
         request.Content = new StringContent(JsonSerializer.Serialize(bodyData, jsonOption), Encoding.UTF8, "application/json");
 
         var jsonRes = await GetResponse(request, "result_status");
-        if (!jsonRes.Success) return new ResAuthSigninAD { Success = false, Message = "ไม่สามารถเชื่อมต่อกับระบบ CA&A ได้" };
+        if (!jsonRes.Success) return new ResAuthSigninAD { Success = false, Message = $"เชื่อมต่อระบบ CA&A ไม่สำเร็จ - {jsonRes.Message}" };
 
         var json2 = jsonRes.json?.GetProperty("resp_parameters")[0].GetProperty("value").GetString();
         byte[] dataBytes = Convert.FromBase64String(json2 ?? "");
@@ -115,8 +122,11 @@ namespace Server.Services{
           LastName = lastName,
         };
       }
-      catch (Exception ex) { Console.WriteLine($"\nAzure AD Auth Error : {ex.Message}\n{ex.StackTrace}"); }
-      return new ResAuthSigninAD{ Success = false, Message = "ไม่สามารถเชื่อมต่อกับระบบ CA&A ได้" };
+      catch (Exception ex)
+      {
+        Console.WriteLine($"\nAzure AD Auth Error : {ex.Message}\n{ex.StackTrace}");
+        return new ResAuthSigninAD{ Success = false, Message = $"เชื่อมต่อระบบ CA&A ไม่สำเร็จ - {ex.Message}" };
+      }
     }
   }
 }

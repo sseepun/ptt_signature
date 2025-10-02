@@ -6,6 +6,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 
 import { DEV_PROCESS, APP_URL } from '@/actions/variables';
 import { useIsAuthenticated, useMsal } from '@azure/msal-react';
+import { alertChange } from '@/helpers/alert';
 import { makeRequest } from '@/helpers/api';
 
 export default function ButtonAD({ msalApplication, tenant, app, test=false, ...props }) {
@@ -42,7 +43,7 @@ export default function ButtonAD({ msalApplication, tenant, app, test=false, ...
           IdToken: _account.idToken,
         });
         const res = await _fetch.json();
-        if(res?.User?.AccessToken){
+        if(_fetch.ok &&res?.User?.AccessToken){
           document.cookie = 'msal.interaction.status=;';
           onSignin({
             u: res.User,
@@ -52,6 +53,8 @@ export default function ButtonAD({ msalApplication, tenant, app, test=false, ...
             app: app,
           });
           return;
+        }else{
+          alertChange('Danger', 'เข้าสู่ระบบไม่สำเร็จ', [ res?.Message ]);
         }
       }
     } catch {}
