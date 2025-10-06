@@ -50,7 +50,7 @@ namespace Server.Controllers
         if (user == null) return null;
       }
 
-      var pisUsers = await _pisService.GetUsers(user.EmployeeId ?? "");
+      var pisUsers = await _pisService.GetUsers(user.EmployeeId, user.Email);
       var pisUser = pisUsers.Count > 0 ? pisUsers[0] : null;
       if (pisUser != null)
       {

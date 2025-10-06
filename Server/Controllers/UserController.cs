@@ -29,7 +29,7 @@ namespace Server.Controllers
       User? _user = HttpContext.Items["User"] as User;
       if (_user == null) return Ok(null);
 
-      var pisUsers = await _pisService.GetUsers(_user.EmployeeId ?? "");
+      var pisUsers = await _pisService.GetUsers(_user.EmployeeId, _user.Email);
       if (pisUsers.Count < 1) return Ok(null);
 
       var pisUser = pisUsers[0];

@@ -2,6 +2,7 @@ using System.Text;
 using System.Text.Json;
 using Server.DTOs;
 using Server.Models;
+using Server.Helpers;
 
 namespace Server.Services {
   public class SearchDirectory2 {
@@ -131,7 +132,7 @@ namespace Server.Services {
       return result;
     }
 
-    public async Task<List<User>> GetUsers(string employeeId)
+    public async Task<List<User>> GetUsers(string? employeeId=null, string? email=null)
     {
       try
       {
@@ -141,8 +142,22 @@ namespace Server.Services {
         var url = GetVariable("Url");
         if (string.IsNullOrEmpty(url)) return new List<User>();
 
-        string endpoint = "/PersonelInfo/S4/1.0.0/PersonelInfo";
-        var request = new HttpRequestMessage(HttpMethod.Get, $"{url}{endpoint}?Search_EmployeeCode={employeeId}");
+        string endpoint = "/PersonelInfo/S4/1.0.0/PersonelInfo"; string sep = "?";
+        if (SUtility.GetTestAccounts().Contains(email ?? ""))
+        {
+          var _testIndex = SUtility.GetTestAccounts().IndexOf(email ?? "");
+          var _employeeId = _testIndex == 0 ? "600191"
+            : _testIndex == 1 ? "420051"
+            : _testIndex == 2 ? "310051"
+            : _testIndex == 3 ? "630036"
+            : _testIndex == 4 ? "480142"
+            : null;
+          endpoint += $"{sep}Search_EmployeeCode={_employeeId}";
+        }else{
+          if (!string.IsNullOrEmpty(employeeId)) { endpoint += $"{sep}Search_EmployeeCode={employeeId}"; sep = "&"; }
+          if (!string.IsNullOrEmpty(email)) { endpoint += $"{sep}Search_EmailAddr={email}"; sep = "&"; }
+        }
+        var request = new HttpRequestMessage(HttpMethod.Get, $"{url}{endpoint}");
         request.Headers.Add("Authorization", "Bearer " + token);
         request.Headers.Add("Accept", "application/json");
 

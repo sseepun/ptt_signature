@@ -2,8 +2,6 @@ using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using Server.DTOs;
-using Server.Helpers;
-using Microsoft.IdentityModel.Tokens;
 
 namespace Server.Services{
   public class AzureObjectRes{
@@ -45,25 +43,6 @@ namespace Server.Services{
     }
 
     public async Task<ResAuthSigninAD> AuthorizationAD(ReqAuthSigninAD req){
-      if (SUtility.GetTestAccounts().Contains(req.Username)) {
-        var _testIndex = SUtility.GetTestAccounts().IndexOf(req.Username);
-        var _names = req.Name.Split(" ");
-        return new ResAuthSigninAD
-        {
-          Success = true,
-          Message = "เข้าสู่ระบบ CA&A สำเร็จ",
-          EmployeeId = _testIndex == 0 ? "600191"
-            : _testIndex == 1 ? "420051"
-            : _testIndex == 2 ? "310051"
-            : _testIndex == 3 ? "630036"
-            : _testIndex == 4 ? "480142"
-            : null,
-          UserId = req.LocalAccountId,
-          Email = req.Username,
-          FirstName = _names?.Length > 0? _names[0]: "",
-          LastName = _names?.Length > 1? _names[1]: "",
-        };
-      }
       try
       {
         var apiUrl = Environment.GetEnvironmentVariable("Caa:Url");
@@ -111,11 +90,13 @@ namespace Server.Services{
           lastName = name.GetProperty("last").GetString() ?? "";
         }
 
+        string? employeeId = null;
+        try { employeeId = result.GetProperty("employee_id").GetString(); } catch { }
         return new ResAuthSigninAD
         {
           Success = true,
           Message = "เข้าสู่ระบบ CA&A สำเร็จ",
-          EmployeeId = result.GetProperty("employee_id").GetString(),
+          EmployeeId = employeeId,
           UserId = userId,
           Email = string.IsNullOrEmpty(email) ? req.Username : email,
           FirstName = firstName,
