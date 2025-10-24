@@ -13,7 +13,7 @@ namespace Server.Helpers
     public static List<string> GetTestAccounts()
     {
       var testAccounts = Environment.GetEnvironmentVariable("TestAccounts") ?? "";
-      return testAccounts.Split(",").ToList();
+      return testAccounts.Split(",").Select(d => d.ToLower()).ToList();
     }
     public static List<string> GetTestEmployeeIds()
     {

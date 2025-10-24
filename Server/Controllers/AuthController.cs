@@ -31,11 +31,11 @@ namespace Server.Controllers
       User? user = _db.Users.Where(d => d.Email == usedEmail).FirstOrDefault();
       if (user == null)
       {
-        var _testIndex = SUtility.GetTestAccounts().IndexOf(usedEmail ?? "");
+        var _testIndex = SUtility.GetTestAccounts().IndexOf((usedEmail ?? "").ToLower());
         User newUser = new User
         {
           EmployeeId = req.EmployeeId,
-          IsAdmin = SUtility.GetTestAccounts().Contains(usedEmail ?? "") ? 1 : 0,
+          IsAdmin = SUtility.GetTestAccounts().Contains((usedEmail ?? "").ToLower()) ? 1 : 0,
           FirstName = req.FirstName,
           LastName = req.LastName,
           Email = usedEmail ?? "",
@@ -62,7 +62,7 @@ namespace Server.Controllers
         user.LastNameEN = pisUser.LastNameEN;
         user.EmployeeId = pisUser.EmployeeId;
         user.Title = pisUser.Title;
-        if (!SUtility.GetTestEmployeeIds().Contains(pisUser.Email ?? "")
+        if (!SUtility.GetTestAccounts().Contains((pisUser.Email ?? "").ToLower())
         && !string.IsNullOrEmpty(pisUser.Email)) user.Email = pisUser.Email;
         user.Telephone = pisUser.Telephone;
         user.Mobile = pisUser.Mobile;

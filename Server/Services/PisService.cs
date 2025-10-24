@@ -121,7 +121,7 @@ namespace Server.Services {
           TitleEN = position.e_name ?? "",
           Email = entry.EmailAddr ?? "",
           Telephone = entry.OFFICETEL ?? "",
-          Mobile = entry.Mobile ?? "",
+          Mobile = entry.mobile ?? "",
           DepartmentCode = department.unitcode,
           Department = department.longname,
           DepartmentEN = department.engname,
@@ -143,15 +143,10 @@ namespace Server.Services {
         if (string.IsNullOrEmpty(url)) return new List<User>();
 
         string endpoint = "/PersonelInfo/S4/1.0.0/PersonelInfo"; string sep = "?";
-        if (SUtility.GetTestAccounts().Contains(email ?? ""))
+        if (SUtility.GetTestAccounts().Contains((email ?? "").ToLower()))
         {
-          var _testIndex = SUtility.GetTestAccounts().IndexOf(email ?? "");
-          var _employeeId = _testIndex == 0 ? "600191"
-            : _testIndex == 1 ? "420051"
-            : _testIndex == 2 ? "310051"
-            : _testIndex == 3 ? "630036"
-            : _testIndex == 4 ? "480142"
-            : null;
+          var _testIndex = SUtility.GetTestAccounts().IndexOf((email ?? "").ToLower());
+          var _employeeId = SUtility.GetTestEmployeeIds().ElementAtOrDefault(_testIndex);
           endpoint += $"{sep}Search_EmployeeCode={_employeeId}";
         }else{
           if (!string.IsNullOrEmpty(employeeId)) { endpoint += $"{sep}Search_EmployeeCode={employeeId}"; sep = "&"; }

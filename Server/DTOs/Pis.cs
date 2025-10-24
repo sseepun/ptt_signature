@@ -26,7 +26,7 @@ namespace Server.DTOs
 
     public string? EmailAddr { get; set; }
     public string? OFFICETEL { get; set; }
-    public string? Mobile { get; set; }
+    public string? mobile { get; set; }
   }
 
 

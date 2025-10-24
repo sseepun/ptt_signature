@@ -34,7 +34,7 @@ namespace Server.Controllers
 
       var pisUser = pisUsers[0];
       pisUser.Id = _user.Id;
-      if (!SUtility.GetTestEmployeeIds().Contains(pisUser.Email ?? "")
+      if (!SUtility.GetTestAccounts().Contains((pisUser.Email ?? "").ToLower())
       && string.IsNullOrEmpty(pisUser.Email)) pisUser.Email = _user.Email;
       if (string.IsNullOrEmpty(pisUser.Telephone)) pisUser.Telephone = _user.Telephone;
       if (string.IsNullOrEmpty(pisUser.Mobile)) pisUser.Mobile = _user.Mobile;
