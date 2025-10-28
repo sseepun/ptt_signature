@@ -60,7 +60,8 @@ namespace Server.Services {
         var url = GetVariable("Url");
         if (string.IsNullOrEmpty(url)) return new PisDepartment();
 
-        string endpoint = "/Unit/S4/1.0.0/Unit";
+        var prefix = GetVariable("Prefix");
+        string endpoint = $"/Unit/S4/1.0.0/{prefix}Unit";
         var request = new HttpRequestMessage(HttpMethod.Get, $"{url}{endpoint}?Search_UnitCode={unitCode}");
         request.Headers.Add("Authorization", "Bearer " + token);
         request.Headers.Add("Accept", "application/json");
@@ -84,7 +85,8 @@ namespace Server.Services {
         var url = GetVariable("Url");
         if (string.IsNullOrEmpty(url)) return new PisPosition();
 
-        string endpoint = "/Position/S4/1.0.0/Position";
+        var prefix = GetVariable("Prefix");
+        string endpoint = $"/Position/S4/1.0.0/{prefix}Position";
         var request = new HttpRequestMessage(HttpMethod.Get, $"{url}{endpoint}?Search_PositionCode={posCode}");
         request.Headers.Add("Authorization", "Bearer " + token);
         request.Headers.Add("Accept", "application/json");
@@ -142,7 +144,8 @@ namespace Server.Services {
         var url = GetVariable("Url");
         if (string.IsNullOrEmpty(url)) return new List<User>();
 
-        string endpoint = "/PersonelInfo/S4/1.0.0/PersonelInfo"; string sep = "?";
+        var prefix = GetVariable("Prefix");
+        string endpoint = $"/PersonelInfo/S4/1.0.0/{prefix}PersonelInfo"; string sep = "?";
         if (SUtility.GetTestAccounts().Contains((email ?? "").ToLower()))
         {
           var _testIndex = SUtility.GetTestAccounts().IndexOf((email ?? "").ToLower());
