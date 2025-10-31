@@ -18,7 +18,7 @@ namespace Server.Controllers
     [HttpGet("api")]
     public ActionResult AppDefaultRead()
     {
-      return Ok("PTT - E-Mail Signature API");
+      return Ok("PTT - E-mail Signature API");
     }
 
     [HttpGet("api/app-setting")]

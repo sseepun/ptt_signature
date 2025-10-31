@@ -31,8 +31,8 @@ namespace Server.Helpers
       var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
       var token = new JwtSecurityToken(
-        issuer: Environment.GetEnvironmentVariable("Jwt:Issuer") ?? "PTT E-Mail Signature",
-        audience: Environment.GetEnvironmentVariable("Jwt:Audience") ?? "PTT E-Mail Signature",
+        issuer: Environment.GetEnvironmentVariable("Jwt:Issuer") ?? "PTT E-mail Signature",
+        audience: Environment.GetEnvironmentVariable("Jwt:Audience") ?? "PTT E-mail Signature",
         expires: expires,
         signingCredentials: credentials,
         claims: [
@@ -52,8 +52,8 @@ namespace Server.Helpers
       var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
       var token = new JwtSecurityToken(
-        issuer: Environment.GetEnvironmentVariable("Jwt:Issuer") ?? "PTT E-Mail Signature",
-        audience: Environment.GetEnvironmentVariable("Jwt:Audience") ?? "PTT E-Mail Signature",
+        issuer: Environment.GetEnvironmentVariable("Jwt:Issuer") ?? "PTT E-mail Signature",
+        audience: Environment.GetEnvironmentVariable("Jwt:Audience") ?? "PTT E-mail Signature",
         expires: expires,
         signingCredentials: credentials,
         claims: [

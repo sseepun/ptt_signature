@@ -77,7 +77,7 @@ export default function HomePage() {
       <section className="section-padding">
         <div className="container">
           <h5 className="pb-2">
-            คุณสามารถดาวน์โหลด E-Mail Signature ของคุณได้ที่นี่
+            คุณสามารถดาวน์โหลด E-mail Signature ของคุณได้ที่นี่
           </h5>
           <div ref={ref} className="templates border-1 bcolor-fgray mt-6" style={{ '--scale': scale }}>
             <div ref={downloadRef}>

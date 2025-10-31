@@ -46,7 +46,7 @@ export default function SigninPage() {
           <div className="header">
             <img className="logo" src="/logo.png" alt="Logo" />
             <div className="text">
-              E-Mail Signature
+              E-mail Signature
             </div>
           </div>
           <div className="body text-center">
