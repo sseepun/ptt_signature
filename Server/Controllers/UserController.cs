@@ -80,14 +80,14 @@ namespace Server.Controllers
       var pisUser = pisUsers[0];
 
       User? user = _db.Users
-        .Where(d => (!string.IsNullOrEmpty(d.EmployeeId) && d.EmployeeId == req.EmployeeId) 
+        .Where(d => d.EmployeeId == req.EmployeeId 
           || (!string.IsNullOrEmpty(d.Email) && d.Email == pisUser.Email))
         .FirstOrDefault();
       if (user != null)
       {
         user.Department = pisUser.Department;
-        user.Email = pisUser.Email;
         if(string.IsNullOrEmpty(user.EmployeeId)) user.EmployeeId = pisUser.EmployeeId;
+        user.Email = pisUser.Email;
         user.IsAdmin = 1;
         user.Status = 1;
         _db.SaveChanges();
