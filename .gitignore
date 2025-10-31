@@ -34,3 +34,4 @@ appsettings.*.json
 Properties/launchSettings.BAK.json
 
 backup.txt
+wwwroot

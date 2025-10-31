@@ -44,6 +44,12 @@ app.UseMiddleware<AuthMiddleware>();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
-app.MapFallbackToFile("/index.html");
+app.MapFallbackToFile("/index.html", new StaticFileOptions {
+  OnPrepareResponse = (ctx) => {
+    ctx.Context.Response.Headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
+    ctx.Context.Response.Headers["Pragma"] = "no-cache";
+    ctx.Context.Response.Headers["Expires"] = "0";
+  }
+});
 
 app.Run();

@@ -1,4 +1,4 @@
-@Server_HostAddress = http://localhost:5285
+@Server_HostAddress = http://localhost:63446
 
 GET {{Server_HostAddress}}/app-setting/
 Accept: application/json
