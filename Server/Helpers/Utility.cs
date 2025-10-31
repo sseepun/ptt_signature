@@ -12,12 +12,12 @@ namespace Server.Helpers
 
     public static List<string> GetTestAccounts()
     {
-      var testAccounts = Environment.GetEnvironmentVariable("TestAccounts") ?? "";
+      var testAccounts = Environment.GetEnvironmentVariable("TestAccounts") ?? "TEST";
       return testAccounts.Split(",").Select(d => d.ToLower()).ToList();
     }
     public static List<string> GetTestEmployeeIds()
     {
-      var testEmployeeIds = Environment.GetEnvironmentVariable("TestEmployeeIds") ?? "";
+      var testEmployeeIds = Environment.GetEnvironmentVariable("TestEmployeeIds") ?? "TEST";
       return testEmployeeIds.Split(",").ToList();
     }
     
